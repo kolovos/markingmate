@@ -270,19 +270,13 @@ public class QuestionImpl extends MinimalEObjectImpl.Container implements Questi
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	@Override
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (title: ");
-		result.append(title);
-		result.append(", marks: ");
-		result.append(marks);
-		result.append(')');
-		return result.toString();
+		return this.getTitle() + " - " + this.getMarks() + " marks";
 	}
 
 } //QuestionImpl

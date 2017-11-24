@@ -5,8 +5,13 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
+import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
@@ -16,6 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -26,8 +32,16 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
+import com.explodingpixels.macwidgets.HudWidgetFactory;
+import com.explodingpixels.macwidgets.MacButtonFactory;
+import com.explodingpixels.macwidgets.MacUtils;
+import com.explodingpixels.macwidgets.MacWidgetFactory;
+import com.explodingpixels.macwidgets.UnifiedToolBar;
+import com.explodingpixels.macwidgets.plaf.HudComboBoxUI;
+
 import io.dimitris.markingmate.Answer;
 import io.dimitris.markingmate.Exam;
+import io.dimitris.markingmate.MarkingmateFactory;
 import io.dimitris.markingmate.MarkingmatePackage;
 import io.dimitris.markingmate.Question;
 import io.dimitris.markingmate.Student;
@@ -43,12 +57,16 @@ public class App extends JFrame {
 	protected Answer answer;
 	
 	public static void main(String[] args) throws Exception {
-		UIManager.getDefaults().put("SplitPane.border", BorderFactory.createEmptyBorder());
+		// UIManager.getDefaults().put("SplitPane.border", BorderFactory.createEmptyBorder());
         
 		new App().run();
 	}
 
 	protected void run() throws Exception {
+		setTitle("MarkingMate");
+		System.setProperty("Quaqua.tabLayoutPolicy", "wrap");
+		UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager.getLookAndFeel());
+		MacUtils.makeWindowLeopardStyle(getRootPane());
 		
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getPackageRegistry().put(MarkingmatePackage.eINSTANCE.getNsURI(), MarkingmatePackage.eINSTANCE);
@@ -56,14 +74,17 @@ public class App extends JFrame {
 		Resource resource = resourceSet.createResource(URI.createFileURI("/Users/dkolovos/git/markingmate/io.dimitris.markingmate/sample.model"));
 		resource.load(null);
 		exam = (Exam) resource.getContents().get(0);
+		// exam = MarkingmateFactory.eINSTANCE.createExam();
 		
 		feedbackEditorPane = new JEditorPane();
 		feedbackEditorPane.setMinimumSize(new Dimension(100, 0));
-		feedbackEditorPane.setBorder(new EtchedBorder());
+		feedbackEditorPane.setBorder(new EmptyBorder(7,7,7,7));
 		
 		answersPanel = new AnswersPanel();
 		
 		questionsComboBox = new JComboBox<Question>(new QuestionsComboBoxModel(this));
+		//questionsComboBox.setUI(new HudComboBoxUI());
+		
 		questionsComboBox.setRenderer(new QuestionsComboBoxListCellRenderer());
 		questionsComboBox.addActionListener(new ActionListener() {
 			
@@ -76,7 +97,8 @@ public class App extends JFrame {
 		if (exam.getQuestions().size() > 0) questionsComboBox.setSelectedIndex(0);
 		
 		studentsList = new JList<Student>(new StudentsListModel(this));
-		studentsList.setBorder(new EtchedBorder());
+		studentsList.setMinimumSize(new Dimension(200, 0));
+		//studentsList.setBorder(new EtchedBorder());
 		studentsList.setCellRenderer(new StudentsListCellRenderer());
 		studentsList.addListSelectionListener(new ListSelectionListener() {
 			
@@ -88,21 +110,28 @@ public class App extends JFrame {
 		});
 		if (exam.getStudents().size() > 0) studentsList.setSelectedIndex(0);
 		
-		JPanel studentPanel= new JPanel(new BorderLayout());	
+		JPanel studentPanel= new JPanel(new BorderLayout());
 		studentPanel.add(questionsComboBox, BorderLayout.NORTH);
 		studentPanel.add(feedbackEditorPane, BorderLayout.CENTER);
 		
-		JSplitPane leftSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, studentsList, studentPanel);
-		JSplitPane rightSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftSplitPane, createJScrollPane(answersPanel));
+		JSplitPane leftSplitPane = createSplitPane(studentsList, studentPanel);
+		JSplitPane rightSplitPane = createSplitPane(leftSplitPane, createJScrollPane(answersPanel));
+		rightSplitPane.setDividerLocation(600);
 		
 		setLayout(new BorderLayout());
-		//getRootPane().add(studentsList, BorderLayout.WEST);
-		//answersPanel.setMinimumSize(new Dimension(400, 0));
-		//getRootPane().add(createJScrollPane(answersPanel), BorderLayout.EAST);
 		add(rightSplitPane, BorderLayout.CENTER);
 		
+		UnifiedToolBar toolbar = new UnifiedToolBar();
+		toolbar.installWindowDraggerOnWindow(this);
+		toolbar.disableBackgroundPainter();
+		add(toolbar.getComponent(), BorderLayout.NORTH);
+		toolbar.addComponentToLeft(getUnifiedToolBarButton(new OpenAction()));
+		toolbar.addComponentToLeft(getUnifiedToolBarButton(new SaveAction()));
+		getRootPane().putClientProperty("apple.awt.brushMetalLook", true);
+		add(MacWidgetFactory.createComponentStatusBar().getComponent(), BorderLayout.SOUTH);
+		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setBounds(200, 200, 400, 400);
+		setBounds(200, 200, 800, 500);
 		setVisible(true);
 		
 	}
@@ -113,12 +142,7 @@ public class App extends JFrame {
 		}
 		Student student = getStudent();
 		if (student != null) {
-			for (Answer candidate : question.getAnswers()) {
-				if (candidate.getStudent() == student) {
-					setAnswer(candidate);
-					break;
-				}
-			}
+			setAnswer(getAnswer(student, question));
 		}
 	}
 	
@@ -128,13 +152,20 @@ public class App extends JFrame {
 		}
 		Question question = getQuestion();
 		if (question != null) {
-			for (Answer candidate : student.getAnswers()) {
-				if (candidate.getQuestion() == question) {
-					setAnswer(candidate);
-					break;
-				}
+			setAnswer(getAnswer(student, question));
+		}
+	}
+	
+	protected Answer getAnswer(Student student, Question question) {
+		for (Answer answer : student.getAnswers()) {
+			if (answer.getQuestion() == question) {
+				return answer;
 			}
 		}
+		Answer answer = MarkingmateFactory.eINSTANCE.createAnswer();
+		answer.setStudent(student);
+		answer.setQuestion(question);
+		return answer;
 	}
 	
 	protected void setAnswer(Answer answer) {
@@ -158,8 +189,53 @@ public class App extends JFrame {
 	}
 	
 	protected JScrollPane createJScrollPane(Component component) {
-		return new JScrollPane(component, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		JScrollPane scrollPane = new JScrollPane(component, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
             JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setBorder(BorderFactory.createEmptyBorder());
+		return scrollPane;
 	}
 	
+	protected JSplitPane createSplitPane(Component left, Component right) {
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
+		splitPane.putClientProperty("Quaqua.SplitPane.style","bar");
+		splitPane.setDividerSize(1);
+		return splitPane;
+	}
+	
+	protected AbstractButton getUnifiedToolBarButton(AbstractAction action) {
+		JButton button = new JButton(action);
+		button.setActionCommand("pressed");
+		Dimension d = new Dimension(48,48);
+		button.setPreferredSize(d);
+		button.setMinimumSize(d);
+		button.setMaximumSize(d);
+		button.putClientProperty("JButton.buttonType", "textured");
+		return MacButtonFactory.makeUnifiedToolBarButton(button);
+	}
+	
+	class OpenAction extends AbstractAction {
+		
+		public OpenAction() {
+			super("Open", new ImageIcon(new File("resources/open.png").getAbsolutePath()));
+			putValue(AbstractAction.SHORT_DESCRIPTION, "Opens a MarkingMate file");
+		}
+
+		public void actionPerformed(ActionEvent actionevent) {
+			
+		}
+		
+	}
+	
+	class SaveAction extends AbstractAction {
+		
+		public SaveAction() {
+			super("Save", new ImageIcon(new File("resources/save.png").getAbsolutePath()));
+			putValue(AbstractAction.SHORT_DESCRIPTION, "Saves the current MarkingMate file");
+		}
+
+		public void actionPerformed(ActionEvent actionevent) {
+			
+		}
+		
+	}
 }

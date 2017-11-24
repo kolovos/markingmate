@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ASCII"?>
 <Exam xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="markingmate" xmi:id="_1Voc4ND_Eee56I1TPN3wGw">
-  <questions xmi:id="_2k_L8ND_Eee56I1TPN3wGw" title="Design" marks="10" answers="_2KmOoNECEee56I1TPN3wGw _B3O04NEDEee56I1TPN3wGw _Jvr6sNEKEee56I1TPN3wGw _JHVdEdEREee56I1TPN3wGw _JTwvgdEREee56I1TPN3wGw _EdYyQdEYEee56I1TPN3wGw _Ij7w4dEYEee56I1TPN3wGw"/>
-  <questions xmi:id="_4kBrgND_Eee56I1TPN3wGw" title="Implementation" marks="20" answers="_5pxEMNECEee56I1TPN3wGw _Di7hsNEDEee56I1TPN3wGw _NkOjUNEKEee56I1TPN3wGw _JHVdEtEREee56I1TPN3wGw _JTwvgtEREee56I1TPN3wGw _EdYyQtEYEee56I1TPN3wGw _Ij7w4tEYEee56I1TPN3wGw"/>
+  <questions xmi:id="_2k_L8ND_Eee56I1TPN3wGw" title="Design" marks="10" answers="_2KmOoNECEee56I1TPN3wGw _B3O04NEDEee56I1TPN3wGw _Jvr6sNEKEee56I1TPN3wGw _JHVdEdEREee56I1TPN3wGw _JTwvgdEREee56I1TPN3wGw _EdYyQdEYEee56I1TPN3wGw"/>
+  <questions xmi:id="_4kBrgND_Eee56I1TPN3wGw" title="Implementation" marks="20" answers="_5pxEMNECEee56I1TPN3wGw _Di7hsNEDEee56I1TPN3wGw _NkOjUNEKEee56I1TPN3wGw _JHVdEtEREee56I1TPN3wGw _JTwvgtEREee56I1TPN3wGw _EdYyQtEYEee56I1TPN3wGw"/>
   <students xmi:id="_60J7END_Eee56I1TPN3wGw" number="StrongStudent">
     <answers xmi:id="_2KmOoNECEee56I1TPN3wGw" question="_2k_L8ND_Eee56I1TPN3wGw" feedback="StrongStudent Design" marks="90"/>
     <answers xmi:id="_5pxEMNECEee56I1TPN3wGw" question="_4kBrgND_Eee56I1TPN3wGw" feedback="StrongStudent Implementation" marks="89"/>
@@ -26,8 +26,5 @@
     <answers xmi:id="_EdYyQdEYEee56I1TPN3wGw" question="_2k_L8ND_Eee56I1TPN3wGw" feedback="WeakStudent Design" marks="20"/>
     <answers xmi:id="_EdYyQtEYEee56I1TPN3wGw" question="_4kBrgND_Eee56I1TPN3wGw" feedback="WeakStudent Implementation" marks="19"/>
   </students>
-  <students xmi:id="_Ij7w4NEYEee56I1TPN3wGw" number="WeakStudent">
-    <answers xmi:id="_Ij7w4dEYEee56I1TPN3wGw" question="_2k_L8ND_Eee56I1TPN3wGw" feedback="WeakStudent Design" marks="20"/>
-    <answers xmi:id="_Ij7w4tEYEee56I1TPN3wGw" question="_4kBrgND_Eee56I1TPN3wGw" feedback="WeakStudent Implementation" marks="19"/>
-  </students>
+  <students xmi:id="_Ij7w4NEYEee56I1TPN3wGw" number="WeakStudent"/>
 </Exam>
