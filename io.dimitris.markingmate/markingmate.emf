@@ -1,0 +1,25 @@
+@namespace(uri="markingmate", prefix="")
+package markingmate;
+
+class Exam {
+	val Question[*] questions;
+	val Student[*] students;
+}
+
+class Question {
+	attr String title = "";
+	attr int marks = 0;
+	ref Answer[*]#question answers;
+}
+
+class Student {
+	attr String number;
+	val Answer[*]#student answers;
+}
+
+class Answer {
+	ref Student#answers student;
+	ref Question#answers question;
+	attr String feedback = "";
+	attr int marks = 0;
+}

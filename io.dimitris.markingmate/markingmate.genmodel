@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/io.dimitris.markingmate/src" modelPluginID="io.dimitris.markingmate"
+    modelName="Markingmate" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>markingmate.ecore</foreignModel>
+  <genPackages prefix="Markingmate" basePackage="io.dimitris" disposableProviderFactory="true"
+      ecorePackage="markingmate.ecore#/">
+    <genClasses ecoreClass="markingmate.ecore#//Exam">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference markingmate.ecore#//Exam/questions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference markingmate.ecore#//Exam/students"/>
+    </genClasses>
+    <genClasses ecoreClass="markingmate.ecore#//Question">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute markingmate.ecore#//Question/title"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute markingmate.ecore#//Question/marks"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference markingmate.ecore#//Question/answers"/>
+    </genClasses>
+    <genClasses ecoreClass="markingmate.ecore#//Student">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute markingmate.ecore#//Student/number"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference markingmate.ecore#//Student/answers"/>
+    </genClasses>
+    <genClasses ecoreClass="markingmate.ecore#//Answer">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference markingmate.ecore#//Answer/student"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference markingmate.ecore#//Answer/question"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute markingmate.ecore#//Answer/feedback"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute markingmate.ecore#//Answer/marks"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
