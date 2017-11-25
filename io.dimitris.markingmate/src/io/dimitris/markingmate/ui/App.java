@@ -1,8 +1,10 @@
 package io.dimitris.markingmate.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -22,9 +24,11 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.ComboBoxUI;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -32,12 +36,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
-import com.explodingpixels.macwidgets.HudWidgetFactory;
 import com.explodingpixels.macwidgets.MacButtonFactory;
 import com.explodingpixels.macwidgets.MacUtils;
-import com.explodingpixels.macwidgets.MacWidgetFactory;
 import com.explodingpixels.macwidgets.UnifiedToolBar;
-import com.explodingpixels.macwidgets.plaf.HudComboBoxUI;
 
 import io.dimitris.markingmate.Answer;
 import io.dimitris.markingmate.Exam;
@@ -45,11 +46,20 @@ import io.dimitris.markingmate.MarkingmateFactory;
 import io.dimitris.markingmate.MarkingmatePackage;
 import io.dimitris.markingmate.Question;
 import io.dimitris.markingmate.Student;
+import net.infonode.docking.RootWindow;
+import net.infonode.docking.SplitWindow;
+import net.infonode.docking.View;
+import net.infonode.docking.properties.RootWindowProperties;
+import net.infonode.docking.theme.DefaultDockingTheme;
+import net.infonode.docking.theme.DockingWindowsTheme;
+import net.infonode.docking.theme.ShapedGradientDockingTheme;
+import net.infonode.docking.util.DockingUtil;
+import net.infonode.docking.util.ViewMap;
 
 public class App extends JFrame {
 
 	protected JList<Student> studentsList;
-	protected AnswersPanel answersPanel;
+	protected RelatedFeedbackPanel relatedFeedbackPanel;
 	protected JComboBox<Question> questionsComboBox;
 	protected JEditorPane feedbackEditorPane;
 	protected JTextField markTextArea;
@@ -65,7 +75,8 @@ public class App extends JFrame {
 	protected void run() throws Exception {
 		setTitle("MarkingMate");
 		System.setProperty("Quaqua.tabLayoutPolicy", "wrap");
-		UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager.getLookAndFeel());
+		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		//UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager.getLookAndFeel());
 		MacUtils.makeWindowLeopardStyle(getRootPane());
 		
 		ResourceSet resourceSet = new ResourceSetImpl();
@@ -77,13 +88,17 @@ public class App extends JFrame {
 		// exam = MarkingmateFactory.eINSTANCE.createExam();
 		
 		feedbackEditorPane = new JEditorPane();
-		feedbackEditorPane.setMinimumSize(new Dimension(100, 0));
+		feedbackEditorPane.setMinimumSize(new Dimension(0, 0));
 		feedbackEditorPane.setBorder(new EmptyBorder(7,7,7,7));
 		
-		answersPanel = new AnswersPanel();
+		relatedFeedbackPanel = new RelatedFeedbackPanel();
 		
 		questionsComboBox = new JComboBox<Question>(new QuestionsComboBoxModel(this));
-		//questionsComboBox.setUI(new HudComboBoxUI());
+		questionsComboBox.setMinimumSize(new Dimension(0, 0));
+		System.out.println(questionsComboBox.getUI().getClass());
+		
+		questionsComboBox.setUI((ComboBoxUI) Class.forName("com.apple.laf.AquaComboBoxUI").newInstance());
+		// questionsComboBox.setUI(new QuaquaComboBoxUI().set);
 		
 		questionsComboBox.setRenderer(new QuestionsComboBoxListCellRenderer());
 		questionsComboBox.addActionListener(new ActionListener() {
@@ -97,7 +112,7 @@ public class App extends JFrame {
 		if (exam.getQuestions().size() > 0) questionsComboBox.setSelectedIndex(0);
 		
 		studentsList = new JList<Student>(new StudentsListModel(this));
-		studentsList.setMinimumSize(new Dimension(200, 0));
+		//studentsList.setMinimumSize(new Dimension(200, 0));
 		//studentsList.setBorder(new EtchedBorder());
 		studentsList.setCellRenderer(new StudentsListCellRenderer());
 		studentsList.addListSelectionListener(new ListSelectionListener() {
@@ -110,16 +125,17 @@ public class App extends JFrame {
 		});
 		if (exam.getStudents().size() > 0) studentsList.setSelectedIndex(0);
 		
-		JPanel studentPanel= new JPanel(new BorderLayout());
-		studentPanel.add(questionsComboBox, BorderLayout.NORTH);
-		studentPanel.add(feedbackEditorPane, BorderLayout.CENTER);
+		JPanel feedbackPanel= new JPanel(new BorderLayout());
+		feedbackPanel.setOpaque(false);
+		feedbackPanel.add(questionsComboBox, BorderLayout.NORTH);
+		feedbackPanel.add(feedbackEditorPane, BorderLayout.CENTER);
 		
-		JSplitPane leftSplitPane = createSplitPane(studentsList, studentPanel);
-		JSplitPane rightSplitPane = createSplitPane(leftSplitPane, createJScrollPane(answersPanel));
-		rightSplitPane.setDividerLocation(600);
+		//JSplitPane leftSplitPane = createSplitPane(studentsList, feedbackPanel);
+		//JSplitPane rightSplitPane = createSplitPane(leftSplitPane, createJScrollPane(relatedFeedbackPanel));
+		//rightSplitPane.setDividerLocation(600);
 		
 		setLayout(new BorderLayout());
-		add(rightSplitPane, BorderLayout.CENTER);
+		//add(rightSplitPane, BorderLayout.CENTER);
 		
 		UnifiedToolBar toolbar = new UnifiedToolBar();
 		toolbar.installWindowDraggerOnWindow(this);
@@ -128,12 +144,34 @@ public class App extends JFrame {
 		toolbar.addComponentToLeft(getUnifiedToolBarButton(new OpenAction()));
 		toolbar.addComponentToLeft(getUnifiedToolBarButton(new SaveAction()));
 		getRootPane().putClientProperty("apple.awt.brushMetalLook", true);
-		add(MacWidgetFactory.createComponentStatusBar().getComponent(), BorderLayout.SOUTH);
 		
+		ViewMap viewMap = new ViewMap();
+		View studentsView = createView("Students", createJScrollPane(studentsList), viewMap);
+		View feedbackView = createView("Feedback", feedbackPanel, viewMap);
+		View relatedFeedbackView = createView("Related Feedback", createJScrollPane(relatedFeedbackPanel), viewMap);
+		RootWindow rootWindow = DockingUtil.createRootWindow(viewMap, true);
+
+		DockingWindowsTheme theme = new CustomDockingTheme();
+		// Apply theme
+		rootWindow.getRootWindowProperties().addSuperObject(theme.getRootWindowProperties());
+		RootWindowProperties rootWindowProperties = new RootWindowProperties();
+		rootWindowProperties.getWindowAreaProperties().setBackgroundColor(new Color(223, 228, 234));
+		rootWindow.getRootWindowProperties().addSuperObject(rootWindowProperties);
+		
+		rootWindow.setWindow(new SplitWindow(true, 0.3f, studentsView, new SplitWindow(true, 0.5f, feedbackView, relatedFeedbackView)));
+		
+		getContentPane().add(rootWindow, BorderLayout.CENTER);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setBounds(200, 200, 800, 500);
 		setVisible(true);
 		
+	}
+	
+	public View createView(String title, Component component, ViewMap viewMap) {
+		final View view = new View(title, null, component);
+		viewMap.addView(viewMap.getViewCount(), view);
+		view.getWindowProperties().setCloseEnabled(false);
+		return view;
 	}
 	
 	protected void questionSelected(Question question) {
@@ -171,7 +209,7 @@ public class App extends JFrame {
 	protected void setAnswer(Answer answer) {
 		this.answer = answer;
 		feedbackEditorPane.setText(answer.getFeedback());
-		answersPanel.setAnswer(answer);
+		relatedFeedbackPanel.setAnswer(answer);
 	}
 	
 	public Student getStudent() {
@@ -198,7 +236,11 @@ public class App extends JFrame {
 	protected JSplitPane createSplitPane(Component left, Component right) {
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
 		splitPane.putClientProperty("Quaqua.SplitPane.style","bar");
-		splitPane.setDividerSize(1);
+		splitPane.setDividerSize(2);
+		BasicSplitPaneDivider divider = (BasicSplitPaneDivider) splitPane.getComponent(2);
+		divider.setBackground(new Color(165, 165, 165));
+		divider.setBorder(new LineBorder(new Color(165, 165, 165), 0));
+		splitPane.setBorder(new EmptyBorder(0,0,0,0));
 		return splitPane;
 	}
 	
