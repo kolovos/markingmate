@@ -35,7 +35,7 @@ public class CustomDockingTheme extends DockingWindowsTheme {
 		
 		rootWindowProperties.getWindowAreaProperties().setBackgroundColor(null).setInsets(new Insets(0, 0, 0, 0))
 		.setBorder(new EmptyBorder(10, 10, 10, 10));
-		
+		//https://github.com/mpue/blackboard/blob/master/src/net/infonode/docking/theme/ClassicDockingTheme.java
 		/*
 		
 		ClassicTheme theme = new ClassicTheme();
