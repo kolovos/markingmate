@@ -37,6 +37,9 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.ComboBoxUI;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -137,7 +140,6 @@ public class App extends JFrame {
 			}
 		});
 		
-		if (exam.getQuestions().size() > 0) questionsComboBox.setSelectedIndex(0);
 		
 		studentsList = new JList<Student>(new StudentsListModel(this));
 		studentsList.setBorder(new EtchedBorder());
@@ -152,7 +154,6 @@ public class App extends JFrame {
 				studentSelected(studentsList.getSelectedValue());
 			}
 		});
-		if (exam.getStudents().size() > 0) studentsList.setSelectedIndex(0);
 		
 		JPanel feedbackPanel= new JPanel(new BorderLayout());
 		feedbackPanel.setOpaque(false);
@@ -253,12 +254,14 @@ public class App extends JFrame {
 		
 		FileDialog fd = new FileDialog(this, "Choose a file", FileDialog.LOAD);
 		fd.setVisible(true);
-		String filename = fd.getFile();
-		if (filename != null) {
-			file = new File(fd.getFile());
+		if (fd.getFile() != null) {
+			file = new File(fd.getDirectory(), fd.getFile());
 			resource = resourceSet.createResource(URI.createFileURI(file.getAbsolutePath()));
 			resource.load(null);
 			exam = (Exam) resource.getContents().get(0);
+			if (exam.getQuestions().size() > 0) questionsComboBox.setSelectedIndex(0);
+			if (exam.getStudents().size() > 0) studentsList.setSelectedIndex(0);
+			
 			studentsList.updateUI();
 			questionsComboBox.updateUI();
 		}

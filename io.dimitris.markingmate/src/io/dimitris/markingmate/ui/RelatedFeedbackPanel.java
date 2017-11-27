@@ -21,6 +21,7 @@ public class RelatedFeedbackPanel extends JPanel {
 	
 	public RelatedFeedbackPanel() {
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setOpaque(false);
 	}
 	
 	public void setAnswer(Answer answer) {
