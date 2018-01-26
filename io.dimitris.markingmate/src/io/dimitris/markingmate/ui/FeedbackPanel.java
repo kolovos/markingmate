@@ -11,6 +11,8 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
+import com.inet.jortho.SpellChecker;
+
 import io.dimitris.markingmate.Answer;
 
 public class FeedbackPanel extends JPanel {
@@ -22,7 +24,7 @@ public class FeedbackPanel extends JPanel {
 	
 	public FeedbackPanel(Answer answer) {
 		this.setLayout(new BorderLayout());
-		feedbackEditorPane = new JTextArea();
+		feedbackEditorPane = new JTextAreaWithUndo();
 		feedbackEditorPane.setLineWrap(true);
 		feedbackEditorPane.setWrapStyleWord(true);
 		feedbackEditorPane.setMinimumSize(new Dimension(0, 0));
@@ -63,6 +65,9 @@ public class FeedbackPanel extends JPanel {
 		add(feedbackEditorPane, BorderLayout.CENTER);
 		add(marksPanel, BorderLayout.SOUTH);
 		setOpaque(false);
+		
+		SpellChecker.register(feedbackEditorPane);
+		
 		setAnswer(answer);
 		
 	}

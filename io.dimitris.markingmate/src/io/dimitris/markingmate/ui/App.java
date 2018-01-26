@@ -46,6 +46,8 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import com.explodingpixels.macwidgets.MacButtonFactory;
 import com.explodingpixels.macwidgets.MacUtils;
 import com.explodingpixels.macwidgets.UnifiedToolBar;
+import com.inet.jortho.FileUserDictionary;
+import com.inet.jortho.SpellChecker;
 
 import io.dimitris.markingmate.Answer;
 import io.dimitris.markingmate.Exam;
@@ -84,7 +86,9 @@ public class App extends JFrame {
 		System.setProperty("Quaqua.tabLayoutPolicy", "wrap");
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		MacUtils.makeWindowLeopardStyle(getRootPane());
-		
+		SpellChecker.setUserDictionaryProvider(new FileUserDictionary());
+		SpellChecker.registerDictionaries(null, null);
+		SpellChecker.getOptions().setIgnoreCapitalization(true);
 		exam = MarkingmateFactory.eINSTANCE.createExam();
 		
 		feedbackPanel = new FeedbackPanel(null);
@@ -230,6 +234,7 @@ public class App extends JFrame {
 						//new Exception().printStackTrace();
 						
 						setDirty(true);
+						studentsList.updateUI();
 					}
 				}
 			});
