@@ -7,9 +7,9 @@ import io.dimitris.markingmate.Student;
 
 public class StudentsTableModel implements TableModel {
 	
-	protected App app;
+	protected MarkingMate app;
 	
-	public StudentsTableModel(App app) {
+	public StudentsTableModel(MarkingMate app) {
 		this.app = app;
 	}
 

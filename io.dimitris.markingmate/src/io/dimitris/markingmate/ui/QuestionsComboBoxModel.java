@@ -6,9 +6,9 @@ import io.dimitris.markingmate.Question;
 
 public class QuestionsComboBoxModel extends DefaultComboBoxModel<Question> {
 	
-	protected App app;
+	protected MarkingMate app;
 	
-	public QuestionsComboBoxModel(App app) {
+	public QuestionsComboBoxModel(MarkingMate app) {
 		this.app = app;
 	}
 	

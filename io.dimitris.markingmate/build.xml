@@ -12,7 +12,7 @@
 		<delete file="dist/MarkingMate.dmg"/>
 		<delete dir="dist/MarkingMate.app"/>
 
-		<bundleapp outputdirectory="dist" name="MarkingMate" displayname="MarkingMate" identifier="MarkingMate" mainclassname="io.dimitris.markingmate.ui.App" icon="resources/markingmate.icns">
+		<bundleapp outputdirectory="dist" name="MarkingMate" displayname="MarkingMate" identifier="MarkingMate" mainclassname="io.dimitris.markingmate.ui.MarkingMate4Mac" icon="resources/markingmate.icns">
 			<classpath file="dist/io.dimitris.markingmate.jar"/>
 			<classpath file="lib/quaqua.jar"/>
 			<classpath file="lib/jortho.jar"/>

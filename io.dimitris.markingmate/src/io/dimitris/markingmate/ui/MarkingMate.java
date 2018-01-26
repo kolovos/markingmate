@@ -26,9 +26,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
+import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
@@ -67,7 +69,7 @@ import net.infonode.docking.util.ViewMap;
 import net.infonode.gui.colorprovider.FixedColorProvider;
 import net.infonode.gui.componentpainter.SolidColorComponentPainter;
 
-public class App extends JFrame {
+public class MarkingMate extends JFrame {
 
 	protected JTable studentsTable;
 	protected RelatedFeedbackPanel relatedFeedbackPanel;
@@ -82,16 +84,24 @@ public class App extends JFrame {
 	protected EContentAdapter adapter;
 	
 	public static void main(String[] args) throws Exception {
-		new App().run();
+		new MarkingMate().run();
 	}
-
+	
+	protected void setupLookAndFeel() throws Exception {}
+	
+	protected void createToolbarAndMenus() {
+		JToolBar toolbar = new JToolBar();
+		toolbar.setRollover(true);
+		toolbar.setFloatable(false);
+		add(toolbar, BorderLayout.NORTH);
+		toolbar.add(new OpenAction());
+		toolbar.add(new SaveAction());
+	}
+	
 	protected void run() throws Exception {
-		System.setProperty("Quaqua.tabLayoutPolicy", "wrap");
-		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		MacUtils.makeWindowLeopardStyle(getRootPane());
-		//System.out.println("Working directory: " + Paths.get("").toAbsolutePath().toString());
+		setupLookAndFeel();
+
 		SpellChecker.setUserDictionaryProvider(new FileUserDictionary());
-		//SpellChecker.registerDictionaries(null, null);
 		SpellChecker.registerDictionaries( new File("").toURI().toURL(), null );
 		SpellChecker.getOptions().setIgnoreCapitalization(true);
 		exam = MarkingmateFactory.eINSTANCE.createExam();
@@ -134,14 +144,7 @@ public class App extends JFrame {
 		questionFeedbackPanel.add(feedbackPanel, BorderLayout.CENTER);
 		
 		setLayout(new BorderLayout());
-		
-		UnifiedToolBar toolbar = new UnifiedToolBar();
-		toolbar.installWindowDraggerOnWindow(this);
-		toolbar.disableBackgroundPainter();
-		add(toolbar.getComponent(), BorderLayout.NORTH);
-		toolbar.addComponentToLeft(getUnifiedToolBarButton(new OpenAction()));
-		toolbar.addComponentToLeft(getUnifiedToolBarButton(new SaveAction()));
-		getRootPane().putClientProperty("apple.awt.brushMetalLook", true);
+		createToolbarAndMenus();
 		
 		ViewMap viewMap = new ViewMap();
 		JScrollPane p = createJScrollPane(studentsTable);
@@ -191,7 +194,7 @@ public class App extends JFrame {
 			setDirty(false);
 		}
 		catch (Exception e) {
-			JOptionPane.showMessageDialog(App.this, e.getMessage());
+			JOptionPane.showMessageDialog(MarkingMate.this, e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -333,17 +336,6 @@ public class App extends JFrame {
 		return splitPane;
 	}
 	
-	protected AbstractButton getUnifiedToolBarButton(AbstractAction action) {
-		JButton button = new JButton(action);
-		button.setActionCommand("pressed");
-		Dimension d = new Dimension(48,48);
-		button.setPreferredSize(d);
-		button.setMinimumSize(d);
-		button.setMaximumSize(d);
-		button.putClientProperty("JButton.buttonType", "textured");
-		return MacButtonFactory.makeUnifiedToolBarButton(button);
-	}
-	
 	class OpenAction extends AbstractAction {
 		
 		public OpenAction() {
@@ -355,7 +347,7 @@ public class App extends JFrame {
 			try {
 				open();
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(App.this, e.getMessage());
+				JOptionPane.showMessageDialog(MarkingMate.this, e.getMessage());
 				e.printStackTrace();
 			}
 		}
