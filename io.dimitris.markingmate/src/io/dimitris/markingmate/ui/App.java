@@ -19,11 +19,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
@@ -32,7 +33,6 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.ComboBoxUI;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -67,7 +67,7 @@ import net.infonode.gui.componentpainter.SolidColorComponentPainter;
 
 public class App extends JFrame {
 
-	protected JList<Student> studentsList;
+	protected JTable studentsTable;
 	protected RelatedFeedbackPanel relatedFeedbackPanel;
 	protected JComboBox<Question> questionsComboBox;
 	protected FeedbackPanel feedbackPanel;
@@ -97,7 +97,7 @@ public class App extends JFrame {
 		questionsComboBox = new JComboBox<Question>(new QuestionsComboBoxModel(this));
 		questionsComboBox.setMinimumSize(new Dimension(0, 0));
 	
-		questionsComboBox.setUI((ComboBoxUI) Class.forName("com.apple.laf.AquaComboBoxUI").newInstance());
+		//questionsComboBox.setUI((ComboBoxUI) Class.forName("com.apple.laf.AquaComboBoxUI").newInstance());
 		
 		questionsComboBox.setRenderer(new QuestionsComboBoxListCellRenderer());
 		questionsComboBox.addActionListener(new ActionListener() {
@@ -108,15 +108,18 @@ public class App extends JFrame {
 			}
 		});
 		
-		studentsList = new JList<Student>(new StudentsListModel(this));
-		studentsList.setBorder(new EtchedBorder());
-		studentsList.setCellRenderer(new StudentsListCellRenderer());
-		studentsList.addListSelectionListener(new ListSelectionListener() {
+		studentsTable = new JTable(new StudentsTableModel(this));
+		studentsTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		studentsTable.getTableHeader().setOpaque(false);
+		//studentsList.setCellRenderer(new StudentsListCellRenderer());
+		studentsTable.setPreferredScrollableViewportSize(new Dimension(450,63));
+		studentsTable.setFillsViewportHeight(true);
+		studentsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				if (e.getValueIsAdjusting()) return;
-				studentSelected(studentsList.getSelectedValue());
+				//if (e.getValueIsAdjusting()) return;
+				studentSelected(exam.getStudents().get(studentsTable.getSelectionModel().getLeadSelectionIndex()));
 			}
 		});
 		
@@ -136,18 +139,21 @@ public class App extends JFrame {
 		getRootPane().putClientProperty("apple.awt.brushMetalLook", true);
 		
 		ViewMap viewMap = new ViewMap();
-		View studentsView = createView("Students", createJScrollPane(studentsList), viewMap);
+		JScrollPane p = createJScrollPane(studentsTable);
+		p.setBorder(new EtchedBorder());
+		View studentsView = createView("Students", p, viewMap);
 		View feedbackView = createView("Feedback", questionFeedbackPanel, viewMap);
 		relatedFeedbackPanelScrollPane = createJScrollPane(relatedFeedbackPanel);
 		View relatedFeedbackView = createView("Related Feedback", relatedFeedbackPanelScrollPane, viewMap);
 		RootWindow rootWindow = DockingUtil.createRootWindow(viewMap, true);
 
-		DockingWindowsTheme theme = new GradientDockingTheme(false, false, false, false); //new ShapedGradientDockingTheme(); //new GradientDockingTheme(false, false, false, false);
+		DockingWindowsTheme theme = new GradientDockingTheme(false, false, false, false, new Color(150, 150, 150)); //new ShapedGradientDockingTheme(); //new GradientDockingTheme(false, false, false, false);
 		rootWindow.getRootWindowProperties().addSuperObject(theme.getRootWindowProperties());
 		// new Color(223, 228, 234) <- Light blue
-		rootWindow.getRootWindowProperties().getWindowAreaShapedPanelProperties().setComponentPainter(new SolidColorComponentPainter(new FixedColorProvider(new Color(146, 146, 146))));
-		rootWindow.getRootWindowProperties().getWindowAreaProperties().setInsets(new Insets(0, 0, 0, 0))
-		.setBorder(new EmptyBorder(10, 10, 10, 10));
+		
+		Color rootWindowBackgroundColor = new Color(245, 244, 245);
+		rootWindow.getRootWindowProperties().getWindowAreaShapedPanelProperties().setComponentPainter(new SolidColorComponentPainter(new FixedColorProvider(rootWindowBackgroundColor)));
+		rootWindow.getRootWindowProperties().getWindowAreaProperties().setInsets(new Insets(0, 0, 0, 0)).setBorder(new EmptyBorder(10, 10, 10, 10));
 		rootWindow.setWindow(new SplitWindow(true, 0.3f, studentsView, new SplitWindow(true, 0.5f, feedbackView, relatedFeedbackView)));
 		
 		getContentPane().add(rootWindow, BorderLayout.CENTER);
@@ -219,9 +225,12 @@ public class App extends JFrame {
 			
 			exam = (Exam) resource.getContents().get(0);
 			if (exam.getQuestions().size() > 0) questionsComboBox.setSelectedIndex(0);
-			if (exam.getStudents().size() > 0) studentsList.setSelectedIndex(0);
+			if (exam.getStudents().size() > 0) {
+				studentsTable.getSelectionModel().clearSelection();
+				studentsTable.getSelectionModel().setLeadSelectionIndex(0);
+			}
 			
-			studentsList.updateUI();
+			studentsTable.updateUI();
 			questionsComboBox.updateUI();
 			resource.eAdapters().add(new EContentAdapter() {
 				@Override
@@ -234,7 +243,7 @@ public class App extends JFrame {
 						//new Exception().printStackTrace();
 						
 						setDirty(true);
-						studentsList.updateUI();
+						studentsTable.updateUI();
 					}
 				}
 			});
@@ -289,8 +298,8 @@ public class App extends JFrame {
 	}
 	
 	public Student getStudent() {
-		if (studentsList == null) return null;
-		return studentsList.getSelectedValue();
+		if (studentsTable == null || studentsTable.getSelectionModel().getLeadSelectionIndex() == -1) return null;
+		return exam.getStudents().get(studentsTable.getSelectionModel().getLeadSelectionIndex());
 	}
 	
 	public Question getQuestion() {

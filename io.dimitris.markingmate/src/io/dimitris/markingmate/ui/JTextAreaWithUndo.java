@@ -15,7 +15,7 @@ import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
 public class JTextAreaWithUndo extends JTextArea {
-
+	
 	protected UndoHandler undoHandler = new UndoHandler();
 	protected UndoManager undoManager = new UndoManager();
 	private UndoAction undoAction = null;
