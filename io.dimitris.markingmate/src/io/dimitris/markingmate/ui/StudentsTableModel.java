@@ -3,7 +3,6 @@ package io.dimitris.markingmate.ui;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import io.dimitris.markingmate.Exam;
 import io.dimitris.markingmate.Student;
 
 public class StudentsTableModel implements TableModel {

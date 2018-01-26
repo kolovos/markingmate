@@ -11,6 +11,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.net.URL;
+import java.nio.file.Paths;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
@@ -77,6 +79,7 @@ public class App extends JFrame {
 	protected Answer answer;
 	protected File file;
 	protected boolean dirty = false;
+	protected EContentAdapter adapter;
 	
 	public static void main(String[] args) throws Exception {
 		new App().run();
@@ -86,8 +89,10 @@ public class App extends JFrame {
 		System.setProperty("Quaqua.tabLayoutPolicy", "wrap");
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		MacUtils.makeWindowLeopardStyle(getRootPane());
+		//System.out.println("Working directory: " + Paths.get("").toAbsolutePath().toString());
 		SpellChecker.setUserDictionaryProvider(new FileUserDictionary());
-		SpellChecker.registerDictionaries(null, null);
+		//SpellChecker.registerDictionaries(null, null);
+		SpellChecker.registerDictionaries( new File("").toURI().toURL(), null );
 		SpellChecker.getOptions().setIgnoreCapitalization(true);
 		exam = MarkingmateFactory.eINSTANCE.createExam();
 		
@@ -223,30 +228,27 @@ public class App extends JFrame {
 			resource = resourceSet.createResource(URI.createFileURI(file.getAbsolutePath()));
 			resource.load(null);
 			
-			exam = (Exam) resource.getContents().get(0);
-			if (exam.getQuestions().size() > 0) questionsComboBox.setSelectedIndex(0);
-			if (exam.getStudents().size() > 0) {
-				studentsTable.getSelectionModel().clearSelection();
-				studentsTable.getSelectionModel().setLeadSelectionIndex(0);
-			}
-			
-			studentsTable.updateUI();
-			questionsComboBox.updateUI();
-			resource.eAdapters().add(new EContentAdapter() {
+			adapter = new EContentAdapter() {
 				@Override
 				public void notifyChanged(Notification notification) {
 					
 					if (!(notification.getOldValue()+"").contentEquals(notification.getNewValue()+"")) {
-						System.out.println("Old value " + notification.getOldValue());
-						System.out.println("New value " + notification.getNewValue());
-						System.out.println("Same? " + (notification.getOldValue()+"").contentEquals(""+notification.getNewValue()));
-						//new Exception().printStackTrace();
-						
 						setDirty(true);
 						studentsTable.updateUI();
 					}
 				}
-			});
+			};
+			
+			exam = (Exam) resource.getContents().get(0);
+			if (exam.getQuestions().size() > 0) questionsComboBox.setSelectedIndex(0);
+			if (exam.getStudents().size() > 0) {
+				studentsTable.setRowSelectionInterval(0, 0);
+				studentsTable.updateUI();
+			}
+			
+			studentsTable.updateUI();
+			questionsComboBox.updateUI();
+			resource.eAdapters().add(adapter);
 		}
 	}
 	
@@ -280,6 +282,8 @@ public class App extends JFrame {
 		Answer answer = MarkingmateFactory.eINSTANCE.createAnswer();
 		answer.setStudent(student);
 		answer.setQuestion(question);
+		System.out.println(adapter == null);
+		answer.eAdapters().add(adapter);
 		return answer;
 	}
 	

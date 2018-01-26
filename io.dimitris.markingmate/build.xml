@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ButtonDemo" default="default" basedir=".">
+
+	<taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask" classpath="lib/appbundler-1.0.jar" />
+
+	<target name="default">
+
+		<jar destfile="dist/io.dimitris.markingmate.jar">
+			<fileset dir="bin"/>
+		</jar>
+		
+		<delete file="dist/MarkingMate.dmg"/>
+		<delete dir="dist/MarkingMate.app"/>
+
+		<bundleapp outputdirectory="dist" name="MarkingMate" displayname="MarkingMate" identifier="MarkingMate" mainclassname="io.dimitris.markingmate.ui.App" icon="resources/markingmate.icns">
+			<classpath file="dist/io.dimitris.markingmate.jar"/>
+			<classpath file="lib/quaqua.jar"/>
+			<classpath file="lib/jortho.jar"/>
+			<classpath file="lib/idw-gpl.jar"/>
+			<classpath file="lib/MacWidgets.jar"/>
+			<classpath file="lib/forms-1.2.1.jar"/>
+			<classpath file="lib/org.eclipse.emf.common_2.12.0.v20160420-0247.jar"/>
+			<classpath file="lib/org.eclipse.emf.ecore_2.12.0.v20160420-0247.jar"/>
+			<classpath file="lib/org.eclipse.emf.ecore.xmi_2.12.0.v20160420-0247.jar"/>
+						
+			<librarypath file="lib/libquaqua.jnilib"/>
+			<librarypath file="lib/libquaqua64.jnilib"/>
+			<librarypath file="lib/libquaqua64.dylib"/>
+			
+			<!--option value="-Dapple.laf.useScreenMenuBar=true"/-->
+			<option value="-Duser.dir=$APP_ROOT/Contents/Home/"/>
+			<!--option value="-Dapple.awt.UIElement=true"/-->
+		</bundleapp>
+
+		<copydir src="resources" dest="dist/MarkingMate.app/Contents/Home/resources"/>
+		<copyfile src="dictionaries.cnf" dest="dist/MarkingMate.app/Contents/Home/dictionaries.cnf"/>
+		<copyfile src="dictionary_en.ortho" dest="dist/MarkingMate.app/Contents/Home/dictionary_en.ortho"/>
+						
+		<!--copydir src="config" dest="dist/MarkingMate.app/Contents/Home/config"/-->
+		
+		<exec executable="hdiutil">
+			<arg line="create -srcfolder dist/MarkingMate.app dist/MarkingMate.dmg"/>
+		</exec>
+		
+	</target>
+
+</project>
