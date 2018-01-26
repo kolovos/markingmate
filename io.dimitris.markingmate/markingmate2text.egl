@@ -1,0 +1,8 @@
+[%for (student in Student.all){%]
+[%=student.number%]
+---
+[%for (answer in student.answers) { %]
+[%=answer.question.title%] ([%=answer.marks%]/[%=answer.question.marks%]): [%=answer.feedback%]
+
+[%}%]
+[%}%]

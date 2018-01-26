@@ -3,9 +3,9 @@ package io.dimitris.markingmate.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
-import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -16,19 +16,22 @@ import io.dimitris.markingmate.Answer;
 public class FeedbackPanel extends JPanel {
 	
 	protected Answer answer = null;
-	protected JEditorPane feedbackEditorPane;
+	protected JTextArea feedbackEditorPane;
 	protected JTextField marksTextField;
+	protected boolean notificationsEnabled = true;
 	
 	public FeedbackPanel(Answer answer) {
 		this.setLayout(new BorderLayout());
-		feedbackEditorPane = new JEditorPane();
+		feedbackEditorPane = new JTextArea();
+		feedbackEditorPane.setLineWrap(true);
+		feedbackEditorPane.setWrapStyleWord(true);
 		feedbackEditorPane.setMinimumSize(new Dimension(0, 0));
 		feedbackEditorPane.setBorder(new CompoundBorder(new EtchedBorder(), new EmptyBorder(7,7,7,7)));
 		feedbackEditorPane.getDocument().addDocumentListener(new DocumentChangeListener() {
 			
 			@Override
 			public void textChanged() {
-				if (FeedbackPanel.this.answer != null) {
+				if (notificationsEnabled && FeedbackPanel.this.answer != null) {
 					FeedbackPanel.this.answer.setFeedback(feedbackEditorPane.getText());
 				}
 			}
@@ -42,7 +45,7 @@ public class FeedbackPanel extends JPanel {
 			
 			@Override
 			public void textChanged() {
-				if (FeedbackPanel.this.answer != null) {
+				if (notificationsEnabled && FeedbackPanel.this.answer != null) {
 					try {
 						FeedbackPanel.this.answer.setMarks(Integer.parseInt(marksTextField.getText()));
 					}
@@ -52,6 +55,10 @@ public class FeedbackPanel extends JPanel {
 		});
 		marksPanel.add(marksTextField, BorderLayout.CENTER);
 		marksPanel.setOpaque(false);
+		
+		if (answer!= null && answer.getQuestion().getMarks() == 0) {
+			marksPanel.setVisible(false);
+		}
 		
 		add(feedbackEditorPane, BorderLayout.CENTER);
 		add(marksPanel, BorderLayout.SOUTH);
@@ -63,8 +70,10 @@ public class FeedbackPanel extends JPanel {
 	public void setAnswer(Answer answer) {
 		this.answer = answer;
 		if (answer != null) {
+			notificationsEnabled = false;
 			feedbackEditorPane.setText(answer.getFeedback());
 			marksTextField.setText(answer.getMarks() + "");
+			notificationsEnabled = true;
 		}
 	}
 	

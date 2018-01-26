@@ -122,13 +122,22 @@ public interface MarkingmatePackage extends EPackage {
 	int QUESTION__TITLE = 0;
 
 	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int QUESTION__DESCRIPTION = 1;
+
+	/**
 	 * The feature id for the '<em><b>Marks</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int QUESTION__MARKS = 1;
+	int QUESTION__MARKS = 2;
 
 	/**
 	 * The feature id for the '<em><b>Answers</b></em>' reference list.
@@ -137,7 +146,7 @@ public interface MarkingmatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int QUESTION__ANSWERS = 2;
+	int QUESTION__ANSWERS = 3;
 
 	/**
 	 * The number of structural features of the '<em>Question</em>' class.
@@ -146,7 +155,7 @@ public interface MarkingmatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int QUESTION_FEATURE_COUNT = 3;
+	int QUESTION_FEATURE_COUNT = 4;
 
 	/**
 	 * The number of operations of the '<em>Question</em>' class.
@@ -322,6 +331,17 @@ public interface MarkingmatePackage extends EPackage {
 	EAttribute getQuestion_Title();
 
 	/**
+	 * Returns the meta object for the attribute '{@link io.dimitris.markingmate.Question#getDescription <em>Description</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Description</em>'.
+	 * @see io.dimitris.markingmate.Question#getDescription()
+	 * @see #getQuestion()
+	 * @generated
+	 */
+	EAttribute getQuestion_Description();
+
+	/**
 	 * Returns the meta object for the attribute '{@link io.dimitris.markingmate.Question#getMarks <em>Marks</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -495,6 +515,14 @@ public interface MarkingmatePackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute QUESTION__TITLE = eINSTANCE.getQuestion_Title();
+
+		/**
+		 * The meta object literal for the '<em><b>Description</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute QUESTION__DESCRIPTION = eINSTANCE.getQuestion_Description();
 
 		/**
 		 * The meta object literal for the '<em><b>Marks</b></em>' attribute feature.

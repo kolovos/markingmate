@@ -19,7 +19,11 @@ public class StudentsListCellRenderer extends DefaultListCellRenderer {
 		
 		JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 		if (student != null) {
-			label.setText(student.getNumber() + " (" + student.getAnswers().stream().filter(f -> !f.getFeedback().isEmpty()).count() + "/" + ((Exam) student.eContainer()).getQuestions().size() + ")");
+			
+			String marks = "(" + student.getAnswers().stream().mapToInt(f -> f.getMarks()).sum() + "/" + ((Exam) student.eContainer()).getQuestions().stream().mapToInt(f -> f.getMarks()).sum() + ")";
+			String answered = "(" + student.getAnswers().stream().filter(f -> !f.getFeedback().isEmpty()).count() + "/" + ((Exam) student.eContainer()).getQuestions().size() + ")";
+			
+			label.setText(student.getNumber() + " " + answered + " " + marks);
 		}
 		return label;
 	}

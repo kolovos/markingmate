@@ -37,7 +37,7 @@ public interface Answer extends EObject {
 	 * @see #setStudent(Student)
 	 * @see io.dimitris.markingmate.MarkingmatePackage#getAnswer_Student()
 	 * @see io.dimitris.markingmate.Student#getAnswers
-	 * @model opposite="answers" transient="false"
+	 * @model opposite="answers"
 	 * @generated
 	 */
 	Student getStudent();
@@ -65,7 +65,7 @@ public interface Answer extends EObject {
 	 * @see #setQuestion(Question)
 	 * @see io.dimitris.markingmate.MarkingmatePackage#getAnswer_Question()
 	 * @see io.dimitris.markingmate.Question#getAnswers
-	 * @model opposite="answers"
+	 * @model opposite="answers" resolveProxies="false"
 	 * @generated
 	 */
 	Question getQuestion();

@@ -8,8 +8,9 @@ class Exam {
 
 class Question {
 	attr String title = "";
+	attr String description = "";
 	attr int marks = 0;
-	ref Answer[*]#question answers;
+	transient ref Answer[*]#question answers;
 }
 
 class Student {
@@ -18,8 +19,8 @@ class Student {
 }
 
 class Answer {
-	ref Student#answers student;
-	ref Question#answers question;
+	transient ref Student#answers student;
+	!resolve ref Question#answers question;
 	attr String feedback = "";
 	attr int marks = 0;
 }

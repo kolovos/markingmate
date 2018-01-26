@@ -150,23 +150,6 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 	 * @generated
 	 */
 	public Question getQuestion() {
-		if (question != null && question.eIsProxy()) {
-			InternalEObject oldQuestion = (InternalEObject)question;
-			question = (Question)eResolveProxy(oldQuestion);
-			if (question != oldQuestion) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, MarkingmatePackage.ANSWER__QUESTION, oldQuestion, question));
-			}
-		}
-		return question;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public Question basicGetQuestion() {
 		return question;
 	}
 
@@ -307,8 +290,7 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 			case MarkingmatePackage.ANSWER__STUDENT:
 				return getStudent();
 			case MarkingmatePackage.ANSWER__QUESTION:
-				if (resolve) return getQuestion();
-				return basicGetQuestion();
+				return getQuestion();
 			case MarkingmatePackage.ANSWER__FEEDBACK:
 				return getFeedback();
 			case MarkingmatePackage.ANSWER__MARKS:

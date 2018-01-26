@@ -10,10 +10,12 @@
   <eClassifiers xsi:type="ecore:EClass" name="Question">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="title" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral=""/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="marks" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
         defaultValueLiteral="0"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="answers" upperBound="-1"
-        eType="#//Answer" eOpposite="#//Answer/question"/>
+        eType="#//Answer" transient="true" eOpposite="#//Answer/question"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Student">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="number" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -22,9 +24,9 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Answer">
     <eStructuralFeatures xsi:type="ecore:EReference" name="student" eType="#//Student"
-        eOpposite="#//Student/answers"/>
+        transient="true" eOpposite="#//Student/answers"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="question" eType="#//Question"
-        eOpposite="#//Question/answers"/>
+        resolveProxies="false" eOpposite="#//Question/answers"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="feedback" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         defaultValueLiteral=""/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="marks" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"

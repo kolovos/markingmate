@@ -162,7 +162,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getQuestion_Marks() {
+	public EAttribute getQuestion_Description() {
 		return (EAttribute)questionEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -171,8 +171,17 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getQuestion_Marks() {
+		return (EAttribute)questionEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EReference getQuestion_Answers() {
-		return (EReference)questionEClass.getEStructuralFeatures().get(2);
+		return (EReference)questionEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
@@ -281,6 +290,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 
 		questionEClass = createEClass(QUESTION);
 		createEAttribute(questionEClass, QUESTION__TITLE);
+		createEAttribute(questionEClass, QUESTION__DESCRIPTION);
 		createEAttribute(questionEClass, QUESTION__MARKS);
 		createEReference(questionEClass, QUESTION__ANSWERS);
 
@@ -331,16 +341,17 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 
 		initEClass(questionEClass, Question.class, "Question", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getQuestion_Title(), ecorePackage.getEString(), "title", "", 0, 1, Question.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getQuestion_Description(), ecorePackage.getEString(), "description", "", 0, 1, Question.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getQuestion_Marks(), ecorePackage.getEInt(), "marks", "0", 0, 1, Question.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getQuestion_Answers(), this.getAnswer(), this.getAnswer_Question(), "answers", null, 0, -1, Question.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getQuestion_Answers(), this.getAnswer(), this.getAnswer_Question(), "answers", null, 0, -1, Question.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(studentEClass, Student.class, "Student", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getStudent_Number(), ecorePackage.getEString(), "number", null, 0, 1, Student.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getStudent_Answers(), this.getAnswer(), this.getAnswer_Student(), "answers", null, 0, -1, Student.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(answerEClass, Answer.class, "Answer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getAnswer_Student(), this.getStudent(), this.getStudent_Answers(), "student", null, 0, 1, Answer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getAnswer_Question(), this.getQuestion(), this.getQuestion_Answers(), "question", null, 0, 1, Answer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAnswer_Student(), this.getStudent(), this.getStudent_Answers(), "student", null, 0, 1, Answer.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAnswer_Question(), this.getQuestion(), this.getQuestion_Answers(), "question", null, 0, 1, Answer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAnswer_Feedback(), ecorePackage.getEString(), "feedback", "", 0, 1, Answer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAnswer_Marks(), ecorePackage.getEInt(), "marks", "0", 0, 1, Answer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

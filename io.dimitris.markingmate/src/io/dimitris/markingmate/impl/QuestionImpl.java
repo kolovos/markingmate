@@ -28,6 +28,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * </p>
  * <ul>
  *   <li>{@link io.dimitris.markingmate.impl.QuestionImpl#getTitle <em>Title</em>}</li>
+ *   <li>{@link io.dimitris.markingmate.impl.QuestionImpl#getDescription <em>Description</em>}</li>
  *   <li>{@link io.dimitris.markingmate.impl.QuestionImpl#getMarks <em>Marks</em>}</li>
  *   <li>{@link io.dimitris.markingmate.impl.QuestionImpl#getAnswers <em>Answers</em>}</li>
  * </ul>
@@ -54,6 +55,26 @@ public class QuestionImpl extends MinimalEObjectImpl.Container implements Questi
 	 * @ordered
 	 */
 	protected String title = TITLE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String DESCRIPTION_EDEFAULT = "";
+
+	/**
+	 * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDescription()
+	 * @generated
+	 * @ordered
+	 */
+	protected String description = DESCRIPTION_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getMarks() <em>Marks</em>}' attribute.
@@ -130,6 +151,27 @@ public class QuestionImpl extends MinimalEObjectImpl.Container implements Questi
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setDescription(String newDescription) {
+		String oldDescription = description;
+		description = newDescription;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, MarkingmatePackage.QUESTION__DESCRIPTION, oldDescription, description));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public int getMarks() {
 		return marks;
 	}
@@ -197,6 +239,8 @@ public class QuestionImpl extends MinimalEObjectImpl.Container implements Questi
 		switch (featureID) {
 			case MarkingmatePackage.QUESTION__TITLE:
 				return getTitle();
+			case MarkingmatePackage.QUESTION__DESCRIPTION:
+				return getDescription();
 			case MarkingmatePackage.QUESTION__MARKS:
 				return getMarks();
 			case MarkingmatePackage.QUESTION__ANSWERS:
@@ -216,6 +260,9 @@ public class QuestionImpl extends MinimalEObjectImpl.Container implements Questi
 		switch (featureID) {
 			case MarkingmatePackage.QUESTION__TITLE:
 				setTitle((String)newValue);
+				return;
+			case MarkingmatePackage.QUESTION__DESCRIPTION:
+				setDescription((String)newValue);
 				return;
 			case MarkingmatePackage.QUESTION__MARKS:
 				setMarks((Integer)newValue);
@@ -239,6 +286,9 @@ public class QuestionImpl extends MinimalEObjectImpl.Container implements Questi
 			case MarkingmatePackage.QUESTION__TITLE:
 				setTitle(TITLE_EDEFAULT);
 				return;
+			case MarkingmatePackage.QUESTION__DESCRIPTION:
+				setDescription(DESCRIPTION_EDEFAULT);
+				return;
 			case MarkingmatePackage.QUESTION__MARKS:
 				setMarks(MARKS_EDEFAULT);
 				return;
@@ -259,6 +309,8 @@ public class QuestionImpl extends MinimalEObjectImpl.Container implements Questi
 		switch (featureID) {
 			case MarkingmatePackage.QUESTION__TITLE:
 				return TITLE_EDEFAULT == null ? title != null : !TITLE_EDEFAULT.equals(title);
+			case MarkingmatePackage.QUESTION__DESCRIPTION:
+				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case MarkingmatePackage.QUESTION__MARKS:
 				return marks != MARKS_EDEFAULT;
 			case MarkingmatePackage.QUESTION__ANSWERS:

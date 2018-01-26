@@ -15,6 +15,7 @@ import org.eclipse.emf.ecore.EObject;
  * </p>
  * <ul>
  *   <li>{@link io.dimitris.markingmate.Question#getTitle <em>Title</em>}</li>
+ *   <li>{@link io.dimitris.markingmate.Question#getDescription <em>Description</em>}</li>
  *   <li>{@link io.dimitris.markingmate.Question#getMarks <em>Marks</em>}</li>
  *   <li>{@link io.dimitris.markingmate.Question#getAnswers <em>Answers</em>}</li>
  * </ul>
@@ -50,6 +51,33 @@ public interface Question extends EObject {
 	 * @generated
 	 */
 	void setTitle(String value);
+
+	/**
+	 * Returns the value of the '<em><b>Description</b></em>' attribute.
+	 * The default value is <code>""</code>.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Description</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Description</em>' attribute.
+	 * @see #setDescription(String)
+	 * @see io.dimitris.markingmate.MarkingmatePackage#getQuestion_Description()
+	 * @model default=""
+	 * @generated
+	 */
+	String getDescription();
+
+	/**
+	 * Sets the value of the '{@link io.dimitris.markingmate.Question#getDescription <em>Description</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Description</em>' attribute.
+	 * @see #getDescription()
+	 * @generated
+	 */
+	void setDescription(String value);
 
 	/**
 	 * Returns the value of the '<em><b>Marks</b></em>' attribute.
@@ -91,7 +119,7 @@ public interface Question extends EObject {
 	 * @return the value of the '<em>Answers</em>' reference list.
 	 * @see io.dimitris.markingmate.MarkingmatePackage#getQuestion_Answers()
 	 * @see io.dimitris.markingmate.Answer#getQuestion
-	 * @model opposite="question"
+	 * @model opposite="question" transient="true"
 	 * @generated
 	 */
 	EList<Answer> getAnswers();

@@ -26,6 +26,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
@@ -34,10 +35,12 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.ComboBoxUI;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
 import com.explodingpixels.macwidgets.MacButtonFactory;
@@ -71,13 +74,13 @@ public class App extends JFrame {
 	protected Exam exam;
 	protected Answer answer;
 	protected File file;
+	protected boolean dirty = false;
 	
 	public static void main(String[] args) throws Exception {
 		new App().run();
 	}
 
 	protected void run() throws Exception {
-		setTitle("MarkingMate");
 		System.setProperty("Quaqua.tabLayoutPolicy", "wrap");
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		MacUtils.makeWindowLeopardStyle(getRootPane());
@@ -100,7 +103,6 @@ public class App extends JFrame {
 				questionSelected((Question)questionsComboBox.getSelectedItem());
 			}
 		});
-		
 		
 		studentsList = new JList<Student>(new StudentsListModel(this));
 		studentsList.setBorder(new EtchedBorder());
@@ -136,30 +138,42 @@ public class App extends JFrame {
 		View relatedFeedbackView = createView("Related Feedback", relatedFeedbackPanelScrollPane, viewMap);
 		RootWindow rootWindow = DockingUtil.createRootWindow(viewMap, true);
 
-		DockingWindowsTheme theme = new GradientDockingTheme(false, false, false, false, new Color(165, 165, 165));
+		DockingWindowsTheme theme = new GradientDockingTheme(false, false, false, false); //new ShapedGradientDockingTheme(); //new GradientDockingTheme(false, false, false, false);
 		rootWindow.getRootWindowProperties().addSuperObject(theme.getRootWindowProperties());
-		rootWindow.getRootWindowProperties().getWindowAreaShapedPanelProperties().setComponentPainter(new SolidColorComponentPainter(new FixedColorProvider(new Color(223, 228, 234))));
+		// new Color(223, 228, 234) <- Light blue
+		rootWindow.getRootWindowProperties().getWindowAreaShapedPanelProperties().setComponentPainter(new SolidColorComponentPainter(new FixedColorProvider(new Color(146, 146, 146))));
 		rootWindow.getRootWindowProperties().getWindowAreaProperties().setInsets(new Insets(0, 0, 0, 0))
 		.setBorder(new EmptyBorder(10, 10, 10, 10));
 		rootWindow.setWindow(new SplitWindow(true, 0.3f, studentsView, new SplitWindow(true, 0.5f, feedbackView, relatedFeedbackView)));
 		
 		getContentPane().add(rootWindow, BorderLayout.CENTER);
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
-			
 			@Override
-			public void windowClosed(WindowEvent e) {
-				System.exit(0);
+			public void windowClosing(WindowEvent e) {
+				if (handleDirty()) System.exit(0);
 			}
-			
 		});
 		setBounds(200, 200, 800, 500);
+		setDirty(false);
 		setVisible(true);
-		
+	}
+	
+	public boolean isDirty() {
+		return dirty;
+	}
+	
+	public void setDirty(boolean dirty) {
+		this.dirty = dirty;
+		String title = "MarkingMate";
+		if (dirty) title += " *";
+		setTitle(title);
 	}
 	
 	public void save() {
 		try {
 			if (resource != null) resource.save(null);
+			setDirty(false);
 		}
 		catch (Exception e) {
 			JOptionPane.showMessageDialog(App.this, e.getMessage());
@@ -167,7 +181,27 @@ public class App extends JFrame {
 		}
 	}
 	
+	public boolean handleDirty() {
+		if (isDirty()) {
+			int result = JOptionPane.showOptionDialog(this, "File has been modified. Save changes?", "File modified", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, JOptionPane.CANCEL_OPTION);
+			if (result == JOptionPane.CANCEL_OPTION) {
+				return false;
+			}
+			else if (result == JOptionPane.NO_OPTION) {
+				return true;
+			}
+			else {
+				save();
+				return true;
+			}
+		}
+		return true;
+	}
+	
 	public void open() throws Exception {
+		
+		if (!handleDirty()) return;
+		
 		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getPackageRegistry().put(MarkingmatePackage.eINSTANCE.getNsURI(), MarkingmatePackage.eINSTANCE);
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
@@ -178,12 +212,27 @@ public class App extends JFrame {
 			file = new File(fd.getDirectory(), fd.getFile());
 			resource = resourceSet.createResource(URI.createFileURI(file.getAbsolutePath()));
 			resource.load(null);
+			
 			exam = (Exam) resource.getContents().get(0);
 			if (exam.getQuestions().size() > 0) questionsComboBox.setSelectedIndex(0);
 			if (exam.getStudents().size() > 0) studentsList.setSelectedIndex(0);
 			
 			studentsList.updateUI();
 			questionsComboBox.updateUI();
+			resource.eAdapters().add(new EContentAdapter() {
+				@Override
+				public void notifyChanged(Notification notification) {
+					
+					if (!(notification.getOldValue()+"").contentEquals(notification.getNewValue()+"")) {
+						System.out.println("Old value " + notification.getOldValue());
+						System.out.println("New value " + notification.getNewValue());
+						System.out.println("Same? " + (notification.getOldValue()+"").contentEquals(""+notification.getNewValue()));
+						//new Exception().printStackTrace();
+						
+						setDirty(true);
+					}
+				}
+			});
 		}
 	}
 	
