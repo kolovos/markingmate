@@ -68,6 +68,7 @@ import net.infonode.docking.util.DockingUtil;
 import net.infonode.docking.util.ViewMap;
 import net.infonode.gui.colorprovider.FixedColorProvider;
 import net.infonode.gui.componentpainter.SolidColorComponentPainter;
+import net.infonode.util.Direction;
 
 public class MarkingMate extends JFrame {
 
@@ -162,7 +163,8 @@ public class MarkingMate extends JFrame {
 		Color rootWindowBackgroundColor = new Color(245, 244, 245);
 		rootWindow.getRootWindowProperties().getWindowAreaShapedPanelProperties().setComponentPainter(new SolidColorComponentPainter(new FixedColorProvider(rootWindowBackgroundColor)));
 		rootWindow.getRootWindowProperties().getWindowAreaProperties().setInsets(new Insets(0, 0, 0, 0)).setBorder(new EmptyBorder(10, 10, 10, 10));
-		rootWindow.setWindow(new SplitWindow(true, 0.3f, studentsView, new SplitWindow(true, 0.5f, feedbackView, relatedFeedbackView)));
+		rootWindow.getRootWindowProperties().getTabWindowProperties().getTabbedPanelProperties().setTabAreaOrientation(Direction.DOWN);
+		rootWindow.setWindow(new SplitWindow(false, 0.7f, new SplitWindow(true, 0.3f, studentsView, feedbackView), relatedFeedbackView));
 		
 		getContentPane().add(rootWindow, BorderLayout.CENTER);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

@@ -5,7 +5,6 @@ import java.awt.Dimension;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -18,23 +17,23 @@ import io.dimitris.markingmate.Answer;
 public class FeedbackPanel extends JPanel {
 	
 	protected Answer answer = null;
-	protected JTextArea feedbackEditorPane;
+	protected FeedbackTextArea feedbackTextArea;
 	protected JTextField marksTextField;
 	protected boolean notificationsEnabled = true;
 	
 	public FeedbackPanel(Answer answer) {
 		this.setLayout(new BorderLayout());
-		feedbackEditorPane = new JTextAreaWithUndo();
-		feedbackEditorPane.setLineWrap(true);
-		feedbackEditorPane.setWrapStyleWord(true);
-		feedbackEditorPane.setMinimumSize(new Dimension(0, 0));
-		feedbackEditorPane.setBorder(new CompoundBorder(new EtchedBorder(), new EmptyBorder(7,7,7,7)));
-		feedbackEditorPane.getDocument().addDocumentListener(new DocumentChangeListener() {
+		feedbackTextArea = new FeedbackTextArea(answer);
+		feedbackTextArea.setLineWrap(true);
+		feedbackTextArea.setWrapStyleWord(true);
+		feedbackTextArea.setMinimumSize(new Dimension(0, 0));
+		feedbackTextArea.setBorder(new CompoundBorder(new EtchedBorder(), new EmptyBorder(7,7,7,7)));
+		feedbackTextArea.getDocument().addDocumentListener(new DocumentChangeListener() {
 			
 			@Override
 			public void textChanged() {
 				if (notificationsEnabled && FeedbackPanel.this.answer != null) {
-					FeedbackPanel.this.answer.setFeedback(feedbackEditorPane.getText());
+					FeedbackPanel.this.answer.setFeedback(feedbackTextArea.getText());
 				}
 			}
 		});
@@ -62,11 +61,11 @@ public class FeedbackPanel extends JPanel {
 			marksPanel.setVisible(false);
 		}
 		
-		add(feedbackEditorPane, BorderLayout.CENTER);
+		add(feedbackTextArea, BorderLayout.CENTER);
 		add(marksPanel, BorderLayout.SOUTH);
 		setOpaque(false);
 		
-		SpellChecker.register(feedbackEditorPane);
+		SpellChecker.register(feedbackTextArea);
 		
 		setAnswer(answer);
 		
@@ -76,7 +75,7 @@ public class FeedbackPanel extends JPanel {
 		this.answer = answer;
 		if (answer != null) {
 			notificationsEnabled = false;
-			feedbackEditorPane.setText(answer.getFeedback());
+			feedbackTextArea.setAnswer(answer);
 			marksTextField.setText(answer.getMarks() + "");
 			notificationsEnabled = true;
 		}
