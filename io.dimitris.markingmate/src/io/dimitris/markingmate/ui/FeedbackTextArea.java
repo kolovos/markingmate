@@ -141,10 +141,14 @@ public class FeedbackTextArea extends JTextArea {
 				offset --;
 			}
 			
-			for (final String suggestion : getSuggestions(hint)) {
+			Collection<String> suggestions = getSuggestions(hint);
+			for (final String suggestion : suggestions) {
 				menu.add(new AutocompleteItemAction(suggestion, offset + 1));
 			}
-			menu.show(FeedbackTextArea.this, getCaret().getMagicCaretPosition().x, getCaret().getMagicCaretPosition().y);
+			if (!suggestions.isEmpty()) {
+				menu.show(FeedbackTextArea.this, getCaret().getMagicCaretPosition().x, 
+						getCaret().getMagicCaretPosition().y);
+			}
 		}
 		
 	}
