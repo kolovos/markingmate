@@ -65,6 +65,7 @@ import net.infonode.docking.View;
 import net.infonode.docking.theme.DockingWindowsTheme;
 import net.infonode.docking.theme.GradientDockingTheme;
 import net.infonode.docking.util.DockingUtil;
+import net.infonode.docking.util.PropertiesUtil;
 import net.infonode.docking.util.ViewMap;
 import net.infonode.gui.colorprovider.FixedColorProvider;
 import net.infonode.gui.componentpainter.SolidColorComponentPainter;
@@ -155,15 +156,16 @@ public class MarkingMate extends JFrame {
 		relatedFeedbackPanelScrollPane = createJScrollPane(relatedFeedbackPanel);
 		View relatedFeedbackView = createView("Related Feedback", relatedFeedbackPanelScrollPane, viewMap);
 		RootWindow rootWindow = DockingUtil.createRootWindow(viewMap, true);
-
-		DockingWindowsTheme theme = new GradientDockingTheme(false, false, false, false, new Color(150, 150, 150)); //new ShapedGradientDockingTheme(); //new GradientDockingTheme(false, false, false, false);
+		
+		GradientDockingTheme theme = new GradientDockingTheme(false, false, false, false, new Color(150, 150, 150)); //new ShapedGradientDockingTheme(); //new GradientDockingTheme(false, false, false, false);
 		rootWindow.getRootWindowProperties().addSuperObject(theme.getRootWindowProperties());
 		// new Color(223, 228, 234) <- Light blue
 		
 		Color rootWindowBackgroundColor = new Color(245, 244, 245);
 		rootWindow.getRootWindowProperties().getWindowAreaShapedPanelProperties().setComponentPainter(new SolidColorComponentPainter(new FixedColorProvider(rootWindowBackgroundColor)));
-		rootWindow.getRootWindowProperties().getWindowAreaProperties().setInsets(new Insets(0, 0, 0, 0)).setBorder(new EmptyBorder(10, 10, 10, 10));
+		rootWindow.getRootWindowProperties().getWindowAreaProperties().setInsets(new Insets(0, 0, 0, 0)).setBorder(new EmptyBorder(5,5,5,5));
 		rootWindow.getRootWindowProperties().getTabWindowProperties().getTabbedPanelProperties().setTabAreaOrientation(Direction.DOWN);
+		rootWindow.getRootWindowProperties().addSuperObject(PropertiesUtil.createTitleBarStyleRootWindowProperties());
 		rootWindow.setWindow(new SplitWindow(false, 0.7f, new SplitWindow(true, 0.3f, studentsView, feedbackView), relatedFeedbackView));
 		
 		getContentPane().add(rootWindow, BorderLayout.CENTER);
@@ -261,6 +263,8 @@ public class MarkingMate extends JFrame {
 		final View view = new View(title, null, component);
 		viewMap.addView(viewMap.getViewCount(), view);
 		view.getWindowProperties().setCloseEnabled(false);
+		view.getWindowProperties().setMaximizeEnabled(false);
+		view.getWindowProperties().setUndockEnabled(false);
 		return view;
 	}
 	
