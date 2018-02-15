@@ -3,8 +3,10 @@ package io.dimitris.markingmate.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -23,11 +25,12 @@ public class FeedbackPanel extends JPanel {
 	
 	public FeedbackPanel(Answer answer) {
 		this.setLayout(new BorderLayout());
+		this.setBorder(new EmptyBorder(2,2,0,2));
 		feedbackTextArea = new FeedbackTextArea(answer);
 		feedbackTextArea.setLineWrap(true);
 		feedbackTextArea.setWrapStyleWord(true);
 		feedbackTextArea.setMinimumSize(new Dimension(0, 0));
-		feedbackTextArea.setBorder(new CompoundBorder(new EtchedBorder(), new EmptyBorder(7,7,7,7)));
+		feedbackTextArea.setBorder(new EmptyBorder(7,7,7,7));
 		feedbackTextArea.getDocument().addDocumentListener(new DocumentChangeListener() {
 			
 			@Override
@@ -61,7 +64,9 @@ public class FeedbackPanel extends JPanel {
 			marksPanel.setVisible(false);
 		}
 		
-		add(feedbackTextArea, BorderLayout.CENTER);
+		JScrollPane feedbackTextAreaScrollPane = new JScrollPane(feedbackTextArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		feedbackTextAreaScrollPane.setBorder(new EtchedBorder());
+		add(feedbackTextAreaScrollPane, BorderLayout.CENTER);
 		add(marksPanel, BorderLayout.SOUTH);
 		setOpaque(false);
 		

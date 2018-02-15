@@ -152,7 +152,7 @@ public class MarkingMate extends JFrame {
 		JScrollPane p = createJScrollPane(studentsTable);
 		p.setOpaque(true);
 		p.setBackground(new Color(238, 238, 238));
-		p.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(2, 0, 0, 0), new EtchedBorder()));
+		p.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(2, 2, 1, 1), new EtchedBorder()));
 		View studentsView = createView("Students", p, viewMap);
 		View feedbackView = createView("Feedback", questionFeedbackPanel, viewMap);
 		relatedFeedbackPanelScrollPane = createJScrollPane(relatedFeedbackPanel);
