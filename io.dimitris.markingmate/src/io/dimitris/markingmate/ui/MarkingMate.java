@@ -11,14 +11,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.net.URL;
-import java.nio.file.Paths;
 
 import javax.swing.AbstractAction;
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -29,8 +25,6 @@ import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
@@ -46,10 +40,11 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.epsilon.egl.EglFileGeneratingTemplateFactory;
+import org.eclipse.epsilon.egl.EgxModule;
+import org.eclipse.epsilon.emc.emf.InMemoryEmfModel;
+import org.eclipse.epsilon.eol.execute.context.Variable;
 
-import com.explodingpixels.macwidgets.MacButtonFactory;
-import com.explodingpixels.macwidgets.MacUtils;
-import com.explodingpixels.macwidgets.UnifiedToolBar;
 import com.inet.jortho.FileUserDictionary;
 import com.inet.jortho.SpellChecker;
 
@@ -62,7 +57,6 @@ import io.dimitris.markingmate.Student;
 import net.infonode.docking.RootWindow;
 import net.infonode.docking.SplitWindow;
 import net.infonode.docking.View;
-import net.infonode.docking.theme.DockingWindowsTheme;
 import net.infonode.docking.theme.GradientDockingTheme;
 import net.infonode.docking.util.DockingUtil;
 import net.infonode.docking.util.PropertiesUtil;
@@ -85,9 +79,10 @@ public class MarkingMate extends JFrame {
 	protected boolean dirty = false;
 	protected EContentAdapter adapter;
 	
+	/*
 	public static void main(String[] args) throws Exception {
 		new MarkingMate().run();
-	}
+	}*/
 	
 	protected void setupLookAndFeel() throws Exception {}
 	
@@ -98,6 +93,7 @@ public class MarkingMate extends JFrame {
 		add(toolbar, BorderLayout.NORTH);
 		toolbar.add(new OpenAction());
 		toolbar.add(new SaveAction());
+		toolbar.add(new ExportAction());
 	}
 	
 	protected void run() throws Exception {
@@ -371,6 +367,40 @@ public class MarkingMate extends JFrame {
 
 		public void actionPerformed(ActionEvent actionevent) {
 			save();
+		}
+		
+	}
+	
+	class ExportAction extends AbstractAction {
+		
+		public ExportAction() {
+			super("Export", new ImageIcon(new File("resources/export.png").getAbsolutePath()));
+			putValue(AbstractAction.SHORT_DESCRIPTION, "Exports marks and feedback");
+		}
+
+		public void actionPerformed(ActionEvent actionevent) {
+			
+			if (file == null) return;
+			
+			FileDialog fd = new FileDialog(MarkingMate.this, "Choose a directory", FileDialog.SAVE);
+			fd.setFile("marks.csv");
+			fd.setVisible(true);
+			if (fd.getFile() != null) {
+				try {
+					EgxModule module = new EgxModule(new EglFileGeneratingTemplateFactory());
+					module.parse(new File("resources/feedback.egx"));
+					((EglFileGeneratingTemplateFactory) module.getTemplateFactory()).setOutputRoot(fd.getDirectory());
+					module.getContext().getFrameStack().put(Variable.createReadOnlyVariable("csv", fd.getFile()));
+					module.getContext().getModelRepository().addModel(new InMemoryEmfModel(exam.eResource()));
+					module.execute();
+					module.getContext().dispose();
+					JOptionPane.showMessageDialog(MarkingMate.this, "Marks and feedback exported", "Success", JOptionPane.INFORMATION_MESSAGE);
+				}
+				catch (Exception ex) {
+					JOptionPane.showMessageDialog(MarkingMate.this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				}
+				
+			}
 		}
 		
 	}

@@ -1,0 +1,12 @@
+[%for (question in Question.all) { 
+var answer = student.answers.selectOne(a|a.question = question);
+%]
+[%if (answer.isDefined()){%]
+[%=question.title%] ([%=answer.marks%]/[%=question.marks%]): 
+[%=answer.feedback%]
+
+[%}else{%]
+[%=question.title%] (0/[%=question.marks%]): Not answered.
+
+[%}%]
+[%}%]

@@ -7,14 +7,10 @@ import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import com.explodingpixels.macwidgets.MacButtonFactory;
 import com.explodingpixels.macwidgets.MacUtils;
 import com.explodingpixels.macwidgets.UnifiedToolBar;
-
-import io.dimitris.markingmate.ui.MarkingMate.OpenAction;
-import io.dimitris.markingmate.ui.MarkingMate.SaveAction;
 
 public class MarkingMate4Mac extends MarkingMate {
 	
@@ -38,6 +34,7 @@ public class MarkingMate4Mac extends MarkingMate {
 		add(toolbar.getComponent(), BorderLayout.NORTH);
 		toolbar.addComponentToLeft(getUnifiedToolBarButton(new OpenAction()));
 		toolbar.addComponentToLeft(getUnifiedToolBarButton(new SaveAction()));
+		toolbar.addComponentToRight(getUnifiedToolBarButton(new ExportAction()));
 	}
 	
 	protected AbstractButton getUnifiedToolBarButton(AbstractAction action) {

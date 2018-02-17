@@ -1,0 +1,16 @@
+rule Exam2CSV
+	transform exam : Exam {
+	
+	template : "csv.egl"
+	
+	target : csv	
+}
+
+rule Feedback2File
+	transform student : Student {
+	
+	template : "feedback.egl"
+	
+	target: student.number + ".txt"
+		
+}

@@ -1,0 +1,3 @@
+[%for (student in Student.all){%]
+[%=student.number%],[%=student.answers.marks.sum()%]
+[%}%]
