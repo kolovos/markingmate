@@ -16,5 +16,6 @@ deploy:
     secure: OlVBqt4VWezKHKIcDM3kFE0gXu4ca9UfLY/8GRCnrfR4EUUtw+T7jS6fD7Me1cFh00gY03W1Z5gw3JZ9sH7hkkJyczHukbjFVYAyFrZVU5RSwLkHgvUHzzacWctcXMzMXmLh9kVUaox4BNQ6g6U0uMkT1TC/v8uMGADDEZTFPMgmGqjthZaTb23kgUWcul5wHAb68ruGSHJuUefQBxUnsjrjHD9ksW8C/CEsPPSUdYrkHoDgLNe+9FlLZO71Of/IyA2k09mcnlacr0sRccjtYZNuWJHXjTES+YqbyPxE+Vew8FRjQd2RnrBypybdNSQ4wSorTUwnHxPOv0Oiw6OVo1Egr2WaNtg2YfQDqSlZahVOViBA/4FPT+5he/dZ8TTwAnBul5eTNk1hSKZJxWopHaRimHT8bTm7Gb9KcjJ5UPSIwstB5prlkeNMYb9LZSjzDleBv1T40JeS+h16smaDWls0Tqy0eXjFE31AkRFHPLBEBgqDcca3eB7dgpaw6XvVM7R7T5OPwpUIBJNIVlAllr0oBGteADOFcE3umdAVSeFQj402N7ecpxpjT7G2lx5cNN2588sOr6pj6F1mObBE+l7BEiYzCTuwsVQjGm10DJf8xxKegDaZ+l+NrgHE3Kii31POBJXy5nmC9ggLzBLrnSCNdFbuUa/K/vpmVoWH9r0=
   file: dist/MarkingMate.dmg
   skip_cleanup: true
+  name: Build $(date +'%d.%m.%Y %R')
   on:
     repo: kolovos/markingmate
