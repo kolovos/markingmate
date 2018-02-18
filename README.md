@@ -25,3 +25,6 @@ MarkingMate doesn't provide an interface for setting up students, questions and 
 
 ## Screenshot
 ![](https://github.com/kolovos/markingmate/wiki/screenshot.png)
+
+## Status
+![](https://travis-ci.org/kolovos/markingmate.svg?branch=master)
