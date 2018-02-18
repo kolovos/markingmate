@@ -14,6 +14,7 @@ import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JEditorPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;

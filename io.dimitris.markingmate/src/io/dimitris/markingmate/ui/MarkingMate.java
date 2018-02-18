@@ -16,13 +16,15 @@ import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
-import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
@@ -65,7 +67,7 @@ import net.infonode.gui.colorprovider.FixedColorProvider;
 import net.infonode.gui.componentpainter.SolidColorComponentPainter;
 import net.infonode.util.Direction;
 
-public class MarkingMate extends JFrame {
+public abstract class MarkingMate extends JFrame {
 
 	protected JTable studentsTable;
 	protected RelatedFeedbackPanel relatedFeedbackPanel;
@@ -78,23 +80,17 @@ public class MarkingMate extends JFrame {
 	protected File file;
 	protected boolean dirty = false;
 	protected EContentAdapter adapter;
+	protected OpenAction openAction = new OpenAction();
+	protected SaveAction saveAction = new SaveAction();
+	protected ExportAction exportAction = new ExportAction();
 	
-	/*
-	public static void main(String[] args) throws Exception {
-		new MarkingMate().run();
-	}*/
+	protected abstract void setupLookAndFeel() throws Exception;
 	
-	protected void setupLookAndFeel() throws Exception {}
+	protected abstract void createToolbar();
 	
-	protected void createToolbarAndMenus() {
-		JToolBar toolbar = new JToolBar();
-		toolbar.setRollover(true);
-		toolbar.setFloatable(false);
-		add(toolbar, BorderLayout.NORTH);
-		toolbar.add(new OpenAction());
-		toolbar.add(new SaveAction());
-		toolbar.add(new ExportAction());
-	}
+	protected abstract void finetuneUI();
+	
+	protected abstract JComponent getQuestionsComboxPanel();
 	
 	protected void run() throws Exception {
 		setupLookAndFeel();
@@ -104,8 +100,8 @@ public class MarkingMate extends JFrame {
 		SpellChecker.getOptions().setIgnoreCapitalization(true);
 		exam = MarkingmateFactory.eINSTANCE.createExam();
 		
-		feedbackPanel = new FeedbackPanel(null);
-		relatedFeedbackPanel = new RelatedFeedbackPanel();
+		feedbackPanel = new FeedbackPanel(this, null);
+		relatedFeedbackPanel = new RelatedFeedbackPanel(this);
 		
 		questionsComboBox = new JComboBox<Question>(new QuestionsComboBoxModel(this));
 		questionsComboBox.setMinimumSize(new Dimension(0, 0));
@@ -138,11 +134,22 @@ public class MarkingMate extends JFrame {
 		
 		JPanel questionFeedbackPanel= new JPanel(new BorderLayout());
 		questionFeedbackPanel.setOpaque(false);
-		questionFeedbackPanel.add(questionsComboBox, BorderLayout.NORTH);
+		questionFeedbackPanel.add(getQuestionsComboxPanel(), BorderLayout.NORTH);
 		questionFeedbackPanel.add(feedbackPanel, BorderLayout.CENTER);
 		
 		setLayout(new BorderLayout());
-		createToolbarAndMenus();
+		
+		JMenuBar menuBar = new JMenuBar();
+		JMenu fileMenu = new JMenu("File");
+		fileMenu.add(openAction);
+		fileMenu.add(saveAction);
+		menuBar.add(fileMenu);
+		JMenu toolsMenu = new JMenu("Tools");
+		toolsMenu.add(exportAction);
+		menuBar.add(toolsMenu);
+		setJMenuBar(menuBar);
+		
+		createToolbar();
 		
 		ViewMap viewMap = new ViewMap();
 		JScrollPane p = createJScrollPane(studentsTable);
@@ -166,6 +173,7 @@ public class MarkingMate extends JFrame {
 		rootWindow.getRootWindowProperties().addSuperObject(PropertiesUtil.createTitleBarStyleRootWindowProperties());
 		rootWindow.setWindow(new SplitWindow(false, 0.7f, new SplitWindow(true, 0.3f, studentsView, feedbackView), relatedFeedbackView));
 		
+		finetuneUI();
 		getContentPane().add(rootWindow, BorderLayout.CENTER);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
@@ -404,4 +412,9 @@ public class MarkingMate extends JFrame {
 		}
 		
 	}
+
+	public abstract void finetuneMarksPanel(JPanel marksPanel);
+
+	public abstract void finetuneFeedbackTextAreaScrollPane(JScrollPane feedbackTextAreaScrollPane);
+	
 }

@@ -17,11 +17,13 @@ import io.dimitris.markingmate.Answer;
 public class RelatedFeedbackPanel extends JPanel {
 	
 	protected List<JEditorPane> editors = new ArrayList<JEditorPane>();
+	protected MarkingMate markingMate = null;
 	
-	public RelatedFeedbackPanel() {
+	public RelatedFeedbackPanel(MarkingMate markingMate) {
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setOpaque(true);
 		this.setBackground(new Color(238, 238, 238));
+		this.markingMate = markingMate;
 	}
 	
 	public void setAnswer(Answer answer) {
@@ -41,7 +43,7 @@ public class RelatedFeedbackPanel extends JPanel {
 				JPanel groupPanel = new JPanel();
 				groupPanel.setBorder(BorderFactory.createTitledBorder(a.getStudent().getNumber()));
 				groupPanel.setLayout(new BorderLayout());
-				groupPanel.add(new FeedbackPanel(a), BorderLayout.CENTER);
+				groupPanel.add(new FeedbackPanel(markingMate, a), BorderLayout.CENTER);
 				groupPanel.setOpaque(false);
 				
 				add(groupPanel, 0);

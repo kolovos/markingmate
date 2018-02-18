@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -23,10 +24,11 @@ public class FeedbackPanel extends JPanel {
 	protected JTextField marksTextField;
 	protected boolean notificationsEnabled = true;
 	
-	public FeedbackPanel(Answer answer) {
+	public FeedbackPanel(MarkingMate markingMate, Answer answer) {
 		this.setLayout(new BorderLayout());
 		this.setBorder(new EmptyBorder(2,2,0,2));
 		feedbackTextArea = new FeedbackTextArea(answer);
+		feedbackTextArea.setFont(new JEditorPane().getFont());
 		feedbackTextArea.setLineWrap(true);
 		feedbackTextArea.setWrapStyleWord(true);
 		feedbackTextArea.setMinimumSize(new Dimension(0, 0));
@@ -42,6 +44,7 @@ public class FeedbackPanel extends JPanel {
 		});
 		
 		JPanel marksPanel = new JPanel(new BorderLayout());
+		markingMate.finetuneMarksPanel(marksPanel);
 		JLabel marksLabel = new JLabel("Marks:");
 		marksPanel.add(marksLabel, BorderLayout.WEST);
 		marksTextField = new JTextField();
@@ -65,7 +68,7 @@ public class FeedbackPanel extends JPanel {
 		}
 		
 		JScrollPane feedbackTextAreaScrollPane = new JScrollPane(feedbackTextArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		feedbackTextAreaScrollPane.setBorder(new EtchedBorder());
+		markingMate.finetuneFeedbackTextAreaScrollPane(feedbackTextAreaScrollPane);
 		add(feedbackTextAreaScrollPane, BorderLayout.CENTER);
 		add(marksPanel, BorderLayout.SOUTH);
 		setOpaque(false);

@@ -6,7 +6,11 @@ import java.awt.Dimension;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.UIManager;
+import javax.swing.border.EtchedBorder;
 
 import com.explodingpixels.macwidgets.MacButtonFactory;
 import com.explodingpixels.macwidgets.MacUtils;
@@ -27,14 +31,14 @@ public class MarkingMate4Mac extends MarkingMate {
 	}
 	
 	@Override
-	protected void createToolbarAndMenus() {
+	protected void createToolbar() {
 		UnifiedToolBar toolbar = new UnifiedToolBar();
 		toolbar.installWindowDraggerOnWindow(this);
 		toolbar.disableBackgroundPainter();
 		add(toolbar.getComponent(), BorderLayout.NORTH);
-		toolbar.addComponentToLeft(getUnifiedToolBarButton(new OpenAction()));
-		toolbar.addComponentToLeft(getUnifiedToolBarButton(new SaveAction()));
-		toolbar.addComponentToRight(getUnifiedToolBarButton(new ExportAction()));
+		toolbar.addComponentToLeft(getUnifiedToolBarButton(openAction));
+		toolbar.addComponentToLeft(getUnifiedToolBarButton(saveAction));
+		toolbar.addComponentToRight(getUnifiedToolBarButton(exportAction));
 	}
 	
 	protected AbstractButton getUnifiedToolBarButton(AbstractAction action) {
@@ -46,5 +50,25 @@ public class MarkingMate4Mac extends MarkingMate {
 		button.setMaximumSize(d);
 		button.putClientProperty("JButton.buttonType", "textured");
 		return MacButtonFactory.makeUnifiedToolBarButton(button);
+	}
+	
+	@Override
+	protected void finetuneUI() {
+		
+	}
+	
+	@Override
+	protected JComponent getQuestionsComboxPanel() {
+		return questionsComboBox;
+	}
+	
+	@Override
+	public void finetuneMarksPanel(JPanel marksPanel) {
+		
+	}
+	
+	@Override
+	public void finetuneFeedbackTextAreaScrollPane(JScrollPane feedbackTextAreaScrollPane) {
+		feedbackTextAreaScrollPane.setBorder(new EtchedBorder());	
 	}
 }
