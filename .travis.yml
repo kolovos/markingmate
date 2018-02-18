@@ -8,8 +8,8 @@ before_install:
 - cd io.dimitris.markingmate
 script:
 - ant
-- rm apache-ant-1.10.2-bin.tar.gz
-- rm -rf apache-ant-1.10.2
+- rm ../apache-ant-1.10.2-bin.tar.gz
+- rm -rf ../apache-ant-1.10.2
 deploy:
   provider: releases
   api_key:
