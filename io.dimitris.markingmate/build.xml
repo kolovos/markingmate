@@ -5,23 +5,19 @@
 
 	<target name="default">
 
-		<mkdir dir="bin"/>
-
-		<javac srcdir="src" destdir="bin" includes="**/*.java" target="1.8">
-        	<fileset id="libs" dir="lib">
-	         	<include name="**/*.jar" />
-	     	</fileset>
-    	</javac>
-
-		<jar destfile="dist/io.dimitris.markingmate.jar">
-			<fileset dir="bin"/>
-		</jar>
-		
 		<path id="libs">
 	    	<fileset id="libs" dir="lib">
 	         	<include name="**/*.jar" />
 	     	</fileset>
      	</path>
+     	
+		<javac srcdir="src" destdir="bin" includes="**/*.java" target="1.8" includeantruntime="false">
+        	<classpath refid="libs"/>
+    	</javac>
+
+		<jar destfile="dist/io.dimitris.markingmate.jar">
+			<fileset dir="bin"/>
+		</jar>
 		
 		<delete file="dist/MarkingMate.dmg"/>
 		<delete dir="dist/MarkingMate.app"/>
