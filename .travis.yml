@@ -1,0 +1,3 @@
+language: java
+install: 
+  - ant io.dimitris.markingmate/build.xml
