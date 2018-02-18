@@ -7,7 +7,7 @@ When you're done marking, you can export your marks into a CSV file and into ind
 
 ## Installation
 * Mac OSX: Download and run the DMG installer (MarkingMate4Mac.dmg) from the [Releases](https://github.com/kolovos/markingmate/releases) page.
-* Windows: Download the Windows zipped (MarkingMate4Win.zip) from the [Releases](https://github.com/kolovos/markingmate/releases) page, extract its contents, and then double-click markingmate.jar
+* Windows: Download MarkingMate4Win.zip from the [Releases](https://github.com/kolovos/markingmate/releases) page, extract its contents, and then double-click markingmate.jar
 
 ## File Format
 MarkingMate doesn't provide a user interface for creating students and questions. As such you will have to set up your marking file using a text editor (give it any filename/extension you like) and then open it with MarkingMate to do your marking. The format is (almost) self-explanatory:
