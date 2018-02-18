@@ -5,6 +5,8 @@
 
 	<target name="default">
 
+		<mkdir dir="bin"/>
+
 		<javac srcdir="src" destdir="bin" includes="**/*.java" target="1.8">
         	<classpath refid="libs"/>
     	</javac>
