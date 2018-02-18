@@ -141,11 +141,11 @@ public abstract class MarkingMate extends JFrame {
 		
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
-		fileMenu.add(openAction);
-		fileMenu.add(saveAction);
+		fileMenu.add(openAction).setIcon(null);
+		fileMenu.add(saveAction).setIcon(null);
 		menuBar.add(fileMenu);
 		JMenu toolsMenu = new JMenu("Tools");
-		toolsMenu.add(exportAction);
+		toolsMenu.add(exportAction).setIcon(null);
 		menuBar.add(toolsMenu);
 		setJMenuBar(menuBar);
 		

@@ -5,39 +5,62 @@
 
 	<target name="default">
 
-		<path id="libs">
-	    	<fileset dir="lib">
+		<!--path id="libs">
+	    		<fileset id="libsfs" dir="lib">
 	         	<include name="**/*.jar" />
 	     	</fileset>
-     	</path>
+     	</path-->
 
-
-	    <fileset id="libsfs" dir="lib">
+	    <!--fileset id="libsfs" dir="lib">
 	         <include name="**/*.jar" />
-	    </fileset>
-
-
+	    </fileset-->
+		
      	<mkdir dir="bin"/>
 
 		<javac srcdir="src" destdir="bin" includes="**/*.java" target="1.8" includeantruntime="false">
-        	<classpath refid="libs"/>
-    	</javac>
-
-		<jar destfile="dist/io.dimitris.markingmate.jar">
+			<classpath refid="libs"/>
+    		</javac>
+		
+		<jar destfile="dist/markingmate.jar" filesetmanifest="mergewithoutmain">
 			<fileset dir="bin"/>
+			<zipfileset excludes="META-INF/*.SF" src="lib/epsilon-1.4-core.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="lib/epsilon-1.4-emf.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="lib/forms-1.2.1.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="lib/idw-gpl.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="lib/jortho.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="lib/org.apache.commons.lang3_3.1.0.v201403281430.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.common_2.12.0.v20160420-0247.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.ecore_2.12.0.v20160420-0247.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.ecore.xmi_2.12.0.v20160420-0247.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="lib/stanford-parser.jar"/>
+			<manifest>
+				<attribute name="Main-Class" value="io.dimitris.markingmate.ui.MarkingMate4Win"/>
+			</manifest>
 		</jar>
 		
-		<delete file="dist/MarkingMate.dmg"/>
+		<zip destfile="dist/MarkingMate4Win.zip">
+			<zipfileset dir="resources" prefix="resources"/>
+			<zipfileset file="dist/markingmate.jar"/>
+			<zipfileset file="dictionaries.cnf"/>
+			<zipfileset file="dictionary_en.ortho"/>			
+		</zip>
+		
+		<!--jar destfile="dist/io.dimitris.markingmate.jar">
+			<fileset dir="bin"/>
+		</jar-->
+		
+		<delete file="dist/MarkingMate4Mac.dmg"/>
 		<delete dir="dist/MarkingMate.app"/>
-
+		
 		<bundleapp outputdirectory="dist" name="MarkingMate" displayname="MarkingMate" identifier="MarkingMate" mainclassname="io.dimitris.markingmate.ui.MarkingMate4Mac" icon="resources/markingmate.icns">
-			<classpath refid="libsfs"/>
-			<classpath file="dist/io.dimitris.markingmate.jar"/>
+			<classpath file="dist/markingmate.jar"/>
+			<classpath file="dist/quaqua.jar"/>
+			<classpath file="dist/MacWidgets.jar"/>
 			<librarypath file="lib/libquaqua.jnilib"/>
 			<librarypath file="lib/libquaqua64.jnilib"/>
 			<librarypath file="lib/libquaqua64.dylib"/>
 			
-			<!--option value="-Dapple.laf.useScreenMenuBar=true"/-->
+			<option value="-Dapple.laf.useScreenMenuBar=true"/>
 			<option value="-Duser.dir=$APP_ROOT/Contents/Home/"/>
 			<!--option value="-Dapple.awt.UIElement=true"/-->
 		</bundleapp>
@@ -47,7 +70,7 @@
 		<copyfile src="dictionary_en.ortho" dest="dist/MarkingMate.app/Contents/Home/dictionary_en.ortho"/>
 		
 		<exec executable="hdiutil">
-			<arg line="create -srcfolder dist/MarkingMate.app dist/MarkingMate.dmg"/>
+			<arg line="create -srcfolder dist/MarkingMate.app dist/MarkingMate4Mac.dmg"/>
 		</exec>
 		
 	</target>
