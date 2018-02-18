@@ -5,28 +5,23 @@
 
 	<target name="default">
 
+		<javac srcdir="src" destdir="bin" includes="**/*.java" target="1.8">
+        	<classpath refid="libs"/>
+    	</javac>
+
 		<jar destfile="dist/io.dimitris.markingmate.jar">
 			<fileset dir="bin"/>
 		</jar>
 		
+    	<fileset id="libs" dir="lib">
+         	<include name="**/*.jar" />
+     	</fileset>
+
 		<delete file="dist/MarkingMate.dmg"/>
 		<delete dir="dist/MarkingMate.app"/>
 
 		<bundleapp outputdirectory="dist" name="MarkingMate" displayname="MarkingMate" identifier="MarkingMate" mainclassname="io.dimitris.markingmate.ui.MarkingMate4Mac" icon="resources/markingmate.icns">
-			<classpath file="dist/io.dimitris.markingmate.jar"/>
-			<classpath file="lib/quaqua.jar"/>
-			<classpath file="lib/jortho.jar"/>
-			<classpath file="lib/idw-gpl.jar"/>
-			<classpath file="lib/MacWidgets.jar"/>
-			<classpath file="lib/forms-1.2.1.jar"/>
-			<classpath file="lib/org.eclipse.emf.common_2.12.0.v20160420-0247.jar"/>
-			<classpath file="lib/org.eclipse.emf.ecore_2.12.0.v20160420-0247.jar"/>
-			<classpath file="lib/org.eclipse.emf.ecore.xmi_2.12.0.v20160420-0247.jar"/>
-			<classpath file="lib/org.apache.commons.lang3_3.1.0.v201403281430.jar"/>
-			<classpath file="lib/stanford-parser.jar"/>
-			<classpath file="lib/epsilon-1.4-core.jar"/>
-			<classpath file="lib/epsilon-1.4-emf.jar"/>
-			
+			<classpath refid="libs"/>
 			<librarypath file="lib/libquaqua.jnilib"/>
 			<librarypath file="lib/libquaqua64.jnilib"/>
 			<librarypath file="lib/libquaqua64.dylib"/>
@@ -39,8 +34,6 @@
 		<copydir src="resources" dest="dist/MarkingMate.app/Contents/Home/resources"/>
 		<copyfile src="dictionaries.cnf" dest="dist/MarkingMate.app/Contents/Home/dictionaries.cnf"/>
 		<copyfile src="dictionary_en.ortho" dest="dist/MarkingMate.app/Contents/Home/dictionary_en.ortho"/>
-						
-		<!--copydir src="config" dest="dist/MarkingMate.app/Contents/Home/config"/-->
 		
 		<exec executable="hdiutil">
 			<arg line="create -srcfolder dist/MarkingMate.app dist/MarkingMate.dmg"/>
