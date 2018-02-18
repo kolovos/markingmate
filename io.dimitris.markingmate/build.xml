@@ -15,10 +15,12 @@
 			<fileset dir="bin"/>
 		</jar>
 		
-    	<fileset id="libs" dir="lib">
-         	<include name="**/*.jar" />
-     	</fileset>
-
+		<path id="libs">
+	    	<fileset id="libs" dir="lib">
+	         	<include name="**/*.jar" />
+	     	</fileset>
+     	</path>
+		
 		<delete file="dist/MarkingMate.dmg"/>
 		<delete dir="dist/MarkingMate.app"/>
 
