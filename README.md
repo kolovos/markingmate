@@ -1,5 +1,9 @@
 # MarkingMate
-MarkingMate is a cross-platform tool for marking open assessments. The main novelty of MarkingMate is that when you're marking an answer, it also displays the feedback and marks you have given to other students for the same question, for consistency. It also supports sentence-level text completion (<kbd>Ctrl</kbd>+<kbd>Space</kbd>) to avoid re-typing comments. When you're done marking you can export marks as a CSV file as well as individual text files with feedback for every student.
+MarkingMate is a cross-platform desktop application for marking and providing feedback on assessments. MarkingMate has two unique features:
+* When you're marking an answer, it also displays the feedback and marks for other answers to the same question. 
+* It supports sentence-level text completion (<kbd>Ctrl</kbd>+<kbd>Space</kbd>) to avoid re-typing feedback that applies to many answers. 
+
+When you're done marking, you can export your marks into a CSV file and into individual text files with feedback for every student.
 
 ## Installation
 * Mac OSX: Download and run the DMG installer (MarkingMate4Mac.dmg) from the [Releases](https://github.com/kolovos/markingmate/releases) page.
