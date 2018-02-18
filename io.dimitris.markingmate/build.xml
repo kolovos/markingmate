@@ -5,11 +5,11 @@
 
 	<target name="default">
 
-		<!--path id="libs">
-	    		<fileset id="libsfs" dir="lib">
+		<path id="libs">
+	    		<fileset dir="lib">
 	         	<include name="**/*.jar" />
 	     	</fileset>
-     	</path-->
+     	</path>
 
 	    <!--fileset id="libsfs" dir="lib">
 	         <include name="**/*.jar" />
