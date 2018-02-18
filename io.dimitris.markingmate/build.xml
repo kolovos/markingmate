@@ -6,10 +6,16 @@
 	<target name="default">
 
 		<path id="libs">
-	    	<fileset id="libs" dir="lib">
+	    	<fileset dir="lib">
 	         	<include name="**/*.jar" />
 	     	</fileset>
      	</path>
+
+
+	    <fileset id="libsfs" dir="lib">
+	         <include name="**/*.jar" />
+	    </fileset>
+
 
      	<mkdir dir="bin"/>
 
@@ -25,7 +31,7 @@
 		<delete dir="dist/MarkingMate.app"/>
 
 		<bundleapp outputdirectory="dist" name="MarkingMate" displayname="MarkingMate" identifier="MarkingMate" mainclassname="io.dimitris.markingmate.ui.MarkingMate4Mac" icon="resources/markingmate.icns">
-			<classpath refid="libs"/>
+			<classpath refid="libsfs"/>
 			<librarypath file="lib/libquaqua.jnilib"/>
 			<librarypath file="lib/libquaqua64.jnilib"/>
 			<librarypath file="lib/libquaqua64.dylib"/>
