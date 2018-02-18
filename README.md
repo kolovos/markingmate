@@ -1,8 +1,9 @@
 # MarkingMate
-MarkingMate is a Mac OSX tool for marking open assessments. The main novelty of MarkingMate is that when you're marking an answer, it also displays the feedback and marks you have given to other students for the same question, for consistency. It also supports sentence-level text completion (<kbd>Ctrl</kbd>+<kbd>Space</kbd>) to avoid re-typing comments. When you're done marking you can export marks as a CSV file as well as individual text files with feedback for every student.
+MarkingMate is a cross-platform tool for marking open assessments. The main novelty of MarkingMate is that when you're marking an answer, it also displays the feedback and marks you have given to other students for the same question, for consistency. It also supports sentence-level text completion (<kbd>Ctrl</kbd>+<kbd>Space</kbd>) to avoid re-typing comments. When you're done marking you can export marks as a CSV file as well as individual text files with feedback for every student.
 
 ## Installation
-You can download a DMG installer from the [Releases](https://github.com/kolovos/markingmate/releases) page.
+* Mac OSX: Download and run the DMG installer (MarkingMate4Mac.dmg) from the [Releases](https://github.com/kolovos/markingmate/releases) page.
+* Windows: Download the Windows zipped (MarkingMate4Win.zip) from the [Releases](https://github.com/kolovos/markingmate/releases) page, extract its contents, and then double-click markingmate.jar
 
 ## File Format
 MarkingMate doesn't provide a user interface for creating students and questions. As such you will have to set up your marking file using a text editor (give it any filename/extension you like) and then open it with MarkingMate to do your marking. The format is (almost) self-explanatory:
@@ -23,8 +24,9 @@ MarkingMate doesn't provide a user interface for creating students and questions
 </Exam>
 ```
 
-## Screenshot
-![](https://github.com/kolovos/markingmate/wiki/screenshot.png)
+## Screenshots
+![](https://github.com/kolovos/markingmate/wiki/screenshot-win.png)
+![](https://github.com/kolovos/markingmate/wiki/screenshot-mac.png)
 
 ## Status
 ![](https://travis-ci.org/kolovos/markingmate.svg?branch=master)
