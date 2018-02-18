@@ -36,9 +36,9 @@ public class MarkingMate4Mac extends MarkingMate {
 		toolbar.installWindowDraggerOnWindow(this);
 		toolbar.disableBackgroundPainter();
 		add(toolbar.getComponent(), BorderLayout.NORTH);
-		toolbar.addComponentToLeft(getUnifiedToolBarButton(openAction));
-		toolbar.addComponentToLeft(getUnifiedToolBarButton(saveAction));
-		toolbar.addComponentToRight(getUnifiedToolBarButton(exportAction));
+		toolbar.addComponentToLeft(getUnifiedToolBarButton(new OpenAction(true)));
+		toolbar.addComponentToLeft(getUnifiedToolBarButton(new SaveAction(true)));
+		toolbar.addComponentToRight(getUnifiedToolBarButton(new ExportAction(true)));
 	}
 	
 	protected AbstractButton getUnifiedToolBarButton(AbstractAction action) {

@@ -54,8 +54,8 @@
 		
 		<bundleapp outputdirectory="dist" name="MarkingMate" displayname="MarkingMate" identifier="MarkingMate" mainclassname="io.dimitris.markingmate.ui.MarkingMate4Mac" icon="resources/markingmate.icns">
 			<classpath file="dist/markingmate.jar"/>
-			<classpath file="dist/quaqua.jar"/>
-			<classpath file="dist/MacWidgets.jar"/>
+			<classpath file="lib/quaqua.jar"/>
+			<classpath file="lib/MacWidgets.jar"/>
 			<librarypath file="lib/libquaqua.jnilib"/>
 			<librarypath file="lib/libquaqua64.jnilib"/>
 			<librarypath file="lib/libquaqua64.dylib"/>

@@ -21,9 +21,9 @@ public class MarkingMate4Win extends MarkingMate {
 		toolbar.setRollover(true);
 		toolbar.setFloatable(false);
 		add(toolbar, BorderLayout.NORTH);
-		toolbar.add(openAction);
-		toolbar.add(saveAction);
-		toolbar.add(exportAction);
+		toolbar.add(new OpenAction(true));
+		toolbar.add(new SaveAction(true));
+		toolbar.add(new ExportAction(true));
 	}
 	
 	@Override

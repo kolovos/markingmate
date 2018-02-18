@@ -80,9 +80,6 @@ public abstract class MarkingMate extends JFrame {
 	protected File file;
 	protected boolean dirty = false;
 	protected EContentAdapter adapter;
-	protected OpenAction openAction = new OpenAction();
-	protected SaveAction saveAction = new SaveAction();
-	protected ExportAction exportAction = new ExportAction();
 	
 	protected abstract void setupLookAndFeel() throws Exception;
 	
@@ -141,11 +138,11 @@ public abstract class MarkingMate extends JFrame {
 		
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
-		fileMenu.add(openAction).setIcon(null);
-		fileMenu.add(saveAction).setIcon(null);
+		fileMenu.add(new OpenAction(false));
+		fileMenu.add(new SaveAction(false)).setIcon(null);
 		menuBar.add(fileMenu);
 		JMenu toolsMenu = new JMenu("Tools");
-		toolsMenu.add(exportAction).setIcon(null);
+		toolsMenu.add(new ExportAction(false)).setIcon(null);
 		menuBar.add(toolsMenu);
 		setJMenuBar(menuBar);
 		
@@ -350,8 +347,9 @@ public abstract class MarkingMate extends JFrame {
 	
 	class OpenAction extends AbstractAction {
 		
-		public OpenAction() {
-			super("Open", new ImageIcon(new File("resources/open.png").getAbsolutePath()));
+		public OpenAction(boolean icon) {
+			super("Open");
+			if (icon) putValue(AbstractAction.SMALL_ICON, new ImageIcon(new File("resources/open.png").getAbsolutePath()));
 			putValue(AbstractAction.SHORT_DESCRIPTION, "Opens a MarkingMate file");
 		}
 
@@ -368,8 +366,9 @@ public abstract class MarkingMate extends JFrame {
 	
 	class SaveAction extends AbstractAction {
 		
-		public SaveAction() {
-			super("Save", new ImageIcon(new File("resources/save.png").getAbsolutePath()));
+		public SaveAction(boolean icon) {
+			super("Save");
+			if (icon) putValue(AbstractAction.SMALL_ICON, new ImageIcon(new File("resources/save.png").getAbsolutePath()));
 			putValue(AbstractAction.SHORT_DESCRIPTION, "Saves the current MarkingMate file");
 		}
 
@@ -381,8 +380,9 @@ public abstract class MarkingMate extends JFrame {
 	
 	class ExportAction extends AbstractAction {
 		
-		public ExportAction() {
-			super("Export", new ImageIcon(new File("resources/export.png").getAbsolutePath()));
+		public ExportAction(boolean icon) {
+			super("Export");
+			if (icon) putValue(AbstractAction.SMALL_ICON, new ImageIcon(new File("resources/export.png").getAbsolutePath()));
 			putValue(AbstractAction.SHORT_DESCRIPTION, "Exports marks and feedback");
 		}
 
