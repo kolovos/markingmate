@@ -8,7 +8,9 @@
 		<mkdir dir="bin"/>
 
 		<javac srcdir="src" destdir="bin" includes="**/*.java" target="1.8">
-        	<classpath refid="libs"/>
+        	<fileset id="libs" dir="lib">
+	         	<include name="**/*.jar" />
+	     	</fileset>
     	</javac>
 
 		<jar destfile="dist/io.dimitris.markingmate.jar">
