@@ -11,6 +11,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -80,6 +83,7 @@ public abstract class MarkingMate extends JFrame {
 	protected File file;
 	protected boolean dirty = false;
 	protected EContentAdapter adapter;
+	protected TimerTask autosaveTask;
 	
 	protected abstract void setupLookAndFeel() throws Exception;
 	
@@ -223,6 +227,16 @@ public abstract class MarkingMate extends JFrame {
 		return true;
 	}
 	
+	public void autosave() {
+		try {
+			if (resource != null) resource.save(new FileOutputStream(file.getAbsolutePath() + ".autosaved"), null);
+		}
+		catch (Exception e) {
+			JOptionPane.showMessageDialog(MarkingMate.this, e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
 	public void open() throws Exception {
 		
 		if (!handleDirty()) return;
@@ -241,7 +255,7 @@ public abstract class MarkingMate extends JFrame {
 			adapter = new EContentAdapter() {
 				@Override
 				public void notifyChanged(Notification notification) {
-					
+					if (notification.getFeature() == null) return;
 					if (!(notification.getOldValue()+"").contentEquals(notification.getNewValue()+"")) {
 						setDirty(true);
 						studentsTable.updateUI();
@@ -259,6 +273,19 @@ public abstract class MarkingMate extends JFrame {
 			studentsTable.updateUI();
 			questionsComboBox.updateUI();
 			resource.eAdapters().add(adapter);
+			
+			if (autosaveTask != null) {
+				autosaveTask.cancel();
+			}
+			autosaveTask = new TimerTask() {
+				
+				@Override
+				public void run() {
+					autosave();
+				}
+			};
+			new Timer().schedule(autosaveTask, 1000, 10000);
+			
 		}
 	}
 	
