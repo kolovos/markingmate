@@ -49,7 +49,7 @@ public class RelatedFeedbackPanel extends JPanel {
 				add(groupPanel, 0);
 			}
 		}
-		updateUI();
+		markingMate.updateUI(this);
 	}
 	
 }

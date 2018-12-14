@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.Insets;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -62,6 +63,8 @@ import io.dimitris.markingmate.Student;
 import net.infonode.docking.RootWindow;
 import net.infonode.docking.SplitWindow;
 import net.infonode.docking.View;
+import net.infonode.docking.theme.DefaultDockingTheme;
+import net.infonode.docking.theme.DockingWindowsTheme;
 import net.infonode.docking.theme.GradientDockingTheme;
 import net.infonode.docking.util.DockingUtil;
 import net.infonode.docking.util.PropertiesUtil;
@@ -101,7 +104,7 @@ public abstract class MarkingMate extends JFrame {
 		SpellChecker.getOptions().setIgnoreCapitalization(true);
 		exam = MarkingmateFactory.eINSTANCE.createExam();
 		
-		feedbackPanel = new FeedbackPanel(this, null);
+		feedbackPanel = new FeedbackPanel(this, null, true);
 		relatedFeedbackPanel = new RelatedFeedbackPanel(this);
 		
 		questionsComboBox = new JComboBox<Question>(new QuestionsComboBoxModel(this));
@@ -163,11 +166,11 @@ public abstract class MarkingMate extends JFrame {
 		View relatedFeedbackView = createView("Related Feedback", relatedFeedbackPanelScrollPane, viewMap);
 		RootWindow rootWindow = DockingUtil.createRootWindow(viewMap, true);
 		
-		GradientDockingTheme theme = new GradientDockingTheme(false, false, false, false, new Color(150, 150, 150)); //new ShapedGradientDockingTheme(); //new GradientDockingTheme(false, false, false, false);
+		DockingWindowsTheme theme = new GradientDockingTheme(false, false, false, false, SystemColor.windowBorder /*new Color(173, 180, 180)*/); //new ShapedGradientDockingTheme(); //new GradientDockingTheme(false, false, false, false);
 		rootWindow.getRootWindowProperties().addSuperObject(theme.getRootWindowProperties());
 		// new Color(223, 228, 234) <- Light blue
 		
-		Color rootWindowBackgroundColor = new Color(245, 244, 245);
+		Color rootWindowBackgroundColor = SystemColor.window; // new Color(238, 238, 238);
 		rootWindow.getRootWindowProperties().getWindowAreaShapedPanelProperties().setComponentPainter(new SolidColorComponentPainter(new FixedColorProvider(rootWindowBackgroundColor)));
 		rootWindow.getRootWindowProperties().getWindowAreaProperties().setInsets(new Insets(0, 0, 0, 0)).setBorder(new EmptyBorder(5,5,5,5));
 		rootWindow.getRootWindowProperties().getTabWindowProperties().getTabbedPanelProperties().setTabAreaOrientation(Direction.DOWN);
@@ -229,12 +232,22 @@ public abstract class MarkingMate extends JFrame {
 	
 	public void autosave() {
 		try {
-			if (resource != null) resource.save(new FileOutputStream(file.getAbsolutePath() + ".autosaved"), null);
+			if (resource != null && file != null & !file.getAbsolutePath().endsWith("autosaved")) resource.save(new FileOutputStream(file.getAbsolutePath() + ".autosaved"), null);
 		}
 		catch (Exception e) {
 			JOptionPane.showMessageDialog(MarkingMate.this, e.getMessage());
 			e.printStackTrace();
 		}
+	}
+	
+	public void updateUI(JComponent component) {
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				component.updateUI();
+			}
+		});
 	}
 	
 	public void open() throws Exception {
@@ -258,7 +271,7 @@ public abstract class MarkingMate extends JFrame {
 					if (notification.getFeature() == null) return;
 					if (!(notification.getOldValue()+"").contentEquals(notification.getNewValue()+"")) {
 						setDirty(true);
-						studentsTable.updateUI();
+						updateUI(studentsTable);
 					}
 				}
 			};
@@ -267,11 +280,11 @@ public abstract class MarkingMate extends JFrame {
 			if (exam.getQuestions().size() > 0) questionsComboBox.setSelectedIndex(0);
 			if (exam.getStudents().size() > 0) {
 				studentsTable.setRowSelectionInterval(0, 0);
-				studentsTable.updateUI();
+				updateUI(studentsTable);
 			}
 			
-			studentsTable.updateUI();
-			questionsComboBox.updateUI();
+			updateUI(studentsTable);
+			updateUI(questionsComboBox);
 			resource.eAdapters().add(adapter);
 			
 			if (autosaveTask != null) {
