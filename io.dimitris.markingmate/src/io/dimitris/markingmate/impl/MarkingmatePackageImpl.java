@@ -79,7 +79,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 
 	/**
 	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-	 * 
+	 *
 	 * <p>This method is used to initialize {@link MarkingmatePackage#eINSTANCE} when that field is accessed.
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
 	 * <!-- begin-user-doc -->
@@ -93,7 +93,8 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 		if (isInited) return (MarkingmatePackage)EPackage.Registry.INSTANCE.getEPackage(MarkingmatePackage.eNS_URI);
 
 		// Obtain or create and register package
-		MarkingmatePackageImpl theMarkingmatePackage = (MarkingmatePackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof MarkingmatePackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new MarkingmatePackageImpl());
+		Object registeredMarkingmatePackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		MarkingmatePackageImpl theMarkingmatePackage = registeredMarkingmatePackage instanceof MarkingmatePackageImpl ? (MarkingmatePackageImpl)registeredMarkingmatePackage : new MarkingmatePackageImpl();
 
 		isInited = true;
 
@@ -106,7 +107,6 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 		// Mark meta-data to indicate it can't be changed
 		theMarkingmatePackage.freeze();
 
-  
 		// Update the registry and return the package
 		EPackage.Registry.INSTANCE.put(MarkingmatePackage.eNS_URI, theMarkingmatePackage);
 		return theMarkingmatePackage;
@@ -126,8 +126,17 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getExam_Generator() {
+		return (EAttribute)examEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EReference getExam_Questions() {
-		return (EReference)examEClass.getEStructuralFeatures().get(0);
+		return (EReference)examEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -136,7 +145,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * @generated
 	 */
 	public EReference getExam_Students() {
-		return (EReference)examEClass.getEStructuralFeatures().get(1);
+		return (EReference)examEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -285,6 +294,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 
 		// Create classes and their features
 		examEClass = createEClass(EXAM);
+		createEAttribute(examEClass, EXAM__GENERATOR);
 		createEReference(examEClass, EXAM__QUESTIONS);
 		createEReference(examEClass, EXAM__STUDENTS);
 
@@ -336,6 +346,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(examEClass, Exam.class, "Exam", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getExam_Generator(), ecorePackage.getEString(), "generator", null, 0, 1, Exam.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getExam_Questions(), this.getQuestion(), null, "questions", null, 0, -1, Exam.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getExam_Students(), this.getStudent(), null, "students", null, 0, -1, Exam.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

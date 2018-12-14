@@ -8,6 +8,7 @@
   <genPackages prefix="Markingmate" basePackage="io.dimitris" disposableProviderFactory="true"
       ecorePackage="markingmate.ecore#/">
     <genClasses ecoreClass="markingmate.ecore#//Exam">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute markingmate.ecore#//Exam/generator"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference markingmate.ecore#//Exam/questions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference markingmate.ecore#//Exam/students"/>
     </genClasses>

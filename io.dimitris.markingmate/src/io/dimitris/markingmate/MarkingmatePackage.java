@@ -67,13 +67,22 @@ public interface MarkingmatePackage extends EPackage {
 	int EXAM = 0;
 
 	/**
+	 * The feature id for the '<em><b>Generator</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXAM__GENERATOR = 0;
+
+	/**
 	 * The feature id for the '<em><b>Questions</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EXAM__QUESTIONS = 0;
+	int EXAM__QUESTIONS = 1;
 
 	/**
 	 * The feature id for the '<em><b>Students</b></em>' containment reference list.
@@ -82,7 +91,7 @@ public interface MarkingmatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXAM__STUDENTS = 1;
+	int EXAM__STUDENTS = 2;
 
 	/**
 	 * The number of structural features of the '<em>Exam</em>' class.
@@ -91,7 +100,7 @@ public interface MarkingmatePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EXAM_FEATURE_COUNT = 2;
+	int EXAM_FEATURE_COUNT = 3;
 
 	/**
 	 * The number of operations of the '<em>Exam</em>' class.
@@ -288,6 +297,17 @@ public interface MarkingmatePackage extends EPackage {
 	EClass getExam();
 
 	/**
+	 * Returns the meta object for the attribute '{@link io.dimitris.markingmate.Exam#getGenerator <em>Generator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Generator</em>'.
+	 * @see io.dimitris.markingmate.Exam#getGenerator()
+	 * @see #getExam()
+	 * @generated
+	 */
+	EAttribute getExam_Generator();
+
+	/**
 	 * Returns the meta object for the containment reference list '{@link io.dimitris.markingmate.Exam#getQuestions <em>Questions</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -481,6 +501,14 @@ public interface MarkingmatePackage extends EPackage {
 		 * @generated
 		 */
 		EClass EXAM = eINSTANCE.getExam();
+
+		/**
+		 * The meta object literal for the '<em><b>Generator</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute EXAM__GENERATOR = eINSTANCE.getExam_Generator();
 
 		/**
 		 * The meta object literal for the '<em><b>Questions</b></em>' containment reference list feature.

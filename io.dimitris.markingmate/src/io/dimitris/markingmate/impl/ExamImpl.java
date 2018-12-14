@@ -9,6 +9,7 @@ import io.dimitris.markingmate.Question;
 import io.dimitris.markingmate.Student;
 import java.util.Collection;
 
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
@@ -16,6 +17,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
@@ -29,6 +31,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link io.dimitris.markingmate.impl.ExamImpl#getGenerator <em>Generator</em>}</li>
  *   <li>{@link io.dimitris.markingmate.impl.ExamImpl#getQuestions <em>Questions</em>}</li>
  *   <li>{@link io.dimitris.markingmate.impl.ExamImpl#getStudents <em>Students</em>}</li>
  * </ul>
@@ -36,6 +39,26 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * @generated
  */
 public class ExamImpl extends MinimalEObjectImpl.Container implements Exam {
+	/**
+	 * The default value of the '{@link #getGenerator() <em>Generator</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getGenerator()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String GENERATOR_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getGenerator() <em>Generator</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getGenerator()
+	 * @generated
+	 * @ordered
+	 */
+	protected String generator = GENERATOR_EDEFAULT;
+
 	/**
 	 * The cached value of the '{@link #getQuestions() <em>Questions</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -73,6 +96,27 @@ public class ExamImpl extends MinimalEObjectImpl.Container implements Exam {
 	@Override
 	protected EClass eStaticClass() {
 		return MarkingmatePackage.Literals.EXAM;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getGenerator() {
+		return generator;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setGenerator(String newGenerator) {
+		String oldGenerator = generator;
+		generator = newGenerator;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, MarkingmatePackage.EXAM__GENERATOR, oldGenerator, generator));
 	}
 
 	/**
@@ -123,6 +167,8 @@ public class ExamImpl extends MinimalEObjectImpl.Container implements Exam {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
+			case MarkingmatePackage.EXAM__GENERATOR:
+				return getGenerator();
 			case MarkingmatePackage.EXAM__QUESTIONS:
 				return getQuestions();
 			case MarkingmatePackage.EXAM__STUDENTS:
@@ -140,6 +186,9 @@ public class ExamImpl extends MinimalEObjectImpl.Container implements Exam {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
+			case MarkingmatePackage.EXAM__GENERATOR:
+				setGenerator((String)newValue);
+				return;
 			case MarkingmatePackage.EXAM__QUESTIONS:
 				getQuestions().clear();
 				getQuestions().addAll((Collection<? extends Question>)newValue);
@@ -160,6 +209,9 @@ public class ExamImpl extends MinimalEObjectImpl.Container implements Exam {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
+			case MarkingmatePackage.EXAM__GENERATOR:
+				setGenerator(GENERATOR_EDEFAULT);
+				return;
 			case MarkingmatePackage.EXAM__QUESTIONS:
 				getQuestions().clear();
 				return;
@@ -178,12 +230,30 @@ public class ExamImpl extends MinimalEObjectImpl.Container implements Exam {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
+			case MarkingmatePackage.EXAM__GENERATOR:
+				return GENERATOR_EDEFAULT == null ? generator != null : !GENERATOR_EDEFAULT.equals(generator);
 			case MarkingmatePackage.EXAM__QUESTIONS:
 				return questions != null && !questions.isEmpty();
 			case MarkingmatePackage.EXAM__STUDENTS:
 				return students != null && !students.isEmpty();
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (generator: ");
+		result.append(generator);
+		result.append(')');
+		return result.toString();
 	}
 
 } //ExamImpl

@@ -376,7 +376,7 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (feedback: ");
 		result.append(feedback);
 		result.append(", marks: ");

@@ -2,6 +2,7 @@
 package markingmate;
 
 class Exam {
+	attr String generator;
 	val Question[*] questions;
 	val Student[*] students;
 }

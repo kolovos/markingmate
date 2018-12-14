@@ -436,7 +436,18 @@ public abstract class MarkingMate extends JFrame {
 			if (fd.getFile() != null) {
 				try {
 					EgxModule module = new EgxModule(new EglFileGeneratingTemplateFactory());
-					module.parse(new File("resources/feedback.egx"));
+					File customGenerator = null;
+					if (exam.getGenerator() != null) {
+						customGenerator = new File(exam.getGenerator());
+					}
+					
+					if (customGenerator == null || !customGenerator.exists()) {
+						module.parse(new File("resources/feedback.egx"));
+					}
+					else {
+						module.parse(customGenerator);
+					}
+					
 					((EglFileGeneratingTemplateFactory) module.getTemplateFactory()).setOutputRoot(fd.getDirectory());
 					module.getContext().getFrameStack().put(Variable.createReadOnlyVariable("csv", fd.getFile()));
 					module.getContext().getModelRepository().addModel(new InMemoryEmfModel(exam.eResource()));
