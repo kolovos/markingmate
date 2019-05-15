@@ -46,8 +46,10 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.eclipse.epsilon.ecl.EclModule;
 import org.eclipse.epsilon.egl.EglFileGeneratingTemplateFactory;
 import org.eclipse.epsilon.egl.EgxModule;
+import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.emc.emf.InMemoryEmfModel;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 
@@ -60,6 +62,7 @@ import io.dimitris.markingmate.MarkingmateFactory;
 import io.dimitris.markingmate.MarkingmatePackage;
 import io.dimitris.markingmate.Question;
 import io.dimitris.markingmate.Student;
+import io.dimitris.markingmate.util.Merger;
 import net.infonode.docking.RootWindow;
 import net.infonode.docking.SplitWindow;
 import net.infonode.docking.View;
@@ -150,6 +153,7 @@ public abstract class MarkingMate extends JFrame {
 		menuBar.add(fileMenu);
 		JMenu toolsMenu = new JMenu("Tools");
 		toolsMenu.add(new ExportAction(false)).setIcon(null);
+		// toolsMenu.add(new MergeAction(false)).setIcon(null);
 		menuBar.add(toolsMenu);
 		setJMenuBar(menuBar);
 		
@@ -463,7 +467,41 @@ public abstract class MarkingMate extends JFrame {
 		}
 		
 	}
-
+	
+	class MergeAction extends AbstractAction {
+		
+		public MergeAction(boolean icon) {
+			super("Merge");
+			if (icon) putValue(AbstractAction.SMALL_ICON, new ImageIcon(new File("resources/merge2.png").getAbsolutePath()));
+			putValue(AbstractAction.SHORT_DESCRIPTION, "Merge mutliple MarkingMate files");
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			try {
+				FileDialog openDialog = new FileDialog(MarkingMate.this, "Choose the files to merge", FileDialog.LOAD );
+				openDialog.setMultipleMode(true);
+				FileDialog saveDialog = new FileDialog(MarkingMate.this, "Choose the output file", FileDialog.SAVE);
+				
+				openDialog.setVisible(true);
+				File[] inputs = openDialog.getFiles();
+				
+				if (inputs.length < 2) return;
+				
+				saveDialog.setVisible(true);
+				
+				File[] outputs = saveDialog.getFiles();
+				if (outputs.length != 1) return;
+				
+				new Merger().merge(inputs, outputs[0]);
+				
+			}
+			catch (Exception ex) {
+				JOptionPane.showMessageDialog(MarkingMate.this, ex.getMessage(), "Merge failed", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+	
 	public abstract void finetuneMarksPanel(JPanel marksPanel);
 
 	public abstract void finetuneFeedbackTextAreaScrollPane(JScrollPane feedbackTextAreaScrollPane);

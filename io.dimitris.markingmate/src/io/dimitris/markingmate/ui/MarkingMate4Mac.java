@@ -38,6 +38,7 @@ public class MarkingMate4Mac extends MarkingMate {
 		add(toolbar.getComponent(), BorderLayout.NORTH);
 		toolbar.addComponentToLeft(getUnifiedToolBarButton(new OpenAction(true)));
 		toolbar.addComponentToLeft(getUnifiedToolBarButton(new SaveAction(true)));
+		// toolbar.addComponentToRight(getUnifiedToolBarButton(new MergeAction(true)));
 		toolbar.addComponentToRight(getUnifiedToolBarButton(new ExportAction(true)));
 	}
 	

@@ -23,6 +23,7 @@ public class MarkingMate4Win extends MarkingMate {
 		add(toolbar, BorderLayout.NORTH);
 		toolbar.add(new OpenAction(true));
 		toolbar.add(new SaveAction(true));
+		// toolbar.add(new MergeAction(true));
 		toolbar.add(new ExportAction(true));
 	}
 	

@@ -1,0 +1,7 @@
+[%for (question in Question.all) {
+%]
+<h2>[%=question.title%]</h2>
+[%for (answer in question.answers.sortBy(a|-a.marks)){%]
+<p><b>([%=answer.marks%]/[%=question.marks%])</b>: [%=answer.feedback%]</p>
+[%}%]
+[%}%]

@@ -198,6 +198,15 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getQuestion_Weight() {
+		return (EAttribute)questionEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getStudent() {
 		return studentEClass;
 	}
@@ -303,6 +312,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 		createEAttribute(questionEClass, QUESTION__DESCRIPTION);
 		createEAttribute(questionEClass, QUESTION__MARKS);
 		createEReference(questionEClass, QUESTION__ANSWERS);
+		createEAttribute(questionEClass, QUESTION__WEIGHT);
 
 		studentEClass = createEClass(STUDENT);
 		createEAttribute(studentEClass, STUDENT__NUMBER);
@@ -355,6 +365,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 		initEAttribute(getQuestion_Description(), ecorePackage.getEString(), "description", "", 0, 1, Question.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getQuestion_Marks(), ecorePackage.getEInt(), "marks", "0", 0, 1, Question.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getQuestion_Answers(), this.getAnswer(), this.getAnswer_Question(), "answers", null, 0, -1, Question.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getQuestion_Weight(), ecorePackage.getEInt(), "weight", "100", 0, 1, Question.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(studentEClass, Student.class, "Student", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getStudent_Number(), ecorePackage.getEString(), "number", null, 0, 1, Student.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

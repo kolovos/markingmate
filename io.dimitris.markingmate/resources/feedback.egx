@@ -6,6 +6,14 @@ rule Exam2CSV
 	target : csv	
 }
 
+rule Exam2HTML
+	transform exam : Exam {
+	
+	template : "all-feedback.egl"
+	
+	target : "all-feedback.html"
+}
+
 rule Feedback2File
 	transform student : Student {
 	

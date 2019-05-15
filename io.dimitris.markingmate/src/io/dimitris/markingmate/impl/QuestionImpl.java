@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link io.dimitris.markingmate.impl.QuestionImpl#getDescription <em>Description</em>}</li>
  *   <li>{@link io.dimitris.markingmate.impl.QuestionImpl#getMarks <em>Marks</em>}</li>
  *   <li>{@link io.dimitris.markingmate.impl.QuestionImpl#getAnswers <em>Answers</em>}</li>
+ *   <li>{@link io.dimitris.markingmate.impl.QuestionImpl#getWeight <em>Weight</em>}</li>
  * </ul>
  *
  * @generated
@@ -105,6 +106,26 @@ public class QuestionImpl extends MinimalEObjectImpl.Container implements Questi
 	 * @ordered
 	 */
 	protected EList<Answer> answers;
+
+	/**
+	 * The default value of the '{@link #getWeight() <em>Weight</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getWeight()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final int WEIGHT_EDEFAULT = 100;
+
+	/**
+	 * The cached value of the '{@link #getWeight() <em>Weight</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getWeight()
+	 * @generated
+	 * @ordered
+	 */
+	protected int weight = WEIGHT_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -205,6 +226,27 @@ public class QuestionImpl extends MinimalEObjectImpl.Container implements Questi
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public int getWeight() {
+		return weight;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setWeight(int newWeight) {
+		int oldWeight = weight;
+		weight = newWeight;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, MarkingmatePackage.QUESTION__WEIGHT, oldWeight, weight));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
@@ -245,6 +287,8 @@ public class QuestionImpl extends MinimalEObjectImpl.Container implements Questi
 				return getMarks();
 			case MarkingmatePackage.QUESTION__ANSWERS:
 				return getAnswers();
+			case MarkingmatePackage.QUESTION__WEIGHT:
+				return getWeight();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -271,6 +315,9 @@ public class QuestionImpl extends MinimalEObjectImpl.Container implements Questi
 				getAnswers().clear();
 				getAnswers().addAll((Collection<? extends Answer>)newValue);
 				return;
+			case MarkingmatePackage.QUESTION__WEIGHT:
+				setWeight((Integer)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -295,6 +342,9 @@ public class QuestionImpl extends MinimalEObjectImpl.Container implements Questi
 			case MarkingmatePackage.QUESTION__ANSWERS:
 				getAnswers().clear();
 				return;
+			case MarkingmatePackage.QUESTION__WEIGHT:
+				setWeight(WEIGHT_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -315,6 +365,8 @@ public class QuestionImpl extends MinimalEObjectImpl.Container implements Questi
 				return marks != MARKS_EDEFAULT;
 			case MarkingmatePackage.QUESTION__ANSWERS:
 				return answers != null && !answers.isEmpty();
+			case MarkingmatePackage.QUESTION__WEIGHT:
+				return weight != WEIGHT_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
