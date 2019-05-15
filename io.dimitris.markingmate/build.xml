@@ -52,7 +52,7 @@
 		<delete file="dist/MarkingMate4Mac.dmg"/>
 		<delete dir="dist/MarkingMate.app"/>
 		
-		<bundleapp outputdirectory="dist" name="MarkingMate" displayname="MarkingMate" identifier="MarkingMate" mainclassname="io.dimitris.markingmate.ui.MarkingMate4MacSimple" icon="resources/markingmate.icns">
+		<bundleapp outputdirectory="dist" name="MarkingMate" displayname="MarkingMate" identifier="MarkingMate" mainclassname="io.dimitris.markingmate.ui.MarkingMate4Mac" icon="resources/markingmate.icns">
 			<classpath file="dist/markingmate.jar"/>
 			<classpath file="lib/quaqua.jar"/>
 			<classpath file="lib/MacWidgets.jar"/>
