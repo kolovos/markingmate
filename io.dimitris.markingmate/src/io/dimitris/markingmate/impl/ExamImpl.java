@@ -103,6 +103,7 @@ public class ExamImpl extends MinimalEObjectImpl.Container implements Exam {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getGenerator() {
 		return generator;
 	}
@@ -112,6 +113,7 @@ public class ExamImpl extends MinimalEObjectImpl.Container implements Exam {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setGenerator(String newGenerator) {
 		String oldGenerator = generator;
 		generator = newGenerator;
@@ -124,6 +126,7 @@ public class ExamImpl extends MinimalEObjectImpl.Container implements Exam {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Question> getQuestions() {
 		if (questions == null) {
 			questions = new EObjectContainmentEList<Question>(Question.class, this, MarkingmatePackage.EXAM__QUESTIONS);
@@ -136,6 +139,7 @@ public class ExamImpl extends MinimalEObjectImpl.Container implements Exam {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Student> getStudents() {
 		if (students == null) {
 			students = new EObjectContainmentEList<Student>(Student.class, this, MarkingmatePackage.EXAM__STUDENTS);

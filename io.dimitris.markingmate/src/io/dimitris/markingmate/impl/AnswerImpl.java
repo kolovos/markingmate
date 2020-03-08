@@ -108,6 +108,7 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Student getStudent() {
 		if (eContainerFeatureID() != MarkingmatePackage.ANSWER__STUDENT) return null;
 		return (Student)eInternalContainer();
@@ -128,6 +129,7 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setStudent(Student newStudent) {
 		if (newStudent != eInternalContainer() || (eContainerFeatureID() != MarkingmatePackage.ANSWER__STUDENT && newStudent != null)) {
 			if (EcoreUtil.isAncestor(this, newStudent))
@@ -149,6 +151,7 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Question getQuestion() {
 		return question;
 	}
@@ -173,6 +176,7 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setQuestion(Question newQuestion) {
 		if (newQuestion != question) {
 			NotificationChain msgs = null;
@@ -192,6 +196,7 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getFeedback() {
 		return feedback;
 	}
@@ -201,6 +206,7 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setFeedback(String newFeedback) {
 		String oldFeedback = feedback;
 		feedback = newFeedback;
@@ -213,6 +219,7 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public int getMarks() {
 		return marks;
 	}
@@ -222,6 +229,7 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setMarks(int newMarks) {
 		int oldMarks = marks;
 		marks = newMarks;

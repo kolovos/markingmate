@@ -90,6 +90,7 @@ public class StudentImpl extends MinimalEObjectImpl.Container implements Student
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public String getNumber() {
 		return number;
 	}
@@ -99,6 +100,7 @@ public class StudentImpl extends MinimalEObjectImpl.Container implements Student
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public void setNumber(String newNumber) {
 		String oldNumber = number;
 		number = newNumber;
@@ -111,6 +113,7 @@ public class StudentImpl extends MinimalEObjectImpl.Container implements Student
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EList<Answer> getAnswers() {
 		if (answers == null) {
 			answers = new EObjectContainmentWithInverseEList<Answer>(Answer.class, this, MarkingmatePackage.STUDENT__ANSWERS, MarkingmatePackage.ANSWER__STUDENT);

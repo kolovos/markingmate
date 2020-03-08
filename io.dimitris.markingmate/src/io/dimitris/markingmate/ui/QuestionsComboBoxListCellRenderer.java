@@ -19,7 +19,6 @@ public class QuestionsComboBoxListCellRenderer extends DefaultListCellRenderer {
 		JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 		if (question != null) {
 			String text = question.getTitle() + " - " + question.getMarks() + " marks";
-			if (question.getWeight() != 100) text += " - " + question.getWeight() + "%";
 			label.setText(text);
 		}
 		return label;

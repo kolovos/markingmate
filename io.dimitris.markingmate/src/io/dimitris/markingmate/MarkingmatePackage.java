@@ -158,22 +158,13 @@ public interface MarkingmatePackage extends EPackage {
 	int QUESTION__ANSWERS = 3;
 
 	/**
-	 * The feature id for the '<em><b>Weight</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int QUESTION__WEIGHT = 4;
-
-	/**
 	 * The number of structural features of the '<em>Question</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int QUESTION_FEATURE_COUNT = 5;
+	int QUESTION_FEATURE_COUNT = 4;
 
 	/**
 	 * The number of operations of the '<em>Question</em>' class.
@@ -393,17 +384,6 @@ public interface MarkingmatePackage extends EPackage {
 	EReference getQuestion_Answers();
 
 	/**
-	 * Returns the meta object for the attribute '{@link io.dimitris.markingmate.Question#getWeight <em>Weight</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Weight</em>'.
-	 * @see io.dimitris.markingmate.Question#getWeight()
-	 * @see #getQuestion()
-	 * @generated
-	 */
-	EAttribute getQuestion_Weight();
-
-	/**
 	 * Returns the meta object for class '{@link io.dimitris.markingmate.Student <em>Student</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -587,14 +567,6 @@ public interface MarkingmatePackage extends EPackage {
 		 * @generated
 		 */
 		EReference QUESTION__ANSWERS = eINSTANCE.getQuestion_Answers();
-
-		/**
-		 * The meta object literal for the '<em><b>Weight</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute QUESTION__WEIGHT = eINSTANCE.getQuestion_Weight();
 
 		/**
 		 * The meta object literal for the '{@link io.dimitris.markingmate.impl.StudentImpl <em>Student</em>}' class.

@@ -17,7 +17,6 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute markingmate.ecore#//Question/description"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute markingmate.ecore#//Question/marks"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference markingmate.ecore#//Question/answers"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute markingmate.ecore#//Question/weight"/>
     </genClasses>
     <genClasses ecoreClass="markingmate.ecore#//Student">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute markingmate.ecore#//Student/number"/>

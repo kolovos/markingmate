@@ -44,7 +44,7 @@ public class StudentsTableModel implements TableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Student student = app.getExam().getStudents().get(rowIndex);
 		if (columnIndex == 0) return student.getNumber();
-		else if (columnIndex == 2) return Math.round(student.getAnswers().stream().mapToDouble(f -> f.getMarks() * (double) f.getQuestion().getWeight() / f.getQuestion().getMarks()).sum());
+		else if (columnIndex == 2) return student.getAnswers().stream().mapToInt(f -> f.getMarks()).sum();
 		else return student.getAnswers().stream().filter(f -> !f.getFeedback().isEmpty()).count();
 	}
 

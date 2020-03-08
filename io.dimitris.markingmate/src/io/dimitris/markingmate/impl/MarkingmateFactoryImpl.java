@@ -70,6 +70,7 @@ public class MarkingmateFactoryImpl extends EFactoryImpl implements MarkingmateF
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Exam createExam() {
 		ExamImpl exam = new ExamImpl();
 		return exam;
@@ -80,6 +81,7 @@ public class MarkingmateFactoryImpl extends EFactoryImpl implements MarkingmateF
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Question createQuestion() {
 		QuestionImpl question = new QuestionImpl();
 		return question;
@@ -90,6 +92,7 @@ public class MarkingmateFactoryImpl extends EFactoryImpl implements MarkingmateF
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Student createStudent() {
 		StudentImpl student = new StudentImpl();
 		return student;
@@ -100,6 +103,7 @@ public class MarkingmateFactoryImpl extends EFactoryImpl implements MarkingmateF
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public Answer createAnswer() {
 		AnswerImpl answer = new AnswerImpl();
 		return answer;
@@ -110,6 +114,7 @@ public class MarkingmateFactoryImpl extends EFactoryImpl implements MarkingmateF
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public MarkingmatePackage getMarkingmatePackage() {
 		return (MarkingmatePackage)getEPackage();
 	}

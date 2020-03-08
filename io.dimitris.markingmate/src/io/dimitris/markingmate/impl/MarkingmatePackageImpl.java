@@ -117,6 +117,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getExam() {
 		return examEClass;
 	}
@@ -126,6 +127,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getExam_Generator() {
 		return (EAttribute)examEClass.getEStructuralFeatures().get(0);
 	}
@@ -135,6 +137,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getExam_Questions() {
 		return (EReference)examEClass.getEStructuralFeatures().get(1);
 	}
@@ -144,6 +147,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getExam_Students() {
 		return (EReference)examEClass.getEStructuralFeatures().get(2);
 	}
@@ -153,6 +157,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getQuestion() {
 		return questionEClass;
 	}
@@ -162,6 +167,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getQuestion_Title() {
 		return (EAttribute)questionEClass.getEStructuralFeatures().get(0);
 	}
@@ -171,6 +177,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getQuestion_Description() {
 		return (EAttribute)questionEClass.getEStructuralFeatures().get(1);
 	}
@@ -180,6 +187,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getQuestion_Marks() {
 		return (EAttribute)questionEClass.getEStructuralFeatures().get(2);
 	}
@@ -189,6 +197,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getQuestion_Answers() {
 		return (EReference)questionEClass.getEStructuralFeatures().get(3);
 	}
@@ -198,15 +207,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getQuestion_Weight() {
-		return (EAttribute)questionEClass.getEStructuralFeatures().get(4);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
+	@Override
 	public EClass getStudent() {
 		return studentEClass;
 	}
@@ -216,6 +217,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getStudent_Number() {
 		return (EAttribute)studentEClass.getEStructuralFeatures().get(0);
 	}
@@ -225,6 +227,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getStudent_Answers() {
 		return (EReference)studentEClass.getEStructuralFeatures().get(1);
 	}
@@ -234,6 +237,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EClass getAnswer() {
 		return answerEClass;
 	}
@@ -243,6 +247,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getAnswer_Student() {
 		return (EReference)answerEClass.getEStructuralFeatures().get(0);
 	}
@@ -252,6 +257,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EReference getAnswer_Question() {
 		return (EReference)answerEClass.getEStructuralFeatures().get(1);
 	}
@@ -261,6 +267,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getAnswer_Feedback() {
 		return (EAttribute)answerEClass.getEStructuralFeatures().get(2);
 	}
@@ -270,6 +277,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public EAttribute getAnswer_Marks() {
 		return (EAttribute)answerEClass.getEStructuralFeatures().get(3);
 	}
@@ -279,6 +287,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@Override
 	public MarkingmateFactory getMarkingmateFactory() {
 		return (MarkingmateFactory)getEFactoryInstance();
 	}
@@ -312,7 +321,6 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 		createEAttribute(questionEClass, QUESTION__DESCRIPTION);
 		createEAttribute(questionEClass, QUESTION__MARKS);
 		createEReference(questionEClass, QUESTION__ANSWERS);
-		createEAttribute(questionEClass, QUESTION__WEIGHT);
 
 		studentEClass = createEClass(STUDENT);
 		createEAttribute(studentEClass, STUDENT__NUMBER);
@@ -365,7 +373,6 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 		initEAttribute(getQuestion_Description(), ecorePackage.getEString(), "description", "", 0, 1, Question.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getQuestion_Marks(), ecorePackage.getEInt(), "marks", "0", 0, 1, Question.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getQuestion_Answers(), this.getAnswer(), this.getAnswer_Question(), "answers", null, 0, -1, Question.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getQuestion_Weight(), ecorePackage.getEInt(), "weight", "100", 0, 1, Question.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(studentEClass, Student.class, "Student", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getStudent_Number(), ecorePackage.getEString(), "number", null, 0, 1, Student.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

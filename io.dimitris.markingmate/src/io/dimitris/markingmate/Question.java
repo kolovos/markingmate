@@ -18,7 +18,6 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link io.dimitris.markingmate.Question#getDescription <em>Description</em>}</li>
  *   <li>{@link io.dimitris.markingmate.Question#getMarks <em>Marks</em>}</li>
  *   <li>{@link io.dimitris.markingmate.Question#getAnswers <em>Answers</em>}</li>
- *   <li>{@link io.dimitris.markingmate.Question#getWeight <em>Weight</em>}</li>
  * </ul>
  *
  * @see io.dimitris.markingmate.MarkingmatePackage#getQuestion()
@@ -124,32 +123,5 @@ public interface Question extends EObject {
 	 * @generated
 	 */
 	EList<Answer> getAnswers();
-
-	/**
-	 * Returns the value of the '<em><b>Weight</b></em>' attribute.
-	 * The default value is <code>"100"</code>.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Weight</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Weight</em>' attribute.
-	 * @see #setWeight(int)
-	 * @see io.dimitris.markingmate.MarkingmatePackage#getQuestion_Weight()
-	 * @model default="100"
-	 * @generated
-	 */
-	int getWeight();
-
-	/**
-	 * Sets the value of the '{@link io.dimitris.markingmate.Question#getWeight <em>Weight</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Weight</em>' attribute.
-	 * @see #getWeight()
-	 * @generated
-	 */
-	void setWeight(int value);
 
 } // Question
