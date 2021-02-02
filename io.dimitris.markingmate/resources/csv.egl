@@ -1,4 +1,12 @@
 ,[%=exam.questions.collect(q|q.title).concat(",")%],Total
 [%for (student in Student.all){%]
-[%=student.number%],[%=exam.questions.collect(q|student.answers.selectOne(a|a.question = q).marks).concat(",")%],[%=student.answers.marks.sum()%]
+[%=student.number%],[%=exam.questions.collect(q|student.getMarks(q)).concat(",")%],[%=student.answers.marks.sum()%]
 [%}%]
+
+[%
+operation Student getMarks(q : Question) {
+	var answer = self.answers.selectOne(a|a.question = q);
+	if (answer.isDefined()) return answer.marks;
+	else return 0;
+}
+%]
