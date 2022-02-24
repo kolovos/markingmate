@@ -23,3 +23,7 @@ jobs:
         distribution: 'temurin'
     - name: Build with Ant
       run: ant -noinput -buildfile io.dimitris.markingmate/build.xml
+    - uses: ncipollo/release-action@v1
+      with:
+        artifacts: "io.dimitris.markingmate/dist/MarkingMate4Mac.dmg,io.dimitris.markingmate/dist/MarkingMate4Win.zip"
+        token: ${{ secrets.GITHUB_TOKEN }}
