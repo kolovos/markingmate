@@ -1,12 +1,9 @@
 package io.dimitris.markingmate.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FileDialog;
-import java.awt.Insets;
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -28,13 +25,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
@@ -46,13 +43,12 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.eclipse.epsilon.ecl.EclModule;
 import org.eclipse.epsilon.egl.EglFileGeneratingTemplateFactory;
 import org.eclipse.epsilon.egl.EgxModule;
-import org.eclipse.epsilon.emc.emf.EmfModel;
 import org.eclipse.epsilon.emc.emf.InMemoryEmfModel;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.inet.jortho.FileUserDictionary;
 import com.inet.jortho.SpellChecker;
 
@@ -63,18 +59,6 @@ import io.dimitris.markingmate.MarkingmatePackage;
 import io.dimitris.markingmate.Question;
 import io.dimitris.markingmate.Student;
 import io.dimitris.markingmate.util.Merger;
-import net.infonode.docking.RootWindow;
-import net.infonode.docking.SplitWindow;
-import net.infonode.docking.View;
-import net.infonode.docking.theme.DefaultDockingTheme;
-import net.infonode.docking.theme.DockingWindowsTheme;
-import net.infonode.docking.theme.GradientDockingTheme;
-import net.infonode.docking.util.DockingUtil;
-import net.infonode.docking.util.PropertiesUtil;
-import net.infonode.docking.util.ViewMap;
-import net.infonode.gui.colorprovider.FixedColorProvider;
-import net.infonode.gui.componentpainter.SolidColorComponentPainter;
-import net.infonode.util.Direction;
 
 public abstract class MarkingMate extends JFrame {
 
@@ -159,30 +143,40 @@ public abstract class MarkingMate extends JFrame {
 		
 		createToolbar();
 		
-		ViewMap viewMap = new ViewMap();
-		JScrollPane p = createJScrollPane(studentsTable);
-		p.setOpaque(true);
-		p.setBackground(new Color(238, 238, 238));
-		p.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(2, 2, 1, 1), new EtchedBorder()));
-		View studentsView = createView("Students", p, viewMap);
-		View feedbackView = createView("Feedback", questionFeedbackPanel, viewMap);
+//		ViewMap viewMap = new ViewMap();
+//		JScrollPane p = createJScrollPane(studentsTable);
+//		p.setOpaque(true);
+//		//p.setBackground(new Color(238, 238, 238));
+//		p.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(2, 2, 1, 1), new EtchedBorder()));
+//		View studentsView = createView("Students", p, viewMap);
+//		View feedbackView = createView("Feedback", questionFeedbackPanel, viewMap);
+//		relatedFeedbackPanelScrollPane = createJScrollPane(relatedFeedbackPanel);
+//		View relatedFeedbackView = createView("Related Feedback", relatedFeedbackPanelScrollPane, viewMap);
+//		RootWindow rootWindow = DockingUtil.createRootWindow(viewMap, true);
+//		
+//		DockingWindowsTheme theme = new ClassicDockingTheme(); //new GradientDockingTheme(false, false, false, false, SystemColor.windowBorder /*new Color(173, 180, 180)*/); //new ShapedGradientDockingTheme(); //new GradientDockingTheme(false, false, false, false);
+//		rootWindow.getRootWindowProperties().addSuperObject(theme.getRootWindowProperties());
+//		// new Color(223, 228, 234) <- Light blue
+//		
+//		Color rootWindowBackgroundColor = SystemColor.window; // new Color(238, 238, 238);
+//		//rootWindow.getRootWindowProperties().getWindowAreaShapedPanelProperties().setComponentPainter(new SolidColorComponentPainter(new FixedColorProvider(rootWindowBackgroundColor)));
+//		//rootWindow.getRootWindowProperties().getWindowAreaProperties().setInsets(new Insets(0, 0, 0, 0)).setBorder(new EmptyBorder(5,5,5,5));
+//		rootWindow.getRootWindowProperties().getTabWindowProperties().getTabbedPanelProperties().setTabAreaOrientation(Direction.DOWN);
+//		rootWindow.getRootWindowProperties().addSuperObject(PropertiesUtil.createTitleBarStyleRootWindowProperties());
+//		rootWindow.setWindow(new SplitWindow(false, 0.7f, new SplitWindow(true, 0.3f, studentsView, feedbackView), relatedFeedbackView));
+//		
+		
+		
+		
 		relatedFeedbackPanelScrollPane = createJScrollPane(relatedFeedbackPanel);
-		View relatedFeedbackView = createView("Related Feedback", relatedFeedbackPanelScrollPane, viewMap);
-		RootWindow rootWindow = DockingUtil.createRootWindow(viewMap, true);
-		
-		DockingWindowsTheme theme = new GradientDockingTheme(false, false, false, false, SystemColor.windowBorder /*new Color(173, 180, 180)*/); //new ShapedGradientDockingTheme(); //new GradientDockingTheme(false, false, false, false);
-		rootWindow.getRootWindowProperties().addSuperObject(theme.getRootWindowProperties());
-		// new Color(223, 228, 234) <- Light blue
-		
-		Color rootWindowBackgroundColor = SystemColor.window; // new Color(238, 238, 238);
-		rootWindow.getRootWindowProperties().getWindowAreaShapedPanelProperties().setComponentPainter(new SolidColorComponentPainter(new FixedColorProvider(rootWindowBackgroundColor)));
-		rootWindow.getRootWindowProperties().getWindowAreaProperties().setInsets(new Insets(0, 0, 0, 0)).setBorder(new EmptyBorder(5,5,5,5));
-		rootWindow.getRootWindowProperties().getTabWindowProperties().getTabbedPanelProperties().setTabAreaOrientation(Direction.DOWN);
-		rootWindow.getRootWindowProperties().addSuperObject(PropertiesUtil.createTitleBarStyleRootWindowProperties());
-		rootWindow.setWindow(new SplitWindow(false, 0.7f, new SplitWindow(true, 0.3f, studentsView, feedbackView), relatedFeedbackView));
+		JSplitPane vertical = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, createJTabbedPane("Students", createJScrollPane(studentsTable)), createJTabbedPane("Feedback", questionFeedbackPanel));
+		vertical.setDividerLocation(200);
+		JSplitPane horizontal = new JSplitPane(JSplitPane.VERTICAL_SPLIT, vertical, createJTabbedPane("Related Feedback", relatedFeedbackPanelScrollPane));
+		horizontal.setDividerLocation(300);
+		horizontal.setBorder(new EmptyBorder(0, 8, 8, 8));
 		
 		finetuneUI();
-		getContentPane().add(rootWindow, BorderLayout.CENTER);
+		getContentPane().add(horizontal, BorderLayout.CENTER);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -193,6 +187,23 @@ public abstract class MarkingMate extends JFrame {
 		setBounds(200, 200, 800, 500);
 		setDirty(false);
 		setVisible(true);
+		studentsTable.requestFocus();
+		
+	}
+	
+	protected JTabbedPane createJTabbedPane(String name, JComponent component) {
+		JTabbedPane tp = new JTabbedPane();
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+		panel.add(component, BorderLayout.CENTER);
+		if (name.equalsIgnoreCase("Students")) {
+			
+			component.setBorder(new JTextArea().getBorder());
+			panel.setBorder(new EmptyBorder(8, 0, 0, 0));
+		}
+		else component.setBorder(new EmptyBorder(8, 0, 0, 0));
+		tp.add(name, panel);
+		return tp;
 	}
 	
 	public boolean isDirty() {
@@ -306,15 +317,6 @@ public abstract class MarkingMate extends JFrame {
 		}
 	}
 	
-	public View createView(String title, Component component, ViewMap viewMap) {
-		final View view = new View(title, null, component);
-		viewMap.addView(viewMap.getViewCount(), view);
-		view.getWindowProperties().setCloseEnabled(false);
-		view.getWindowProperties().setMaximizeEnabled(false);
-		view.getWindowProperties().setUndockEnabled(false);
-		return view;
-	}
-	
 	protected void questionSelected(Question question) {
 		Student student = getStudent();
 		if (student != null) {
@@ -383,8 +385,8 @@ public abstract class MarkingMate extends JFrame {
 		splitPane.putClientProperty("Quaqua.SplitPane.style","bar");
 		splitPane.setDividerSize(2);
 		BasicSplitPaneDivider divider = (BasicSplitPaneDivider) splitPane.getComponent(2);
-		divider.setBackground(new Color(165, 165, 165));
-		divider.setBorder(new LineBorder(new Color(165, 165, 165), 0));
+		//divider.setBackground(new Color(165, 165, 165));
+		//divider.setBorder(new LineBorder(new Color(165, 165, 165), 0));
 		splitPane.setBorder(new EmptyBorder(0,0,0,0));
 		return splitPane;
 	}
@@ -393,7 +395,7 @@ public abstract class MarkingMate extends JFrame {
 		
 		public OpenAction(boolean icon) {
 			super("Open");
-			if (icon) putValue(AbstractAction.SMALL_ICON, new ImageIcon(new File("resources/open.png").getAbsolutePath()));
+			if (icon) putValue(AbstractAction.SMALL_ICON, new FlatSVGIcon("io/dimitris/markingmate/ui/resources/open.svg"));
 			putValue(AbstractAction.SHORT_DESCRIPTION, "Opens a MarkingMate file");
 		}
 
@@ -412,7 +414,7 @@ public abstract class MarkingMate extends JFrame {
 		
 		public SaveAction(boolean icon) {
 			super("Save");
-			if (icon) putValue(AbstractAction.SMALL_ICON, new ImageIcon(new File("resources/save.png").getAbsolutePath()));
+			if (icon) putValue(AbstractAction.SMALL_ICON, new FlatSVGIcon("io/dimitris/markingmate/ui/resources/save.svg"));
 			putValue(AbstractAction.SHORT_DESCRIPTION, "Saves the current MarkingMate file");
 		}
 
@@ -426,7 +428,7 @@ public abstract class MarkingMate extends JFrame {
 		
 		public ExportAction(boolean icon) {
 			super("Export");
-			if (icon) putValue(AbstractAction.SMALL_ICON, new ImageIcon(new File("resources/export.png").getAbsolutePath()));
+			if (icon) putValue(AbstractAction.SMALL_ICON, new FlatSVGIcon("io/dimitris/markingmate/ui/resources/export.svg"));
 			putValue(AbstractAction.SHORT_DESCRIPTION, "Exports marks and feedback");
 		}
 

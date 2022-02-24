@@ -36,9 +36,6 @@ public class FeedbackPanel extends JPanel {
 		
 		if (showDescription) {
 			descriptionLabel = new JLabel();
-			//descriptionLabel.setOpaque(true);
-			//descriptionLabel.setBackground(SystemColor.windowBorder);
-			descriptionLabel.setForeground(SystemColor.windowBorder);
 		}
 		
 		feedbackTextArea = new FeedbackTextArea(answer);
@@ -61,6 +58,7 @@ public class FeedbackPanel extends JPanel {
 		markingMate.finetuneMarksPanel(marksPanel);
 		JLabel marksLabel = new JLabel("Marks:");
 		marksPanel.add(marksLabel, BorderLayout.WEST);
+		marksLabel.setBorder(new EmptyBorder(0, 0, 0, 3));
 		marksTextField = new JTextField();
 		marksTextField.getDocument().addDocumentListener(new DocumentChangeListener() {
 			
@@ -75,14 +73,12 @@ public class FeedbackPanel extends JPanel {
 			}
 		});
 		marksPanel.add(marksTextField, BorderLayout.CENTER);
-		marksPanel.setOpaque(false);
 		
 		JScrollPane feedbackTextAreaScrollPane = new JScrollPane(feedbackTextArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		markingMate.finetuneFeedbackTextAreaScrollPane(feedbackTextAreaScrollPane);
 		if (showDescription) add(descriptionLabel, BorderLayout.NORTH);
 		add(feedbackTextAreaScrollPane, BorderLayout.CENTER);
 		add(marksPanel, BorderLayout.SOUTH);
-		setOpaque(false);
 		
 		SpellChecker.register(feedbackTextArea);
 		

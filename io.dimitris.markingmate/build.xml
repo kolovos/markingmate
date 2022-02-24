@@ -10,17 +10,16 @@
 	         	<include name="**/*.jar" />
 	     	</fileset>
      	</path>
-
-	    <!--fileset id="libsfs" dir="lib">
-	         <include name="**/*.jar" />
-	    </fileset-->
 		
      	<mkdir dir="bin"/>
 
 		<javac srcdir="src" destdir="bin" includes="**/*.java" target="1.8" includeantruntime="false">
 			<classpath refid="libs"/>
-    		</javac>
+    	</javac>
 		
+		<copydir src="src/io/dimitris/markingmate/ui/resources/" dest="bin/io/dimitris/markingmate/ui/resources/">
+		</copydir>
+
 		<jar destfile="dist/markingmate.jar" filesetmanifest="mergewithoutmain">
 			<fileset dir="bin"/>
 			<zipfileset excludes="META-INF/*.SF" src="lib/epsilon-1.4-core.jar"/>
@@ -33,6 +32,10 @@
 			<zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.ecore_2.12.0.v20160420-0247.jar"/>
 			<zipfileset excludes="META-INF/*.SF" src="lib/org.eclipse.emf.ecore.xmi_2.12.0.v20160420-0247.jar"/>
 			<zipfileset excludes="META-INF/*.SF" src="lib/stanford-parser.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="lib/flatlaf-extras-2.0.1.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="lib/flatlaf-2.0.1.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="lib/svgSalamander-1.1.3.jar"/>
+						
 			<manifest>
 				<attribute name="Main-Class" value="io.dimitris.markingmate.ui.MarkingMate4Win"/>
 			</manifest>
@@ -45,20 +48,11 @@
 			<zipfileset file="dictionary_en.ortho"/>			
 		</zip>
 		
-		<!--jar destfile="dist/io.dimitris.markingmate.jar">
-			<fileset dir="bin"/>
-		</jar-->
-		
 		<delete file="dist/MarkingMate4Mac.dmg"/>
 		<delete dir="dist/MarkingMate.app"/>
 		
 		<bundleapp outputdirectory="dist" name="MarkingMate" displayname="MarkingMate" identifier="MarkingMate" mainclassname="io.dimitris.markingmate.ui.MarkingMate4Mac" icon="resources/markingmate.icns">
 			<classpath file="dist/markingmate.jar"/>
-			<classpath file="lib/quaqua.jar"/>
-			<classpath file="lib/MacWidgets.jar"/>
-			<librarypath file="lib/libquaqua.jnilib"/>
-			<librarypath file="lib/libquaqua64.jnilib"/>
-			<librarypath file="lib/libquaqua64.dylib"/>
 			
 			<option value="-Dapple.laf.useScreenMenuBar=true"/>
 			<option value="-Duser.dir=$APP_ROOT/Contents/Home/"/>
@@ -66,6 +60,7 @@
 		</bundleapp>
 
 		<copydir src="resources" dest="dist/MarkingMate.app/Contents/Home/resources"/>
+				
 		<copyfile src="dictionaries.cnf" dest="dist/MarkingMate.app/Contents/Home/dictionaries.cnf"/>
 		<copyfile src="dictionary_en.ortho" dest="dist/MarkingMate.app/Contents/Home/dictionary_en.ortho"/>
 		

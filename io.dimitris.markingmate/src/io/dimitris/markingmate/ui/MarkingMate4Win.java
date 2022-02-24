@@ -1,6 +1,7 @@
 package io.dimitris.markingmate.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Insets;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -8,6 +9,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+
+import com.formdev.flatlaf.FlatLightLaf;
 
 public class MarkingMate4Win extends MarkingMate {
 	
@@ -18,7 +21,8 @@ public class MarkingMate4Win extends MarkingMate {
 	@Override
 	protected void createToolbar() {
 		JToolBar toolbar = new JToolBar();
-		toolbar.setRollover(true);
+		toolbar.setMargin(new Insets(3, 3, 3, 3));
+		//toolbar.setRollover(true);
 		toolbar.setFloatable(false);
 		add(toolbar, BorderLayout.NORTH);
 		toolbar.add(new OpenAction(true));
@@ -29,22 +33,25 @@ public class MarkingMate4Win extends MarkingMate {
 	
 	@Override
 	protected void setupLookAndFeel() throws Exception {
-		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		FlatLightLaf.setup();
+		UIManager.setLookAndFeel(new FlatLightLaf());
+		//UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 	}
 	
 	@Override
 	protected void finetuneUI() {
-		studentsTable.setShowGrid(false);
-		studentsTable.setRowHeight(24);
+		//studentsTable.setShowGrid(false);
+		//studentsTable.setRowHeight(24);
 	}
 	
 	@Override
 	protected JComponent getQuestionsComboxPanel() {
 		JPanel panel = new JPanel();
-		panel.setBorder(new EmptyBorder(3, 1, 2, 1));
+		panel.setBorder(new EmptyBorder(0, 2, 2, 2));
 		panel.setLayout(new BorderLayout());
 		panel.add(questionsComboBox, BorderLayout.CENTER);
 		return panel;
+		//return questionsComboBox;
 	}
 	
 	@Override
