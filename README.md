@@ -33,4 +33,4 @@ The `<Exam>` tag also accepts a `generator` attribute which can point to the abs
 
 ## Screenshots
 ![](https://i.imgur.com/YJhwNOV.png)
-![](https://i.imgur.com/qs7vyiO.png)
+![](https://i.imgur.com/yzkFqy1.png)
