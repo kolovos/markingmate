@@ -75,7 +75,6 @@ public class FeedbackPanel extends JPanel {
 		marksPanel.add(marksTextField, BorderLayout.CENTER);
 		
 		JScrollPane feedbackTextAreaScrollPane = new JScrollPane(feedbackTextArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		markingMate.finetuneFeedbackTextAreaScrollPane(feedbackTextAreaScrollPane);
 		if (showDescription) add(descriptionLabel, BorderLayout.NORTH);
 		add(feedbackTextAreaScrollPane, BorderLayout.CENTER);
 		add(marksPanel, BorderLayout.SOUTH);

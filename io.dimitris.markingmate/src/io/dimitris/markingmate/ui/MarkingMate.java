@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FileDialog;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -28,8 +29,10 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -48,6 +51,7 @@ import org.eclipse.epsilon.egl.EgxModule;
 import org.eclipse.epsilon.emc.emf.InMemoryEmfModel;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.inet.jortho.FileUserDictionary;
 import com.inet.jortho.SpellChecker;
@@ -58,9 +62,12 @@ import io.dimitris.markingmate.MarkingmateFactory;
 import io.dimitris.markingmate.MarkingmatePackage;
 import io.dimitris.markingmate.Question;
 import io.dimitris.markingmate.Student;
+import io.dimitris.markingmate.ui.MarkingMate.ExportAction;
+import io.dimitris.markingmate.ui.MarkingMate.OpenAction;
+import io.dimitris.markingmate.ui.MarkingMate.SaveAction;
 import io.dimitris.markingmate.util.Merger;
 
-public abstract class MarkingMate extends JFrame {
+public class MarkingMate extends JFrame {
 
 	protected JTable studentsTable;
 	protected RelatedFeedbackPanel relatedFeedbackPanel;
@@ -74,14 +81,6 @@ public abstract class MarkingMate extends JFrame {
 	protected boolean dirty = false;
 	protected EContentAdapter adapter;
 	protected TimerTask autosaveTask;
-	
-	protected abstract void setupLookAndFeel() throws Exception;
-	
-	protected abstract void createToolbar();
-	
-	protected abstract void finetuneUI();
-	
-	protected abstract JComponent getQuestionsComboxPanel();
 	
 	protected void run() throws Exception {
 		setupLookAndFeel();
@@ -141,41 +140,16 @@ public abstract class MarkingMate extends JFrame {
 		menuBar.add(toolsMenu);
 		setJMenuBar(menuBar);
 		
-		createToolbar();
-		
-//		ViewMap viewMap = new ViewMap();
-//		JScrollPane p = createJScrollPane(studentsTable);
-//		p.setOpaque(true);
-//		//p.setBackground(new Color(238, 238, 238));
-//		p.setBorder(BorderFactory.createCompoundBorder(new EmptyBorder(2, 2, 1, 1), new EtchedBorder()));
-//		View studentsView = createView("Students", p, viewMap);
-//		View feedbackView = createView("Feedback", questionFeedbackPanel, viewMap);
-//		relatedFeedbackPanelScrollPane = createJScrollPane(relatedFeedbackPanel);
-//		View relatedFeedbackView = createView("Related Feedback", relatedFeedbackPanelScrollPane, viewMap);
-//		RootWindow rootWindow = DockingUtil.createRootWindow(viewMap, true);
-//		
-//		DockingWindowsTheme theme = new ClassicDockingTheme(); //new GradientDockingTheme(false, false, false, false, SystemColor.windowBorder /*new Color(173, 180, 180)*/); //new ShapedGradientDockingTheme(); //new GradientDockingTheme(false, false, false, false);
-//		rootWindow.getRootWindowProperties().addSuperObject(theme.getRootWindowProperties());
-//		// new Color(223, 228, 234) <- Light blue
-//		
-//		Color rootWindowBackgroundColor = SystemColor.window; // new Color(238, 238, 238);
-//		//rootWindow.getRootWindowProperties().getWindowAreaShapedPanelProperties().setComponentPainter(new SolidColorComponentPainter(new FixedColorProvider(rootWindowBackgroundColor)));
-//		//rootWindow.getRootWindowProperties().getWindowAreaProperties().setInsets(new Insets(0, 0, 0, 0)).setBorder(new EmptyBorder(5,5,5,5));
-//		rootWindow.getRootWindowProperties().getTabWindowProperties().getTabbedPanelProperties().setTabAreaOrientation(Direction.DOWN);
-//		rootWindow.getRootWindowProperties().addSuperObject(PropertiesUtil.createTitleBarStyleRootWindowProperties());
-//		rootWindow.setWindow(new SplitWindow(false, 0.7f, new SplitWindow(true, 0.3f, studentsView, feedbackView), relatedFeedbackView));
-//		
-		
-		
+		createToolbar();		
 		
 		relatedFeedbackPanelScrollPane = createJScrollPane(relatedFeedbackPanel);
 		JSplitPane vertical = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, createJTabbedPane("Students", createJScrollPane(studentsTable)), createJTabbedPane("Feedback", questionFeedbackPanel));
 		vertical.setDividerLocation(200);
+		vertical.setBorder(new EmptyBorder(0, 0, 2, 0));
 		JSplitPane horizontal = new JSplitPane(JSplitPane.VERTICAL_SPLIT, vertical, createJTabbedPane("Related Feedback", relatedFeedbackPanelScrollPane));
 		horizontal.setDividerLocation(300);
 		horizontal.setBorder(new EmptyBorder(0, 8, 8, 8));
 		
-		finetuneUI();
 		getContentPane().add(horizontal, BorderLayout.CENTER);
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
@@ -199,7 +173,7 @@ public abstract class MarkingMate extends JFrame {
 		if (name.equalsIgnoreCase("Students")) {
 			
 			component.setBorder(new JTextArea().getBorder());
-			panel.setBorder(new EmptyBorder(8, 0, 0, 0));
+			panel.setBorder(new EmptyBorder(8, 2, 0, 2));
 		}
 		else component.setBorder(new EmptyBorder(8, 0, 0, 0));
 		tp.add(name, panel);
@@ -380,17 +354,6 @@ public abstract class MarkingMate extends JFrame {
 		return scrollPane;
 	}
 	
-	protected JSplitPane createSplitPane(Component left, Component right) {
-		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left, right);
-		splitPane.putClientProperty("Quaqua.SplitPane.style","bar");
-		splitPane.setDividerSize(2);
-		BasicSplitPaneDivider divider = (BasicSplitPaneDivider) splitPane.getComponent(2);
-		//divider.setBackground(new Color(165, 165, 165));
-		//divider.setBorder(new LineBorder(new Color(165, 165, 165), 0));
-		splitPane.setBorder(new EmptyBorder(0,0,0,0));
-		return splitPane;
-	}
-	
 	class OpenAction extends AbstractAction {
 		
 		public OpenAction(boolean icon) {
@@ -503,9 +466,38 @@ public abstract class MarkingMate extends JFrame {
 			}
 		}
 	}
+		
+	public static void main(String[] args) throws Exception {
+		new MarkingMate().run();
+	}
 	
-	public abstract void finetuneMarksPanel(JPanel marksPanel);
+	protected void createToolbar() {
+		JToolBar toolbar = new JToolBar();
+		toolbar.setMargin(new Insets(3, 3, 3, 3));
+		//toolbar.setRollover(true);
+		toolbar.setFloatable(false);
+		add(toolbar, BorderLayout.NORTH);
+		toolbar.add(new OpenAction(true));
+		toolbar.add(new SaveAction(true));
+		// toolbar.add(new MergeAction(true));
+		toolbar.add(new ExportAction(true));
+	}
+	
+	protected void setupLookAndFeel() throws Exception {
+		FlatLightLaf.setup();
+		UIManager.setLookAndFeel(new FlatLightLaf());
+	}
+	
+	protected JComponent getQuestionsComboxPanel() {
+		JPanel panel = new JPanel();
+		panel.setBorder(new EmptyBorder(0, 2, 2, 2));
+		panel.setLayout(new BorderLayout());
+		panel.add(questionsComboBox, BorderLayout.CENTER);
+		return panel;
+	}
+	
+	public void finetuneMarksPanel(JPanel marksPanel) {
+		marksPanel.setBorder(new EmptyBorder(3,0,0,0));		
+	}
 
-	public abstract void finetuneFeedbackTextAreaScrollPane(JScrollPane feedbackTextAreaScrollPane);
-	
 }
