@@ -28,6 +28,7 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
           title: "Development Build"
+          prerelease: false
           files: |
-            io.dimitris.markingmate/dist/MarkingMate.dmg
-            io.dimitris.markingmate/dist/MarkingMate.zip
+            io.dimitris.markingmate/dist/MarkingMate4Mac.dmg
+            io.dimitris.markingmate/dist/MarkingMate4Win.zip
