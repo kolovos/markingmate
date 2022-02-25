@@ -21,13 +21,19 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
+    - name: Get Time
+      id: time
+      uses: nanzm/get-time-action@v1.1
+      with:
+          timeZone: 8
+          format: 'DD.MM.YYYY HH:mm'
     - name: Build with Ant
       run: ant -noinput -buildfile io.dimitris.markingmate/build.xml
     - uses: "marvinpinto/action-automatic-releases@latest"
       with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
-          title: "Development Build"
+          title: "Build ${{ steps.time.outputs.time }}"
           prerelease: false
           files: |
             io.dimitris.markingmate/dist/MarkingMate4Mac.dmg
