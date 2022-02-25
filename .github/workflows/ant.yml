@@ -25,7 +25,6 @@ jobs:
       id: time
       uses: nanzm/get-time-action@v1.1
       with:
-          timeZone: 8
           format: 'DD.MM.YYYY HH:mm'
     - name: Build with Ant
       run: ant -noinput -buildfile io.dimitris.markingmate/build.xml
