@@ -31,13 +31,14 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
+import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.basic.BasicSplitPaneDivider;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.URI;
@@ -51,6 +52,8 @@ import org.eclipse.epsilon.egl.EgxModule;
 import org.eclipse.epsilon.emc.emf.InMemoryEmfModel;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.inet.jortho.FileUserDictionary;
@@ -62,9 +65,6 @@ import io.dimitris.markingmate.MarkingmateFactory;
 import io.dimitris.markingmate.MarkingmatePackage;
 import io.dimitris.markingmate.Question;
 import io.dimitris.markingmate.Student;
-import io.dimitris.markingmate.ui.MarkingMate.ExportAction;
-import io.dimitris.markingmate.ui.MarkingMate.OpenAction;
-import io.dimitris.markingmate.ui.MarkingMate.SaveAction;
 import io.dimitris.markingmate.util.Merger;
 
 public class MarkingMate extends JFrame {
@@ -137,6 +137,12 @@ public class MarkingMate extends JFrame {
 		JMenu toolsMenu = new JMenu("Tools");
 		toolsMenu.add(new ExportAction(false)).setIcon(null);
 		// toolsMenu.add(new MergeAction(false)).setIcon(null);
+		
+		JMenu themesMenu = new JMenu("Theme");
+		toolsMenu.add(themesMenu);
+		themesMenu.add(new ChangeLookAndFeelAction("Light", new FlatLightLaf()));
+		themesMenu.add(new ChangeLookAndFeelAction("Dark", new FlatDarkLaf()));
+		
 		menuBar.add(toolsMenu);
 		setJMenuBar(menuBar);
 		
@@ -465,6 +471,27 @@ public class MarkingMate extends JFrame {
 				JOptionPane.showMessageDialog(MarkingMate.this, ex.getMessage(), "Merge failed", JOptionPane.ERROR_MESSAGE);
 			}
 		}
+	}
+	
+	class ChangeLookAndFeelAction extends AbstractAction {
+		
+		protected LookAndFeel laf;
+		
+		public ChangeLookAndFeelAction(String name, LookAndFeel laf) {
+			super(name);
+			this.laf = laf;
+		}
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			try {
+				UIManager.setLookAndFeel(laf);
+				SwingUtilities.updateComponentTreeUI(MarkingMate.this);
+			} catch (UnsupportedLookAndFeelException ex) {
+				ex.printStackTrace();
+			}
+		}
+		
 	}
 		
 	public static void main(String[] args) throws Exception {
