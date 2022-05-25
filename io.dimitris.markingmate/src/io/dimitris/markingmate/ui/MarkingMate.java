@@ -320,7 +320,6 @@ public class MarkingMate extends JFrame {
 		Answer answer = MarkingmateFactory.eINSTANCE.createAnswer();
 		answer.setStudent(student);
 		answer.setQuestion(question);
-		System.out.println(adapter == null);
 		answer.eAdapters().add(adapter);
 		return answer;
 	}
