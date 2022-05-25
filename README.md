@@ -3,15 +3,15 @@ MarkingMate is a cross-platform desktop application for marking and providing fe
 * When you're marking an answer, it also displays the feedback and marks for other answers to the same question. 
 * It supports sentence-level text completion (<kbd>Ctrl</kbd>+<kbd>Space</kbd>) to avoid re-typing feedback that applies to many answers. 
 
-When you're done marking, you can export your marks into a CSV file and into individual text files with feedback for every student.
-
-## Screenshots
-![](https://i.imgur.com/YJhwNOV.png)
-![](https://i.imgur.com/yzkFqy1.png)
+When you are done marking, you can export your marks into a CSV file and into individual text files with feedback for every student.
 
 ## Installation
 * Mac OSX: Download and run the DMG installer (MarkingMate.dmg) from the [Releases](https://github.com/kolovos/markingmate/releases) page.
 * Windows/Linux: Download MarkingMate.zip from the [Releases](https://github.com/kolovos/markingmate/releases) page, extract its contents, and then double-click markingmate.jar
+
+## Screenshots
+![](https://i.imgur.com/YJhwNOV.png)
+![](https://i.imgur.com/yzkFqy1.png)
 
 ## File Format
 MarkingMate doesn't provide a user interface for creating students and questions. As such you will have to set up your marking file using a text editor (give it any filename/extension you like) and then open it with MarkingMate to do your marking. The format is (almost) self-explanatory:
