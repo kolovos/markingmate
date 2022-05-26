@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -30,6 +31,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
@@ -52,7 +54,6 @@ import org.eclipse.epsilon.egl.EgxModule;
 import org.eclipse.epsilon.emc.emf.InMemoryEmfModel;
 import org.eclipse.epsilon.eol.execute.context.Variable;
 
-import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
@@ -131,13 +132,13 @@ public class MarkingMate extends JFrame {
 		
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
-		fileMenu.add(new OpenAction(false));
-		fileMenu.add(new SaveAction(false)).setIcon(null);
+		fileMenu.add(new OpenAction(false)).setAccelerator(KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));;;
+		fileMenu.add(new SaveAction(false)).setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		
 		menuBar.add(fileMenu);
 		JMenu toolsMenu = new JMenu("Tools");
-		toolsMenu.add(new ExportAction(false)).setIcon(null);
+		toolsMenu.add(new ExportAction(false));
 		// toolsMenu.add(new MergeAction(false)).setIcon(null);
-		
 		JMenu themesMenu = new JMenu("Theme");
 		toolsMenu.add(themesMenu);
 		themesMenu.add(new ChangeLookAndFeelAction("Light", new FlatLightLaf()));
@@ -384,6 +385,7 @@ public class MarkingMate extends JFrame {
 			super("Save");
 			if (icon) putValue(AbstractAction.SMALL_ICON, new FlatSVGIcon("io/dimitris/markingmate/ui/resources/save.svg"));
 			putValue(AbstractAction.SHORT_DESCRIPTION, "Saves the current MarkingMate file");
+			
 		}
 
 		public void actionPerformed(ActionEvent actionevent) {
