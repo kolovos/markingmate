@@ -32,7 +32,7 @@ MarkingMate doesn't provide a user interface for creating students and questions
 </Exam>
 ```
 
-## Custom marks and feedback generator
+## Custom Marks and Feedback Generator
 The `<Exam>` tag also accepts a `generator` attribute which can point to the absolute path of an [EGL](https://www.eclipse.org/epsilon/doc/articles/code-generation-tutorial-egl/) generator (.egx file) which MarkingMate should use instead of its built-in generator when it exports feedback. For inspiration, you can have a look at the [built-in generator](https://github.com/kolovos/markingmate/blob/master/io.dimitris.markingmate/resources/feedback.egx), which produces one CSV file with all the marks and one text file with feedback per student.
 
 Actually, MarkingMate files are XMI documents conforming to an [Ecore metamodel](https://github.com/kolovos/markingmate/blob/master/io.dimitris.markingmate/markingmate.ecore), so you can use any EMF-compatible tool to query, analyse and transform them to different representations.
