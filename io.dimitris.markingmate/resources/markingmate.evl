@@ -1,0 +1,18 @@
+context Answer {
+  constraint MustHaveFeedback {
+    check: self.feedback.trim().length() > 0
+    message: 'All answers should have feedback'
+  }
+
+  constraint ScoreMustBeWithinRange {
+    check: self.marks >= 0 and self.marks <= self.question.marks
+    message: 'Answer for ' + self.question.`title` + '  must be between [0, ' + self.question.marks + ']'
+  }
+}
+
+context Student {
+  constraint MustAnswerAllQuestions {
+    check: self.answers.size() = self.eContainer.questions.size()
+    message: 'Student ' + self.number + ' must have answers for all questions'
+  }
+}
