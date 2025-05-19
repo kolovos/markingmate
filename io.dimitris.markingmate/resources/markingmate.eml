@@ -4,9 +4,12 @@ rule Exam
 	into t : Target!Exam {
 	
 	t.questions ::= l.questions;
-	t.students ::= l.students;
-}
 
+    // Right side might have students which are not on the left side
+    var allStudents = l.students.equivalent().asSet();
+    allStudents.addAll(r.students.equivalent());
+	t.students.addAll(allStudents.asSequence().sortBy(s|s.number));
+}
 
 rule Question 
 	merge l : Left!Question
@@ -27,12 +30,19 @@ rule Student
 	
 }
 
-rule Answer 
+rule StudentOneSide
+  transform s: Source!Student
+  to t: Target!Student
+{
+  t.number = s.number;
+}
+
+rule AnswerMerge
 	merge l : Left!Answer
 	with r : Right!Answer
 	into t : Target!Answer {
 	
-	if (l.marks <> 0 and r.marks <> 0) {
+	if (l.marks <> 0 and r.marks <> 0 and l.marks <> r.marks) {
 		throw "Different marks found for answer " +
 			l.question.title + " of student " + l.student.number + ": " + l.marks + " <-> " + r.marks;		
 	}
@@ -51,7 +61,7 @@ rule Answer
 	
 }
 
-rule Answer 
+rule AnswerOneSide
 	transform s : Source!Answer
 	to t : Target!Answer {
 	

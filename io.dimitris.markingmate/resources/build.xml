@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module">
+
+    <target name="merge">
+        <mergeModels leftModel="marker1.xmi" rightModel="marker2.xmi"
+                                mergedModel="merged.xmi" traceName="Merged" />
+
+        <eclipse.refreshLocal resource="project" />
+    </target>
+
+    <target name="validate">
+        <epsilon.emf.loadModel modelfile="merged.xmi" metamodeluri="markingmate" name="Marks" read="true" store="false" />
+        <epsilon.evl src="../markingmate.evl">
+            <model ref="Marks"/>
+        </epsilon.evl>
+        <epsilon.disposeModel model="Marks" />
+    </target>
+
+    <target name="generate">
+        <delete dir="${basedir}/feedback" failonerror="no" />
+        <mkdir dir="${basedir}/feedback" />
+
+        <epsilon.emf.loadModel modelfile="merged.xmi" metamodeluri="markingmate" name="Marks" read="true" store="false" />
+        <epsilon.egl src="../feedback.egx">
+            <model ref="Marks" />
+            <parameter name="csv" value="marks.csv"/>
+            <parameter name="basePath" value="${basedir}/feedback/"/>
+        </epsilon.egl>
+        <epsilon.disposeModels />
+        <eclipse.refreshLocal resource="project" />
+    </target>
+
+    <macrodef name="mergeModels">
+        <attribute name="traceName" />
+        <attribute name="leftModel" />
+        <attribute name="rightModel" />
+        <attribute name="mergedModel" />
+        <sequential>
+            <epsilon.emf.loadModel modelfile="@{leftModel}" metamodeluri="markingmate" name="Left" read="true" store="false" />
+            <epsilon.emf.loadModel modelfile="@{rightModel}" metamodeluri="markingmate" name="Right" read="true" store="false" />
+            <epsilon.emf.loadModel modelfile="@{mergedModel}" metamodeluri="markingmate" name="Target" read="false" store="true" />
+
+            <epsilon.ecl src="../markingmate.ecl" exportmatchtrace="@{traceName}">
+                <model ref="Left" />
+                <model ref="Right" />
+            </epsilon.ecl>
+            <epsilon.eml src="../markingmate.eml" usematchtrace="@{traceName}">
+                <model ref="Left" alias="Source" />
+                <model ref="Right" alias="Source" />
+                <model ref="Target" />
+            </epsilon.eml>
+            <epsilon.disposeModels />
+        </sequential>
+    </macrodef>
+
+</project>
