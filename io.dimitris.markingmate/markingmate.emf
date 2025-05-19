@@ -24,4 +24,5 @@ class Answer {
 	!resolve ref Question#answers question;
 	attr String feedback = "";
 	attr int marks = 0;
+	attr String marksExpression;
 }

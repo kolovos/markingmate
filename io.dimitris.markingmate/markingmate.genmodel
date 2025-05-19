@@ -27,6 +27,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference markingmate.ecore#//Answer/question"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute markingmate.ecore#//Answer/feedback"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute markingmate.ecore#//Answer/marks"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute markingmate.ecore#//Answer/marksExpression"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

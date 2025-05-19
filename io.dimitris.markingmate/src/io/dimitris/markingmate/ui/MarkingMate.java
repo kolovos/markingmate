@@ -427,6 +427,7 @@ public class MarkingMate extends JFrame {
 				);
 				if (studentNumber != null) {
 					addStudent(studentNumber);
+					studentsTable.setRowSelectionInterval(exam.getStudents().size() - 1, exam.getStudents().size() - 1);
 				}
 			}
 		}
@@ -442,7 +443,7 @@ public class MarkingMate extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent actionevent) {
-			final int iSelected = studentsTable.getSelectedRow();
+			final int iSelected = studentsTable.getSelectionModel().getLeadSelectionIndex();
 			if (exam != null && iSelected != -1) {
 				Student selectedStudent = exam.getStudents().get(iSelected);
 

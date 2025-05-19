@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link io.dimitris.markingmate.Answer#getQuestion <em>Question</em>}</li>
  *   <li>{@link io.dimitris.markingmate.Answer#getFeedback <em>Feedback</em>}</li>
  *   <li>{@link io.dimitris.markingmate.Answer#getMarks <em>Marks</em>}</li>
+ *   <li>{@link io.dimitris.markingmate.Answer#getMarksExpression <em>Marks Expression</em>}</li>
  * </ul>
  *
  * @see io.dimitris.markingmate.MarkingmatePackage#getAnswer()
@@ -133,5 +134,27 @@ public interface Answer extends EObject {
 	 * @generated
 	 */
 	void setMarks(int value);
+
+	/**
+	 * Returns the value of the '<em><b>Marks Expression</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Marks Expression</em>' attribute.
+	 * @see #setMarksExpression(String)
+	 * @see io.dimitris.markingmate.MarkingmatePackage#getAnswer_MarksExpression()
+	 * @model
+	 * @generated
+	 */
+	String getMarksExpression();
+
+	/**
+	 * Sets the value of the '{@link io.dimitris.markingmate.Answer#getMarksExpression <em>Marks Expression</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Marks Expression</em>' attribute.
+	 * @see #getMarksExpression()
+	 * @generated
+	 */
+	void setMarksExpression(String value);
 
 } // Answer

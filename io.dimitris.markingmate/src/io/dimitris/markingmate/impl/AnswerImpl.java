@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
  *   <li>{@link io.dimitris.markingmate.impl.AnswerImpl#getQuestion <em>Question</em>}</li>
  *   <li>{@link io.dimitris.markingmate.impl.AnswerImpl#getFeedback <em>Feedback</em>}</li>
  *   <li>{@link io.dimitris.markingmate.impl.AnswerImpl#getMarks <em>Marks</em>}</li>
+ *   <li>{@link io.dimitris.markingmate.impl.AnswerImpl#getMarksExpression <em>Marks Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -83,6 +84,26 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 	 * @ordered
 	 */
 	protected int marks = MARKS_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getMarksExpression() <em>Marks Expression</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMarksExpression()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String MARKS_EXPRESSION_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getMarksExpression() <em>Marks Expression</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getMarksExpression()
+	 * @generated
+	 * @ordered
+	 */
+	protected String marksExpression = MARKS_EXPRESSION_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -243,6 +264,29 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 	 * @generated
 	 */
 	@Override
+	public String getMarksExpression() {
+		return marksExpression;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void setMarksExpression(String newMarksExpression) {
+		String oldMarksExpression = marksExpression;
+		marksExpression = newMarksExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, MarkingmatePackage.ANSWER__MARKS_EXPRESSION, oldMarksExpression, marksExpression));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case MarkingmatePackage.ANSWER__STUDENT:
@@ -303,6 +347,8 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 				return getFeedback();
 			case MarkingmatePackage.ANSWER__MARKS:
 				return getMarks();
+			case MarkingmatePackage.ANSWER__MARKS_EXPRESSION:
+				return getMarksExpression();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -326,6 +372,9 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 				return;
 			case MarkingmatePackage.ANSWER__MARKS:
 				setMarks((Integer)newValue);
+				return;
+			case MarkingmatePackage.ANSWER__MARKS_EXPRESSION:
+				setMarksExpression((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -351,6 +400,9 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 			case MarkingmatePackage.ANSWER__MARKS:
 				setMarks(MARKS_EDEFAULT);
 				return;
+			case MarkingmatePackage.ANSWER__MARKS_EXPRESSION:
+				setMarksExpression(MARKS_EXPRESSION_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -371,6 +423,8 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 				return FEEDBACK_EDEFAULT == null ? feedback != null : !FEEDBACK_EDEFAULT.equals(feedback);
 			case MarkingmatePackage.ANSWER__MARKS:
 				return marks != MARKS_EDEFAULT;
+			case MarkingmatePackage.ANSWER__MARKS_EXPRESSION:
+				return MARKS_EXPRESSION_EDEFAULT == null ? marksExpression != null : !MARKS_EXPRESSION_EDEFAULT.equals(marksExpression);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -389,6 +443,8 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 		result.append(feedback);
 		result.append(", marks: ");
 		result.append(marks);
+		result.append(", marksExpression: ");
+		result.append(marksExpression);
 		result.append(')');
 		return result.toString();
 	}

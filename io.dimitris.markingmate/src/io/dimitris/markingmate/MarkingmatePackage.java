@@ -268,13 +268,22 @@ public interface MarkingmatePackage extends EPackage {
 	int ANSWER__MARKS = 3;
 
 	/**
+	 * The feature id for the '<em><b>Marks Expression</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ANSWER__MARKS_EXPRESSION = 4;
+
+	/**
 	 * The number of structural features of the '<em>Answer</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ANSWER_FEATURE_COUNT = 4;
+	int ANSWER_FEATURE_COUNT = 5;
 
 	/**
 	 * The number of operations of the '<em>Answer</em>' class.
@@ -470,6 +479,17 @@ public interface MarkingmatePackage extends EPackage {
 	EAttribute getAnswer_Marks();
 
 	/**
+	 * Returns the meta object for the attribute '{@link io.dimitris.markingmate.Answer#getMarksExpression <em>Marks Expression</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Marks Expression</em>'.
+	 * @see io.dimitris.markingmate.Answer#getMarksExpression()
+	 * @see #getAnswer()
+	 * @generated
+	 */
+	EAttribute getAnswer_MarksExpression();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -635,6 +655,14 @@ public interface MarkingmatePackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute ANSWER__MARKS = eINSTANCE.getAnswer_Marks();
+
+		/**
+		 * The meta object literal for the '<em><b>Marks Expression</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ANSWER__MARKS_EXPRESSION = eINSTANCE.getAnswer_MarksExpression();
 
 	}
 

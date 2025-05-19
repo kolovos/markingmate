@@ -288,6 +288,16 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * @generated
 	 */
 	@Override
+	public EAttribute getAnswer_MarksExpression() {
+		return (EAttribute)answerEClass.getEStructuralFeatures().get(4);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public MarkingmateFactory getMarkingmateFactory() {
 		return (MarkingmateFactory)getEFactoryInstance();
 	}
@@ -331,6 +341,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 		createEReference(answerEClass, ANSWER__QUESTION);
 		createEAttribute(answerEClass, ANSWER__FEEDBACK);
 		createEAttribute(answerEClass, ANSWER__MARKS);
+		createEAttribute(answerEClass, ANSWER__MARKS_EXPRESSION);
 	}
 
 	/**
@@ -383,6 +394,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 		initEReference(getAnswer_Question(), this.getQuestion(), this.getQuestion_Answers(), "question", null, 0, 1, Answer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAnswer_Feedback(), ecorePackage.getEString(), "feedback", "", 0, 1, Answer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getAnswer_Marks(), ecorePackage.getEInt(), "marks", "0", 0, 1, Answer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAnswer_MarksExpression(), ecorePackage.getEString(), "marksExpression", null, 0, 1, Answer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);
