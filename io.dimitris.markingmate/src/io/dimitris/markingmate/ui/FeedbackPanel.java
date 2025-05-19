@@ -52,7 +52,16 @@ public class FeedbackPanel extends JPanel {
 		public void focusGained(FocusEvent e) {
 			if (answer != null) {
 				notificationsEnabled = false;
-				marksTextField.setText(answer.getMarksExpression());
+				if (answer.getMarksExpression() != null && !answer.getMarksExpression().isEmpty()) {
+					// If we have an expression, use that
+					marksTextField.setText(answer.getMarksExpression());
+				} else {
+					/*
+					 * If we only have marks for now (e.g. we're opening an older model before we
+					 * introduced expressions), use that.
+					 */
+					marksTextField.setText(answer.getMarks() + "");
+				}
 				MarksFieldContentMode.SHOW_EXPRESSION.styleMarksField(marksTextField);
 				notificationsEnabled = true;
 			}
