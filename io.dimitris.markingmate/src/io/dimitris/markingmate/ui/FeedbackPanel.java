@@ -2,7 +2,9 @@ package io.dimitris.markingmate.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.Font;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
@@ -16,13 +18,72 @@ import org.eclipse.epsilon.eol.EolModule;
 import com.inet.jortho.SpellChecker;
 
 import io.dimitris.markingmate.Answer;
-import io.dimitris.markingmate.MarkingmatePackage;
 
 public class FeedbackPanel extends JPanel {
-	
+
+	protected enum MarksFieldContentMode {
+		SHOW_MARKS, SHOW_EXPRESSION;
+
+		protected void styleMarksField(JTextField marksTextField) {
+			Font originalFont = marksTextField.getFont();
+			marksTextField.setFont(new Font(
+				originalFont.getName(),
+				this == SHOW_MARKS ? Font.ITALIC : Font.PLAIN,
+				originalFont.getSize()));
+
+			marksTextField.setToolTipText(this == SHOW_MARKS
+				? "Computed marks (click to enter source expression)"
+				: "Marks expression (supports + - * /, truncated to an integer)"
+			);
+		}
+	}
+
+	protected class ExpressionMarksSwitchingListener implements FocusListener {
+		@Override
+		public void focusLost(FocusEvent e) {
+			if (answer != null) {
+				notificationsEnabled = false;
+				marksTextField.setText(answer.getMarks() + "");
+				MarksFieldContentMode.SHOW_MARKS.styleMarksField(marksTextField);
+				notificationsEnabled = true;
+			}
+		}
+		@Override
+		public void focusGained(FocusEvent e) {
+			if (answer != null) {
+				notificationsEnabled = false;
+				marksTextField.setText(answer.getMarksExpression());
+				MarksFieldContentMode.SHOW_EXPRESSION.styleMarksField(marksTextField);
+				notificationsEnabled = true;
+			}
+		}
+	}
+
+	protected class CalculateMarksListener extends DocumentChangeListener {
+		@Override
+		public void textChanged() {
+			if (notificationsEnabled && answer != null) {
+				try {
+					String expr = marksTextField.getText();
+					answer.setMarksExpression(expr);
+
+					if (!expr.trim().isEmpty()) {
+						EolModule mod = new EolModule();
+						mod.parse("return (" + expr + ").asInteger();");
+						Integer result = (Integer) mod.execute();
+						if (result != null) {
+							answer.setMarks(result);
+						}
+					}
+				}
+				catch (Exception ex) {}
+			}
+		}
+	}
+
 	protected Answer answer = null;
 	protected FeedbackTextArea feedbackTextArea;
-	protected JTextField marksTextField, expressionTextField;
+	protected JTextField marksTextField;
 	protected boolean notificationsEnabled = true;
 	protected JLabel descriptionLabel;
 	protected boolean showDescription;
@@ -56,59 +117,16 @@ public class FeedbackPanel extends JPanel {
 			}
 		});
 
-        // Create the JPanel with Grid Layout
-        marksPanel = new JPanel(new GridLayout(2, 2, 8, 4)); // 2 rows, 2 columns, 10px horizontal/vertical gap
-
-        // Add labels and text fields for "Marks"
-        JLabel marksLabel = new JLabel("Marks:");
-        marksTextField = new JTextField();
-
-        // Add labels and text fields for "Marks Expression"
-        JLabel expressionLabel = new JLabel("Expression:");
-        expressionTextField = new JTextField();
-
-        // Add components to the panel
-        marksPanel.add(marksLabel);
-        marksPanel.add(expressionLabel);
-        marksPanel.add(marksTextField);
-        marksPanel.add(expressionTextField);
-
-		marksTextField.getDocument().addDocumentListener(new DocumentChangeListener() {
-			@Override
-			public void textChanged() {
-				if (notificationsEnabled && FeedbackPanel.this.answer != null) {
-					try {
-						int newMarks = Integer.parseInt(marksTextField.getText());
-						FeedbackPanel.this.answer.setMarks(newMarks);
-					}
-					catch (Exception ex) {}
-
-					updateEditableFields();
-				}
-			}
-		});
-		expressionTextField.getDocument().addDocumentListener(new DocumentChangeListener() {
-			@Override
-			public void textChanged() {
-				if (notificationsEnabled && FeedbackPanel.this.answer != null) {
-					try {
-						String expr = expressionTextField.getText();
-						FeedbackPanel.this.answer.setMarksExpression(expr);
-						if (!expr.trim().isEmpty()) {
-							EolModule mod = new EolModule();
-							mod.parse("return (" + expr + ").asInteger();");
-							Integer result = (Integer) mod.execute();
-							if (result != null) {
-								marksTextField.setText(result.toString());
-							}
-						}
-					}
-					catch (Exception ex) {}
-
-					updateEditableFields();
-				}
-			}
-		});
+		marksPanel = new JPanel(new BorderLayout());
+		markingMate.finetuneMarksPanel(marksPanel);
+		JLabel marksLabel = new JLabel("Marks:");
+		marksPanel.add(marksLabel, BorderLayout.WEST);
+		marksLabel.setBorder(new EmptyBorder(0, 0, 0, 3));
+		marksTextField = new JTextField();
+		marksTextField.getDocument().addDocumentListener(new CalculateMarksListener());
+		marksTextField.addFocusListener(new ExpressionMarksSwitchingListener());
+		marksTextField.setToolTipText("Computed marks for the question (click to enter arithmetic expression)");
+		marksPanel.add(marksTextField, BorderLayout.CENTER);
 
 		JScrollPane feedbackTextAreaScrollPane = new JScrollPane(feedbackTextArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		if (showDescription) add(descriptionLabel, BorderLayout.NORTH);
@@ -141,9 +159,7 @@ public class FeedbackPanel extends JPanel {
 			feedbackTextArea.setAnswer(answer);
 
 			marksTextField.setText(answer.getMarks() + "");
-			expressionTextField.setText(answer.getMarksExpression());
-			updateEditableFields();
-
+			MarksFieldContentMode.SHOW_MARKS.styleMarksField(marksTextField);
 			notificationsEnabled = true;
 		}
 	}
@@ -151,17 +167,4 @@ public class FeedbackPanel extends JPanel {
 	public Answer getAnswer() {
 		return answer;
 	}
-
-	protected void updateEditableFields() {
-		String expr = answer.getMarksExpression();
-		boolean hasExpression = expr != null && !expr.trim().isEmpty();
-
-		// For marks to be editable, the expression must be blank or missing
-		marksTextField.setEditable(!hasExpression);
-
-		// For the expression to be editable, we must have an expression or have no marks / default zero mark
-		expressionTextField.setEditable(
-			hasExpression || marksTextField.getText().trim().isEmpty() || answer.getMarks() == 0);
-	}
-
 }
