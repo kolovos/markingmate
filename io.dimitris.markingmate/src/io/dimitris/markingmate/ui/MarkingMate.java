@@ -137,6 +137,8 @@ public class MarkingMate extends JFrame {
 		
 		menuBar.add(fileMenu);
 		JMenu toolsMenu = new JMenu("Tools");
+		toolsMenu.add(new AddAction(false));
+		toolsMenu.add(new RemoveAction(false));
 		toolsMenu.add(new ExportAction(false));
 		// toolsMenu.add(new MergeAction(false)).setIcon(null);
 		JMenu themesMenu = new JMenu("Theme");
@@ -208,7 +210,21 @@ public class MarkingMate extends JFrame {
 			e.printStackTrace();
 		}
 	}
-	
+
+	public void addStudent(String studentNumber) {
+		if (exam != null) {
+			Student student = MarkingmateFactory.eINSTANCE.createStudent();
+			student.setNumber(studentNumber);
+			exam.getStudents().add(student);
+		}
+	}
+
+	public void removeStudent(int iStudent) {
+		if (exam != null) {
+			exam.getStudents().remove(iStudent);
+		}
+	}
+
 	public boolean handleDirty() {
 		if (isDirty()) {
 			int result = JOptionPane.showOptionDialog(this, "File has been modified. Save changes?", "File modified", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, JOptionPane.CANCEL_OPTION);
@@ -393,7 +409,58 @@ public class MarkingMate extends JFrame {
 		}
 		
 	}
-	
+
+	class AddAction extends AbstractAction {
+		public AddAction(boolean icon) {
+			super("Add student");
+			if (icon)
+				putValue(AbstractAction.SMALL_ICON, new FlatSVGIcon("io/dimitris/markingmate/ui/resources/add.svg"));
+			putValue(AbstractAction.SHORT_DESCRIPTION, "Adds a student to the current MarkingMate file");
+		}
+
+		public void actionPerformed(ActionEvent actionevent) {
+			if (resource != null) {
+				String studentNumber = (String) JOptionPane.showInputDialog(MarkingMate.this, // Parent component
+					"Please enter the student number:", // Message
+					"Enter Student Number", // Title
+					JOptionPane.QUESTION_MESSAGE
+				);
+				if (studentNumber != null) {
+					addStudent(studentNumber);
+				}
+			}
+		}
+	}
+
+	class RemoveAction extends AbstractAction {
+		public RemoveAction(boolean icon) {
+			super("Remove student");
+			if (icon)
+				putValue(AbstractAction.SMALL_ICON, new FlatSVGIcon("io/dimitris/markingmate/ui/resources/remove.svg"));
+			putValue(AbstractAction.SHORT_DESCRIPTION,
+					"Removes the selected student from the current MarkingMate file");
+		}
+
+		public void actionPerformed(ActionEvent actionevent) {
+			final int iSelected = studentsTable.getSelectedRow();
+			if (exam != null && iSelected != -1) {
+				Student selectedStudent = exam.getStudents().get(iSelected);
+
+				int response = JOptionPane.showConfirmDialog(MarkingMate.this, // Parent component (null for no parent)
+					String.format("Are you sure that you want to remove student #%s?", selectedStudent.getNumber()),
+					"Remove Student", // Title of the dialog window
+					JOptionPane.YES_NO_OPTION, // Option buttons: Yes and No
+					JOptionPane.WARNING_MESSAGE // Icon type: Warning
+				);
+
+				// Return true if user clicks 'Yes', false otherwise
+				if (response == JOptionPane.YES_OPTION) {
+					removeStudent(iSelected);
+				}
+			}
+		}
+	}
+
 	class ExportAction extends AbstractAction {
 		
 		public ExportAction(boolean icon) {
@@ -507,6 +574,8 @@ public class MarkingMate extends JFrame {
 		add(toolbar, BorderLayout.NORTH);
 		toolbar.add(new OpenAction(true));
 		toolbar.add(new SaveAction(true));
+		toolbar.add(new AddAction(true));
+		toolbar.add(new RemoveAction(true));
 		// toolbar.add(new MergeAction(true));
 		toolbar.add(new ExportAction(true));
 	}
