@@ -1,7 +1,7 @@
 # MarkingMate
 MarkingMate is a cross-platform desktop application for marking and providing feedback on assessments. MarkingMate has two unique features:
 * When you're marking an answer, it also displays the feedback and marks for other answers to the same question. 
-* It supports sentence-level text completion (<kbd>Ctrl</kbd>+<kbd>Space</kbd>) to avoid re-typing feedback that applies to many answers. 
+* It supports sentence-level text completion (<kbd>Ctrl</kbd>+<kbd>Space</kbd>) to avoid re-typing feedback that applies to many answers: enter a substring and then press Ctrl+Space or Alt+Space.
 
 When you are done marking, you can export your marks into a CSV file and into individual text files with feedback for every student.
 

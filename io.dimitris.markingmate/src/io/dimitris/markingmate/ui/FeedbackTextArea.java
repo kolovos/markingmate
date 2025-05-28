@@ -69,19 +69,29 @@ public class FeedbackTextArea extends JTextArea {
 		super();
 		getDocument().addUndoableEditListener(undoHandler);
 
+		// META_MASK for Mac, CTRL_MASK for Windows
 		KeyStroke undoKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_Z, Event.META_MASK);
 		KeyStroke redoKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_Y, Event.META_MASK);
+		KeyStroke undoCtrlKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_Z, Event.CTRL_MASK);
+		KeyStroke redoCtrlKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_Y, Event.CTRL_MASK);
+
+		// Ctrl+Space is the usual default, and Alt+Space is needed when using multi-language keyboards
+		// (since both Windows and MacOS use Ctrl+Space to change keyboard languages).
 		KeyStroke autocompleteKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, Event.CTRL_MASK);
+		KeyStroke autocompleteAltKeystroke = KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, Event.ALT_MASK);
 
 		undoAction = new UndoAction();
 		getInputMap().put(undoKeystroke, "undoKeystroke");
+		getInputMap().put(undoCtrlKeystroke, "undoKeystroke");
 		getActionMap().put("undoKeystroke", undoAction);
 
 		redoAction = new RedoAction();
 		getInputMap().put(redoKeystroke, "redoKeystroke");
+		getInputMap().put(redoCtrlKeystroke, "redoKeystroke");
 		getActionMap().put("redoKeystroke", redoAction);
 		
 		getInputMap().put(autocompleteKeystroke, "autocompleteKeystroke");
+		getInputMap().put(autocompleteAltKeystroke, "autocompleteKeystroke");
 		getActionMap().put("autocompleteKeystroke", new AutocompleteAction());
 		
 		setAnswer(answer);
@@ -101,20 +111,23 @@ public class FeedbackTextArea extends JTextArea {
 		hint = hint.trim();
 
 		Set<String> sentences = new HashSet<String>();
+		if (answer != null) {
+			for (Answer other : answer.getQuestion().getAnswers()) {
+				if (other == answer)
+					continue;
 
-		for (Answer other : answer.getQuestion().getAnswers()) {
-			if (other == answer) continue;
+				Reader reader = new StringReader(other.getFeedback());
+				DocumentPreprocessor processor = new DocumentPreprocessor(reader);
 
-			Reader reader = new StringReader(other.getFeedback());
-			DocumentPreprocessor processor = new DocumentPreprocessor(reader);
+				for (List<HasWord> words : processor) {
+					if (words.isEmpty())
+						continue;
 
-			for (List<HasWord> words : processor) {
-				if (words.isEmpty()) continue;
-				
-				String sentence = other.getFeedback().substring(((CoreLabel) words.get(0)).beginPosition(),
-						((CoreLabel) words.get(words.size() - 1)).endPosition());
-				if (sentence.toLowerCase().indexOf(hint.toLowerCase()) > -1) {
-					sentences.add(sentence);
+					String sentence = other.getFeedback().substring(((CoreLabel) words.get(0)).beginPosition(),
+							((CoreLabel) words.get(words.size() - 1)).endPosition());
+					if (sentence.toLowerCase().indexOf(hint.toLowerCase()) > -1) {
+						sentences.add(sentence);
+					}
 				}
 			}
 		}
