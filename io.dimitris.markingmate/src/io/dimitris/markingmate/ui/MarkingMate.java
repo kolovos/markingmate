@@ -66,6 +66,9 @@ import io.dimitris.markingmate.MarkingmateFactory;
 import io.dimitris.markingmate.MarkingmatePackage;
 import io.dimitris.markingmate.Question;
 import io.dimitris.markingmate.Student;
+import io.dimitris.markingmate.hints.ISuggestionEngine;
+import io.dimitris.markingmate.hints.LuceneSuggestionEngine;
+import io.dimitris.markingmate.hints.SubstringSuggestionEngine;
 import io.dimitris.markingmate.util.Merger;
 
 public class MarkingMate extends JFrame {
@@ -134,21 +137,25 @@ public class MarkingMate extends JFrame {
 		JMenu fileMenu = new JMenu("File");
 		fileMenu.add(new OpenAction(false)).setAccelerator(KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));;;
 		fileMenu.add(new SaveAction(false)).setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-		
 		menuBar.add(fileMenu);
+
 		JMenu toolsMenu = new JMenu("Tools");
 		toolsMenu.add(new AddAction(false));
 		toolsMenu.add(new RemoveAction(false));
 		toolsMenu.add(new ExportAction(false));
-		// toolsMenu.add(new MergeAction(false)).setIcon(null);
+		// Themes
 		JMenu themesMenu = new JMenu("Theme");
 		toolsMenu.add(themesMenu);
 		themesMenu.add(new ChangeLookAndFeelAction("Light", new FlatLightLaf()));
 		themesMenu.add(new ChangeLookAndFeelAction("Dark", new FlatDarkLaf()));
-		
+		// Suggestion engines
+		JMenu suggestionsMenu = new JMenu("Suggestions");
+		toolsMenu.add(suggestionsMenu);
+		suggestionsMenu.add(new ChangeSuggestionsAction("Lucene", new LuceneSuggestionEngine()));
+		suggestionsMenu.add(new ChangeSuggestionsAction("Substring", new SubstringSuggestionEngine()));
 		menuBar.add(toolsMenu);
+
 		setJMenuBar(menuBar);
-		
 		createToolbar();		
 		
 		relatedFeedbackPanelScrollPane = createJScrollPane(relatedFeedbackPanel);
@@ -543,7 +550,6 @@ public class MarkingMate extends JFrame {
 	}
 	
 	class ChangeLookAndFeelAction extends AbstractAction {
-		
 		protected LookAndFeel laf;
 		
 		public ChangeLookAndFeelAction(String name, LookAndFeel laf) {
@@ -560,9 +566,22 @@ public class MarkingMate extends JFrame {
 				ex.printStackTrace();
 			}
 		}
-		
 	}
-		
+
+	class ChangeSuggestionsAction extends AbstractAction {
+		protected final ISuggestionEngine engine;
+
+		public ChangeSuggestionsAction(String name, ISuggestionEngine engine) {
+			super(name);
+			this.engine = engine;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			feedbackPanel.feedbackTextArea.setSuggestionEngine(engine);
+		}
+	}
+
 	public static void main(String[] args) throws Exception {
 		new MarkingMate().run();
 	}

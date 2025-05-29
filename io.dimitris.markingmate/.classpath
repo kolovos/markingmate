@@ -6,8 +6,9 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21">
 		<attributes>
+			<attribute name="module" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
@@ -23,6 +24,9 @@
 	<classpathentry kind="lib" path="lib/flatlaf-2.2.jar"/>
 	<classpathentry kind="lib" path="lib/flatlaf-extras-2.2.jar"/>
 	<classpathentry kind="lib" path="lib/svgSalamander-1.1.3.jar"/>
+	<classpathentry kind="lib" path="lib/lucene-core-10.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/lucene-queryparser-10.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/lucene-analysis-common-10.2.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>

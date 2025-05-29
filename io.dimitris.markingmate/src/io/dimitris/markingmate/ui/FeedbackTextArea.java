@@ -7,14 +7,10 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Properties;
-import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.JEditorPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
@@ -26,15 +22,12 @@ import javax.swing.undo.UndoManager;
 
 import org.apache.commons.lang3.StringUtils;
 
-import edu.stanford.nlp.fsm.AutomatonMinimizer;
-import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.HasWord;
-import edu.stanford.nlp.ling.SentenceUtils;
-import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.process.DocumentPreprocessor;
-import edu.stanford.nlp.util.CoreMap;
 import io.dimitris.markingmate.Answer;
+import io.dimitris.markingmate.hints.ISuggestionEngine;
+import io.dimitris.markingmate.hints.LuceneSuggestionEngine;
 
 public class FeedbackTextArea extends JTextArea {
 	
@@ -42,7 +35,8 @@ public class FeedbackTextArea extends JTextArea {
 	protected UndoManager undoManager = new UndoManager();
 	protected UndoAction undoAction = null;
 	protected RedoAction redoAction = null;
-	
+
+	protected ISuggestionEngine suggestionEngine = new LuceneSuggestionEngine();
 	protected Answer answer = null;
 	
 	public static void main(String[] args) {
@@ -106,34 +100,15 @@ public class FeedbackTextArea extends JTextArea {
 			setText("");
 		}
 	}
-	
-	protected Collection<String> getSuggestions(String hint) {
-		hint = hint.trim();
 
-		Set<String> sentences = new HashSet<String>();
-		if (answer != null) {
-			for (Answer other : answer.getQuestion().getAnswers()) {
-				if (other == answer)
-					continue;
-
-				Reader reader = new StringReader(other.getFeedback());
-				DocumentPreprocessor processor = new DocumentPreprocessor(reader);
-
-				for (List<HasWord> words : processor) {
-					if (words.isEmpty())
-						continue;
-
-					String sentence = other.getFeedback().substring(((CoreLabel) words.get(0)).beginPosition(),
-							((CoreLabel) words.get(words.size() - 1)).endPosition());
-					if (sentence.toLowerCase().indexOf(hint.toLowerCase()) > -1) {
-						sentences.add(sentence);
-					}
-				}
-			}
-		}
-		return sentences;
+	public ISuggestionEngine getSuggestionEngine() {
+		return suggestionEngine;
 	}
-	
+
+	public void setSuggestionEngine(ISuggestionEngine suggestionEngine) {
+		this.suggestionEngine = suggestionEngine;
+	}
+
 	class UndoHandler implements UndoableEditListener {
 		public void undoableEditHappened(UndoableEditEvent e) {
 			undoManager.addEdit(e.getEdit());
@@ -155,7 +130,7 @@ public class FeedbackTextArea extends JTextArea {
 				offset --;
 			}
 			
-			Collection<String> suggestions = getSuggestions(hint);
+			Collection<String> suggestions = suggestionEngine.getSuggestions(hint, answer);
 			for (final String suggestion : suggestions) {
 				menu.add(new AutocompleteItemAction(suggestion, offset + 1));
 			}

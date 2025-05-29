@@ -13,7 +13,7 @@
 		
      	<mkdir dir="bin"/>
 
-		<javac srcdir="src" destdir="bin" includes="**/*.java" target="1.8" includeantruntime="false">
+		<javac srcdir="src" destdir="bin" includes="**/*.java" target="21" includeantruntime="false">
 			<classpath refid="libs"/>
     	</javac>
 		
@@ -33,7 +33,9 @@
 			<zipfileset excludes="META-INF/*.SF" src="lib/flatlaf-extras-2.2.jar"/>
 			<zipfileset excludes="META-INF/*.SF" src="lib/flatlaf-2.2.jar"/>
 			<zipfileset excludes="META-INF/*.SF" src="lib/svgSalamander-1.1.3.jar"/>
-						
+			<zipfileset excludes="META-INF/*.SF" src="lib/lucene-core-10.2.1.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="lib/lucene-queryparser-10.2.1.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="lib/lucene-analysis-common-10.2.1.jar"/>
 			<manifest>
 				<attribute name="Main-Class" value="io.dimitris.markingmate.ui.MarkingMate"/>
 			</manifest>
