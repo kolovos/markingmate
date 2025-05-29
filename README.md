@@ -2,7 +2,7 @@
 MarkingMate is a cross-platform desktop application for marking and providing feedback on assessments. MarkingMate has several unique features:
 
 * When you're marking an answer, it also displays the feedback and marks for other answers to the same question.
-* When entering marks for an answer, you can use arithmetic expressions (e.g. `(3 - 0.5) + 2 - 1`) and MarkingMate will compute the result on the fly: you can see the result by selecting any other UI element.
+* When entering marks for an answer, you can use arithmetic expressions (e.g. `(3 - 0.5) + 2 - 1`) and MarkingMate will compute the result on the fly: you can see the result by selecting any other UI element. The literal expressions are saved, in case you want to revisit the detailed breakdown of a mark.
 * It supports sentence-level text completion (<kbd>Ctrl</kbd>+<kbd>Space</kbd> or <kbd>Alt</kbd>+<kbd>Space</kbd>) to avoid re-typing feedback that applies to many answers. The default text completion is fuzzy (using [Lucene search queries](https://lucene.apache.org/core/10_2_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package.description)), but it can be switched to use exact substrings by using the "Tools - Suggestions - Substring" menu.
 
 When you are done marking, you can export your marks into a CSV file and into individual text files with feedback for every student.
