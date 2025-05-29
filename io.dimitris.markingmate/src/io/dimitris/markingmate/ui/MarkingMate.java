@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FileDialog;
+import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -12,15 +13,18 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Collection;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
@@ -66,12 +70,15 @@ import io.dimitris.markingmate.MarkingmateFactory;
 import io.dimitris.markingmate.MarkingmatePackage;
 import io.dimitris.markingmate.Question;
 import io.dimitris.markingmate.Student;
-import io.dimitris.markingmate.hints.ISuggestionEngine;
-import io.dimitris.markingmate.hints.LuceneSuggestionEngine;
-import io.dimitris.markingmate.hints.SubstringSuggestionEngine;
+import io.dimitris.markingmate.suggestions.ISuggestionEngine;
+import io.dimitris.markingmate.suggestions.LuceneSuggestionEngine;
+import io.dimitris.markingmate.suggestions.SubstringSuggestionEngine;
+import io.dimitris.markingmate.util.AnswerSearcher;
 import io.dimitris.markingmate.util.Merger;
 
 public class MarkingMate extends JFrame {
+
+	private static final String REMOVE_ICON_PATH = "io/dimitris/markingmate/ui/resources/remove.svg";
 
 	protected JTable studentsTable;
 	protected RelatedFeedbackPanel relatedFeedbackPanel;
@@ -132,37 +139,22 @@ public class MarkingMate extends JFrame {
 		questionFeedbackPanel.add(feedbackPanel, BorderLayout.CENTER);
 		
 		setLayout(new BorderLayout());
-		
-		JMenuBar menuBar = new JMenuBar();
-		JMenu fileMenu = new JMenu("File");
-		fileMenu.add(new OpenAction(false)).setAccelerator(KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));;;
-		fileMenu.add(new SaveAction(false)).setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
-		menuBar.add(fileMenu);
-
-		JMenu toolsMenu = new JMenu("Tools");
-		toolsMenu.add(new AddAction(false));
-		toolsMenu.add(new RemoveAction(false));
-		toolsMenu.add(new ExportAction(false));
-		// Themes
-		JMenu themesMenu = new JMenu("Theme");
-		toolsMenu.add(themesMenu);
-		themesMenu.add(new ChangeLookAndFeelAction("Light", new FlatLightLaf()));
-		themesMenu.add(new ChangeLookAndFeelAction("Dark", new FlatDarkLaf()));
-		// Suggestion engines
-		JMenu suggestionsMenu = new JMenu("Suggestions");
-		toolsMenu.add(suggestionsMenu);
-		suggestionsMenu.add(new ChangeSuggestionsAction("Lucene", new LuceneSuggestionEngine()));
-		suggestionsMenu.add(new ChangeSuggestionsAction("Substring", new SubstringSuggestionEngine()));
-		menuBar.add(toolsMenu);
-
-		setJMenuBar(menuBar);
+		createMenuBar();
 		createToolbar();		
 		
 		relatedFeedbackPanelScrollPane = createJScrollPane(relatedFeedbackPanel);
 		JSplitPane vertical = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, createJTabbedPane("Students", createJScrollPane(studentsTable)), createJTabbedPane("Feedback", questionFeedbackPanel));
 		vertical.setDividerLocation(200);
 		vertical.setBorder(new EmptyBorder(0, 0, 2, 0));
-		JSplitPane horizontal = new JSplitPane(JSplitPane.VERTICAL_SPLIT, vertical, createJTabbedPane("Related Feedback", relatedFeedbackPanelScrollPane));
+
+		JTabbedPane relatedFeedbackTabbedPane = createJTabbedPane("Related Feedback", relatedFeedbackPanelScrollPane);
+		JPanel searchRequestPanel = new JPanel();
+		relatedFeedbackTabbedPane.add("Search", searchRequestPanel);
+		JButton searchButton = new JButton(new SearchFeedbackAction(relatedFeedbackTabbedPane));
+		relatedFeedbackTabbedPane.setTabComponentAt(1, searchButton);
+		relatedFeedbackTabbedPane.setEnabledAt(1, false);
+
+		JSplitPane horizontal = new JSplitPane(JSplitPane.VERTICAL_SPLIT, vertical, relatedFeedbackTabbedPane);
 		horizontal.setDividerLocation(300);
 		horizontal.setBorder(new EmptyBorder(0, 8, 8, 8));
 		
@@ -180,20 +172,50 @@ public class MarkingMate extends JFrame {
 		studentsTable.requestFocus();
 		
 	}
+
+	private void createMenuBar() {
+		JMenuBar menuBar = new JMenuBar();
+		JMenu fileMenu = new JMenu("File");
+		fileMenu.add(new OpenAction(false)).setAccelerator(KeyStroke.getKeyStroke('O', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));;;
+		fileMenu.add(new SaveAction(false)).setAccelerator(KeyStroke.getKeyStroke('S', Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+		menuBar.add(fileMenu);
+
+		JMenu toolsMenu = new JMenu("Tools");
+		toolsMenu.add(new AddStudentAction(false));
+		toolsMenu.add(new RemoveStudentAction(false));
+		toolsMenu.add(new ExportAction(false));
+		// Themes
+		JMenu themesMenu = new JMenu("Theme");
+		toolsMenu.add(themesMenu);
+		themesMenu.add(new ChangeLookAndFeelAction("Light", new FlatLightLaf()));
+		themesMenu.add(new ChangeLookAndFeelAction("Dark", new FlatDarkLaf()));
+		// Suggestion engines
+		JMenu suggestionsMenu = new JMenu("Suggestions");
+		toolsMenu.add(suggestionsMenu);
+		suggestionsMenu.add(new ChangeSuggestionsAction("Lucene", new LuceneSuggestionEngine()));
+		suggestionsMenu.add(new ChangeSuggestionsAction("Substring", new SubstringSuggestionEngine()));
+		menuBar.add(toolsMenu);
+
+		setJMenuBar(menuBar);
+	}
 	
 	protected JTabbedPane createJTabbedPane(String name, JComponent component) {
 		JTabbedPane tp = new JTabbedPane();
+		JPanel panel = createTab(name, component);
+		tp.add(name, panel);
+		return tp;
+	}
+
+	protected JPanel createTab(String name, JComponent component) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 		panel.add(component, BorderLayout.CENTER);
 		if (name.equalsIgnoreCase("Students")) {
-			
 			component.setBorder(new JTextArea().getBorder());
 			panel.setBorder(new EmptyBorder(8, 2, 0, 2));
 		}
 		else component.setBorder(new EmptyBorder(8, 0, 0, 0));
-		tp.add(name, panel);
-		return tp;
+		return panel;
 	}
 	
 	public boolean isDirty() {
@@ -417,8 +439,8 @@ public class MarkingMate extends JFrame {
 		
 	}
 
-	class AddAction extends AbstractAction {
-		public AddAction(boolean icon) {
+	class AddStudentAction extends AbstractAction {
+		public AddStudentAction(boolean icon) {
 			super("Add student");
 			if (icon)
 				putValue(AbstractAction.SMALL_ICON, new FlatSVGIcon("io/dimitris/markingmate/ui/resources/add.svg"));
@@ -440,11 +462,11 @@ public class MarkingMate extends JFrame {
 		}
 	}
 
-	class RemoveAction extends AbstractAction {
-		public RemoveAction(boolean icon) {
+	class RemoveStudentAction extends AbstractAction {
+		public RemoveStudentAction(boolean icon) {
 			super("Remove student");
 			if (icon)
-				putValue(AbstractAction.SMALL_ICON, new FlatSVGIcon("io/dimitris/markingmate/ui/resources/remove.svg"));
+				putValue(AbstractAction.SMALL_ICON, new FlatSVGIcon(REMOVE_ICON_PATH));
 			putValue(AbstractAction.SHORT_DESCRIPTION,
 					"Removes the selected student from the current MarkingMate file");
 		}
@@ -582,6 +604,72 @@ public class MarkingMate extends JFrame {
 		}
 	}
 
+	class SearchFeedbackAction extends AbstractAction {
+		private final JTabbedPane tabbedPane;
+		private final AnswerSearcher searcher = new AnswerSearcher();
+
+		public SearchFeedbackAction(JTabbedPane relatedFeedbackTabbedPane) {
+			super("Search");
+			this.tabbedPane = relatedFeedbackTabbedPane;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (answer != null) {
+				String searchQuery = (String) JOptionPane.showInputDialog(MarkingMate.this, // Parent component
+					"Please enter the search query:", // Message
+					"Enter Search Query", // Title
+					JOptionPane.QUESTION_MESSAGE
+				);
+				if (searchQuery != null) {
+					Collection<Answer> results = searcher.searchRelatedAnswers(answer, searchQuery);
+					showResultsTab(searchQuery, results);
+				}
+			}
+		}
+
+		private void showResultsTab(String searchQuery, Collection<Answer> results) {
+			final int targetTabIndex = 1;
+			String tabTitle = String.format("Search results for '%s'", searchQuery.trim());
+			RelatedFeedbackPanel newRelatedPanel = new RelatedFeedbackPanel(MarkingMate.this);
+			JPanel newResults = createTab(tabTitle, createJScrollPane(newRelatedPanel));
+			tabbedPane.insertTab("Results", null, newResults, "Search results", targetTabIndex);
+
+			JPanel labelClosePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0 , 0));
+			labelClosePanel.setOpaque(false);
+			JLabel lblResults = new JLabel(tabTitle);
+			lblResults.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 8));
+			labelClosePanel.add(lblResults);
+			labelClosePanel.add(new CloseButton(labelClosePanel));
+			tabbedPane.setTabComponentAt(targetTabIndex, labelClosePanel);
+
+			newRelatedPanel.setRelatedAnswers(answer, results);
+			tabbedPane.setSelectedIndex(1);
+		}
+
+		class CloseButton extends JButton implements ActionListener {
+			private final JPanel tabTitleComponent;
+
+			public CloseButton(JPanel tabTitleComponent) {
+				this.tabTitleComponent = tabTitleComponent;
+				setIcon(new FlatSVGIcon(REMOVE_ICON_PATH));
+				setBorder(BorderFactory.createEmptyBorder());
+				setContentAreaFilled(false);
+				setFocusable(false);
+				addActionListener(this);
+			}
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int i = tabbedPane.indexOfTabComponent(tabTitleComponent);
+				if (i != -1) {
+					tabbedPane.remove(i);
+					tabbedPane.setSelectedIndex(0);
+				}
+			}
+		}
+	}
+
 	public static void main(String[] args) throws Exception {
 		new MarkingMate().run();
 	}
@@ -594,8 +682,8 @@ public class MarkingMate extends JFrame {
 		add(toolbar, BorderLayout.NORTH);
 		toolbar.add(new OpenAction(true));
 		toolbar.add(new SaveAction(true));
-		toolbar.add(new AddAction(true));
-		toolbar.add(new RemoveAction(true));
+		toolbar.add(new AddStudentAction(true));
+		toolbar.add(new RemoveStudentAction(true));
 		// toolbar.add(new MergeAction(true));
 		toolbar.add(new ExportAction(true));
 	}

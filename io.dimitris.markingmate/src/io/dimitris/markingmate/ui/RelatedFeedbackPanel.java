@@ -10,6 +10,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 
+import org.eclipse.emf.common.util.EList;
+
 import io.dimitris.markingmate.Answer;
 
 public class RelatedFeedbackPanel extends JPanel {
@@ -23,18 +25,21 @@ public class RelatedFeedbackPanel extends JPanel {
 	}
 	
 	public void setAnswer(Answer answer) {
-		ArrayList<Answer> answers = new ArrayList<Answer>(answer.getQuestion().getAnswers());
+		EList<Answer> relatedAnswers = answer.getQuestion().getAnswers();
+		List<Answer> answers = new ArrayList<Answer>(relatedAnswers);
 		answers.remove(answer);
-		removeAll();
-
 		answers.sort(new Comparator<Answer>() {
 			@Override
 			public int compare(Answer a1, Answer a2) {
 				return Math.abs(answer.getMarks() - a2.getMarks()) - Math.abs(answer.getMarks() - a1.getMarks());
 			}
 		});
-		
-		for (Answer a : answers) {
+		setRelatedAnswers(answer, relatedAnswers);
+	}
+
+	public void setRelatedAnswers(Answer answer, Iterable<Answer> relatedAnswers) {
+		removeAll();
+		for (Answer a : relatedAnswers) {
 			if (a.getFeedback().length() > 0) {
 				JPanel groupPanel = new JPanel();
 				groupPanel.setBorder(BorderFactory.createTitledBorder(a.getStudent().getNumber()));
@@ -46,5 +51,4 @@ public class RelatedFeedbackPanel extends JPanel {
 		}
 		markingMate.updateUI(this);
 	}
-	
 }

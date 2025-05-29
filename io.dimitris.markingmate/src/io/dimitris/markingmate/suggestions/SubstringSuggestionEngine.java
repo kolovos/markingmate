@@ -1,4 +1,4 @@
-package io.dimitris.markingmate.hints;
+package io.dimitris.markingmate.suggestions;
 
 import java.io.Reader;
 import java.io.StringReader;

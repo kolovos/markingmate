@@ -26,8 +26,8 @@ import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.ling.HasWord;
 import edu.stanford.nlp.process.DocumentPreprocessor;
 import io.dimitris.markingmate.Answer;
-import io.dimitris.markingmate.hints.ISuggestionEngine;
-import io.dimitris.markingmate.hints.LuceneSuggestionEngine;
+import io.dimitris.markingmate.suggestions.ISuggestionEngine;
+import io.dimitris.markingmate.suggestions.LuceneSuggestionEngine;
 
 public class FeedbackTextArea extends JTextArea {
 	

@@ -1,13 +1,13 @@
-package io.dimitris.markingmate.hints;
+package io.dimitris.markingmate.suggestions;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
@@ -52,7 +52,7 @@ public class LuceneSuggestionEngine implements ISuggestionEngine {
 
 	private Set<String> search(String hint, Analyzer analyzer, ByteBuffersDirectory directory) throws IOException, ParseException {
 		hint = hint.trim();
-		Set<String> sentences = new TreeSet<>();
+		Set<String> sentences = new LinkedHashSet<>();
 		try (IndexReader reader = DirectoryReader.open(directory)) {
 			IndexSearcher searcher = new IndexSearcher(reader);
 			QueryParser parser = new QueryParser(LUCENE_SENTENCE_FIELD, analyzer);
