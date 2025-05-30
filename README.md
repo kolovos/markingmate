@@ -27,7 +27,7 @@ MarkingMate doesn't provide a user interface for creating questions. As such you
 ```xml
 <?xml version="1.0" encoding="ASCII"?>
 <Exam xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="markingmate">
-  <questions title="Question 1" marks="20"/>
+  <questions title="Question 1" marks="20" description="Optional and longer description of the question, shown in UI and used for LLM context."/>
   <questions title="Question 2" marks="15"/>
   <questions title="Question 3" marks="15"/>
   <questions title="Question 4" marks="25"/>
