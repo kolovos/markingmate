@@ -3,21 +3,32 @@ package io.dimitris.markingmate.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.concurrent.ExecutionException;
 
+import javax.swing.AbstractAction;
 import javax.swing.JEditorPane;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.BadLocationException;
 
 import org.eclipse.epsilon.eol.EolModule;
 
+import com.inet.jortho.PopupListener;
 import com.inet.jortho.SpellChecker;
 
 import io.dimitris.markingmate.Answer;
+import io.dimitris.markingmate.llm.FeedbackAssistant;
 
 public class FeedbackPanel extends JPanel {
 
@@ -97,7 +108,9 @@ public class FeedbackPanel extends JPanel {
 	protected JLabel descriptionLabel;
 	protected boolean showDescription;
 	protected JPanel marksPanel;
-	
+
+	protected static final FeedbackAssistant ASSISTANT = new FeedbackAssistant();
+
 	public FeedbackPanel(MarkingMate markingMate, Answer answer) {
 		this(markingMate, answer, false);
 	}	
@@ -141,11 +154,19 @@ public class FeedbackPanel extends JPanel {
 		if (showDescription) add(descriptionLabel, BorderLayout.NORTH);
 		add(feedbackTextAreaScrollPane, BorderLayout.CENTER);
 		add(marksPanel, BorderLayout.SOUTH);
-		
-		SpellChecker.register(feedbackTextArea);
+
+		SpellChecker.register(feedbackTextArea, false, false, true, true);
+		JPopupMenu menu = new JPopupMenu();
+		menu.add(SpellChecker.createCheckerMenu());
+		menu.add(SpellChecker.createLanguagesMenu());
+		if (ASSISTANT.isAvailable()) {
+			JMenu llmMenu = new JMenu("LLM");
+			llmMenu.add(new MakeConciseAction());
+			menu.add(llmMenu);
+		}
+		feedbackTextArea.addMouseListener(new PopupListener(menu));
 		
 		setAnswer(answer);
-		
 	}
 	
 	public void setAnswer(Answer answer) {
@@ -175,5 +196,41 @@ public class FeedbackPanel extends JPanel {
 	
 	public Answer getAnswer() {
 		return answer;
+	}
+
+	protected class MakeConciseAction extends AbstractAction {
+		protected LLMGenerationProgressDialog dialog = new LLMGenerationProgressDialog(
+			(JFrame) SwingUtilities.getWindowAncestor(FeedbackPanel.this)
+		);
+
+		public MakeConciseAction() {
+			super("Make concise");
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (answer != null) {
+				new SwingWorker<String, String>() {
+					@Override
+					protected String doInBackground() throws Exception {
+						return ASSISTANT.makeConcise(answer.getQuestion(), answer.getFeedback());
+					}
+
+					@Override
+					protected void done() {
+						try {
+							feedbackTextArea.getDocument().insertString(
+									feedbackTextArea.getDocument().getLength(),
+									"-- Produced output --\n" + get(), null);
+							dialog.dispose();
+						} catch (BadLocationException | InterruptedException | ExecutionException e) {
+							e.printStackTrace();
+						}
+					}
+				}.execute();
+
+				dialog.setVisible(true);
+			}
+		}
 	}
 }

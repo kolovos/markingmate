@@ -1,0 +1,19 @@
+prompt: >
+  A teacher has written a piece of feedback for a student on an assessment.
+  The question for the assessment is in the following fenced block:
+  
+  ```question
+  $question
+  ```
+
+  The given feedback is in the following fenced block:
+  
+  ```feedback
+  $input
+  ```
+  
+  Summarise the above feedback in plain text, without using itemized lists.
+  Write it as if you were talking to the student, but keep it concise.
+  Stay within the statements that were made, without making additions.
+  Do not mention anything about revisions to the submission.
+  Do not produce any other text besides the summary.
