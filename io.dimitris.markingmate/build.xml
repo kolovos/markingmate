@@ -17,8 +17,12 @@
 			<classpath refid="libs"/>
     	</javac>
 		
-		<copydir src="src/io/dimitris/markingmate/ui/resources/" dest="bin/io/dimitris/markingmate/ui/resources/">
-		</copydir>
+		<copy todir="bin/io/dimitris/markingmate/ui/resources/">
+			<fileset dir="src/io/dimitris/markingmate/ui/resources/" />
+		</copy>
+		<copy todir="bin/io/dimitris/markingmate/llm/">
+			<fileset dir="src/io/dimitris/markingmate/llm/" includes="*.yaml"/>
+		</copy>
 
 		<jar destfile="dist/markingmate.jar" filesetmanifest="mergewithoutmain">
 			<fileset dir="bin"/>
