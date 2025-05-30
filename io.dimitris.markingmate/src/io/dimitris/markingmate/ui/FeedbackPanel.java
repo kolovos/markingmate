@@ -221,7 +221,7 @@ public class FeedbackPanel extends JPanel {
 						try {
 							feedbackTextArea.getDocument().insertString(
 									feedbackTextArea.getDocument().getLength(),
-									"-- Produced output --\n" + get(), null);
+									"\n-- Produced output --\n" + get(), null);
 							dialog.dispose();
 						} catch (BadLocationException | InterruptedException | ExecutionException e) {
 							e.printStackTrace();
