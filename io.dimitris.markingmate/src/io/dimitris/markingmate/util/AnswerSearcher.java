@@ -37,7 +37,10 @@ public class AnswerSearcher {
 		try (ByteBuffersDirectory directory = new ByteBuffersDirectory()) {
 			Analyzer analyzer = new EnglishAnalyzer();
 			index(directory, original, analyzer);
-			return search(original.eResource(), searchQuery, analyzer, directory);
+
+			Collection<Answer> searchResults = search(original.eResource(), searchQuery, analyzer, directory);
+			searchResults.remove(original);
+			return searchResults;
 		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}

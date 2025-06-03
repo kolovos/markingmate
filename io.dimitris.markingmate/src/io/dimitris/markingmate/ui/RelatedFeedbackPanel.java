@@ -34,7 +34,7 @@ public class RelatedFeedbackPanel extends JPanel {
 				return Math.abs(answer.getMarks() - a2.getMarks()) - Math.abs(answer.getMarks() - a1.getMarks());
 			}
 		});
-		setRelatedAnswers(answer, relatedAnswers);
+		setRelatedAnswers(answer, answers);
 	}
 
 	public void setRelatedAnswers(Answer answer, Iterable<Answer> relatedAnswers) {
