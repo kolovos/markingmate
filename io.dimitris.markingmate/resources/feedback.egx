@@ -14,6 +14,14 @@ rule Exam2HTML
 	target : "all-feedback.html"
 }
 
+rule Exam2CopyToClipboardHTML
+	transform exam : Exam {
+	
+	template : "copy-to-clipboard.egl"
+	
+	target : "copy-to-clipboard.html"
+}
+
 rule Feedback2File
 	transform student : Student {
 	

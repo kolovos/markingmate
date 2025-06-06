@@ -1,0 +1,98 @@
+<html>
+<head>
+<style>
+    td, th {
+        padding: 16px 8px;
+    }
+    tr {
+        height: 40px;
+    }
+    textarea {
+        display:none;
+    }
+</style>
+
+<body>
+
+<table>
+    <tr>
+        <th>Student</th>
+        <th>Feedback</th>
+        <th>Marks</th>
+    </tr>
+    [%for (student in Student.all){%]
+    <tr>
+        <td>[%=student.number%]</td>
+        <td>
+<textarea id="feedback[%=student.number%]">
+[%for (question in Question.all) { 
+var answer = student.answers.selectOne(a|a.question = question);
+%]
+[%if (answer.isDefined()){%]
+[%=question.title%]: 
+[%=answer.feedback%]
+
+[%}else{%]
+[%=question.title%]: Not answered.
+
+[%}%]
+[%}%]
+</textarea>
+            <button onClick="javascript:copyToClipboard('feedback[%=student.number%]')">Copy feedback to clipboard</button>
+        </td>
+        <td>
+<textarea id="marks[%=student.number%]">
+[%=student.answers.marks.sum()%]
+</textarea>
+            <button onClick="javascript:copyToClipboard('marks[%=student.number%]')">Copy marks to clipboard</button>
+        </td>
+    </tr>
+    [%}%]
+</table>
+
+<script>
+function copyToClipboard(elementId) {
+    var textarea = document.getElementById(elementId);
+    if (textarea) {
+        textarea.style.display = "block";
+        textarea.select();
+        //textarea.setSelectionRange(0, 99999); // For mobile devices
+        document.execCommand('copy');
+        //textarea.setSelectionRange(0, 0);
+        textarea.style.display = "none";
+        showToast("Copied to clipboard.");
+    } else {
+        showToast("Element not found.");
+    }
+}
+
+// Toast function
+function showToast(message) {
+    // Create toast div if it doesn't exist
+    var toast = document.getElementById("custom-toast");
+    if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "custom-toast";
+        toast.style.position = "fixed";
+        toast.style.bottom = "30px";
+        toast.style.left = "50%";
+        toast.style.transform = "translateX(-50%)";
+        toast.style.background = "#333";
+        toast.style.color = "#fff";
+        toast.style.padding = "12px 24px";
+        toast.style.borderRadius = "6px";
+        toast.style.fontSize = "16px";
+        toast.style.zIndex = "9999";
+        toast.style.opacity = "0.95";
+        document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.style.display = "block";
+    // Hide after 5 seconds
+    setTimeout(function() {
+        toast.style.display = "none";
+    }, 2000);
+}
+</script>
+</body>
+</html>
