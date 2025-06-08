@@ -3,23 +3,32 @@
 <style>
     td, th {
         padding: 16px 8px;
+        vertical-align: middle;
     }
     tr {
         height: 40px;
     }
+    tbody tr:nth-child(odd) {
+      background-color: #eee;
+    }
     textarea {
-        display:none;
+        width: 240px;
+        height: 150px;
+        display: block;
     }
 </style>
 
 <body>
 
 <table>
+    <thead>
     <tr>
         <th>Student</th>
         <th>Feedback</th>
         <th>Marks</th>
     </tr>
+    </thead>
+    <tbody>
     [%for (student in Student.all){%]
     <tr>
         <td>[%=student.number%]</td>
@@ -48,18 +57,17 @@ var answer = student.answers.selectOne(a|a.question = question);
         </td>
     </tr>
     [%}%]
+    </tbody>
 </table>
 
 <script>
 function copyToClipboard(elementId) {
     var textarea = document.getElementById(elementId);
     if (textarea) {
-        textarea.style.display = "block";
         textarea.select();
-        //textarea.setSelectionRange(0, 99999); // For mobile devices
         document.execCommand('copy');
-        //textarea.setSelectionRange(0, 0);
-        textarea.style.display = "none";
+        // mark it as copied
+        textarea.style.backgroundColor = 'lightgreen';
         showToast("Copied to clipboard.");
     } else {
         showToast("Element not found.");

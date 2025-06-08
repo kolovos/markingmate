@@ -1,18 +1,40 @@
 context Answer {
   constraint MustHaveFeedback {
     check: self.feedback.trim().length() > 0
-    message: 'All answers should have feedback'
+    message: 'Empty feedback to "' + self.question.`title` + '" for student ' + self.student.number
+  }
+
+  constraint MustBeForStudent {
+    check: self.student.isDefined()
+    message: 'Answer must be from a student'
+  }
+
+  constraint MustHaveQuestion {
+    guard: self.satisfies('MustBeForStudent')
+    check: self.question.isDefined()
+    message: 'Answer for student ' + self.student.number + 'must be associated to a question'
   }
 
   constraint ScoreMustBeWithinRange {
+    guard: self.satisfies('MustHaveQuestion')
     check: self.marks >= 0 and self.marks <= self.question.marks
     message: 'Answer for ' + self.question.`title` + '  must be between [0, ' + self.question.marks + ']'
   }
 }
 
 context Student {
+  constraint MustBeInsideExam {
+    check: self.eContainer.isDefined()
+    message: 'Student ' + self.number + ' must be part of an exam'
+  }
   constraint MustAnswerAllQuestions {
+    guard: self.satisfies('MustBeInsideExam')
     check: self.answers.size() = self.eContainer.questions.size()
-    message: 'Student ' + self.number + ' must have answers for all questions'
+    message {
+      var missingQuestions : Set;
+      missingQuestions.addAll(self.eContainer.questions);
+      missingQuestions.removeAll(self.answers.question);
+      return 'Student ' + self.number + ' is missing feedback for questions ' + missingQuestions.`title`;
+    }
   }
 }

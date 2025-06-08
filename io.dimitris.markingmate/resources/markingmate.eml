@@ -48,12 +48,8 @@ rule AnswerMerge
 	}
 	else {
 		t.marks = Sequence{l.marks, r.marks}.max();
-		if (l.feedback.isDefined()) {
-			t.feedback = l.feedback;
-		}
-		else {
-			t.feedback = r.feedback;
-		}
+		t.marksExpression = l.marksExpression ?: r.marksExpression;
+		t.feedback = l.feedback.isDefined() ? l.feedback : r.feedback;
 	}
 	
 	t.question = l.question.equivalent();
@@ -61,14 +57,23 @@ rule AnswerMerge
 	
 }
 
+rule QuestionOneSide
+	transform s: Source!Question
+	to t: Target!Question {
+  t.title = s.title;
+  t.description = s.description;
+  t.marks = s.marks;
+  t.answers ::= s.answers;
+}
+
 rule AnswerOneSide
 	transform s : Source!Answer
 	to t : Target!Answer {
 	
 	t.marks = s.marks;
+	t.marksExpression = s.marksExpression;
 	t.feedback = s.feedback;
 	
 	t.question = s.question.equivalent();
 	t.student = s.student.equivalent();
-	
 }
