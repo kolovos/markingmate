@@ -1,79 +1,78 @@
 rule Exam 
-	merge l : Left!Exam
-	with r : Right!Exam
-	into t : Target!Exam {
-	
-	t.questions ::= l.questions;
+    merge l : Left!Exam
+    with r : Right!Exam
+    into t : Target!Exam
+{
+    t.questions ::= l.questions;
 
     // Right side might have students which are not on the left side
     var allStudents = l.students.equivalent().asSet();
     allStudents.addAll(r.students.equivalent());
-	t.students.addAll(allStudents.asSequence().sortBy(s|s.number));
+    t.students.addAll(allStudents.asSequence().sortBy(s|s.number));
 }
 
 rule Question 
-	merge l : Left!Question
-	with r : Right!Question
-	into t : Target!Question {
-	
-	t.title = l.title;
-	t.description = l.description;
-	t.marks = l.marks;
+    merge l : Left!Question
+    with r : Right!Question
+    into t : Target!Question
+{
+    t.title = l.title;
+    t.description = l.description;
+    t.marks = l.marks;
 }
 
 rule Student 
-	merge l : Left!Student
-	with r : Right!Student
-	into t : Target!Student {
-	
-	t.number = l.number;
-	
+    merge l : Left!Student
+    with r : Right!Student
+    into t : Target!Student
+{
+    t.number = l.number;
 }
 
 rule StudentOneSide
   transform s: Source!Student
   to t: Target!Student
 {
-  t.number = s.number;
+    t.number = s.number;
 }
 
 rule AnswerMerge
-	merge l : Left!Answer
-	with r : Right!Answer
-	into t : Target!Answer {
-	
-	if (l.marks <> 0 and r.marks <> 0 and l.marks <> r.marks) {
-		throw "Different marks found for answer " +
-			l.question.title + " of student " + l.student.number + ": " + l.marks + " <-> " + r.marks;		
-	}
-	else {
-		t.marks = Sequence{l.marks, r.marks}.max();
-		t.marksExpression = l.marksExpression ?: r.marksExpression;
-		t.feedback = l.feedback.isDefined() ? l.feedback : r.feedback;
-	}
-	
-	t.question = l.question.equivalent();
-	t.student = l.student.equivalent();
-	
+    merge l : Left!Answer
+    with r : Right!Answer
+    into t : Target!Answer
+{
+    if (l.marks <> 0 and r.marks <> 0 and l.marks <> r.marks) {
+        throw "Different marks found for answer " +
+            l.question.title + " of student " + l.student.number + ": " + l.marks + " <-> " + r.marks;
+    }
+    else {
+        t.marks = Sequence{l.marks, r.marks}.max();
+        t.marksExpression = l.marksExpression ?: r.marksExpression;
+        t.feedback = l.feedback.isDefined() ? l.feedback : r.feedback;
+    }
+
+    t.question = l.question.equivalent();
+    t.student = l.student.equivalent();
 }
 
 rule QuestionOneSide
-	transform s: Source!Question
-	to t: Target!Question {
-  t.title = s.title;
-  t.description = s.description;
-  t.marks = s.marks;
-  t.answers ::= s.answers;
+    transform s: Source!Question
+    to t: Target!Question
+{
+    t.title = s.title;
+    t.description = s.description;
+    t.marks = s.marks;
+    t.answers ::= s.answers;
 }
 
 rule AnswerOneSide
-	transform s : Source!Answer
-	to t : Target!Answer {
-	
-	t.marks = s.marks;
-	t.marksExpression = s.marksExpression;
-	t.feedback = s.feedback;
-	
-	t.question = s.question.equivalent();
-	t.student = s.student.equivalent();
+    transform s : Source!Answer
+    to t : Target!Answer
+{
+    t.marks = s.marks;
+    t.marksExpression = s.marksExpression;
+    t.feedback = s.feedback;
+
+    t.question = s.question.equivalent();
+    t.student = s.student.equivalent();
 }
