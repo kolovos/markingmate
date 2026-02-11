@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.math.BigDecimal;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.AbstractAction;
@@ -31,6 +32,7 @@ import io.dimitris.markingmate.Answer;
 import io.dimitris.markingmate.llm.FeedbackAssistant;
 
 public class FeedbackPanel extends JPanel {
+	private static final long serialVersionUID = 1L;
 
 	protected enum MarksFieldContentMode {
 		SHOW_MARKS, SHOW_EXPRESSION;
@@ -89,10 +91,11 @@ public class FeedbackPanel extends JPanel {
 
 					if (!expr.trim().isEmpty()) {
 						EolModule mod = new EolModule();
-						mod.parse("return (" + expr + ").asInteger();");
-						Integer result = (Integer) mod.execute();
+						mod.parse("return (" + expr + ").asString();");
+
+						String result = (String) mod.execute();
 						if (result != null) {
-							answer.setMarks(result);
+							answer.setMarks(new BigDecimal(result));
 						}
 					}
 				}

@@ -23,6 +23,6 @@ class Answer {
 	transient ref Student#answers student;
 	!resolve ref Question#answers question;
 	attr String feedback = "";
-	attr int marks = 0;
+	attr EBigDecimal marks = 0;
 	attr String marksExpression;
 }

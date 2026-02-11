@@ -2,6 +2,7 @@
  */
 package io.dimitris.markingmate;
 
+import java.math.BigDecimal;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -118,12 +119,12 @@ public interface Answer extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Marks</em>' attribute.
-	 * @see #setMarks(int)
+	 * @see #setMarks(BigDecimal)
 	 * @see io.dimitris.markingmate.MarkingmatePackage#getAnswer_Marks()
 	 * @model default="0"
 	 * @generated
 	 */
-	int getMarks();
+	BigDecimal getMarks();
 
 	/**
 	 * Sets the value of the '{@link io.dimitris.markingmate.Answer#getMarks <em>Marks</em>}' attribute.
@@ -133,7 +134,7 @@ public interface Answer extends EObject {
 	 * @see #getMarks()
 	 * @generated
 	 */
-	void setMarks(int value);
+	void setMarks(BigDecimal value);
 
 	/**
 	 * Returns the value of the '<em><b>Marks Expression</b></em>' attribute.

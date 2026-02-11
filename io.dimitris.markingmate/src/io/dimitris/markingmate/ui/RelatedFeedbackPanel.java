@@ -31,7 +31,8 @@ public class RelatedFeedbackPanel extends JPanel {
 		answers.sort(new Comparator<Answer>() {
 			@Override
 			public int compare(Answer a1, Answer a2) {
-				return Math.abs(answer.getMarks() - a2.getMarks()) - Math.abs(answer.getMarks() - a1.getMarks());
+				// Sort in descending order
+				return -a1.getMarks().compareTo(a2.getMarks());
 			}
 		});
 		setRelatedAnswers(answer, answers);

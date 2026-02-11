@@ -7,6 +7,7 @@ import io.dimitris.markingmate.MarkingmatePackage;
 import io.dimitris.markingmate.Question;
 
 import io.dimitris.markingmate.Student;
+import java.math.BigDecimal;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -73,7 +74,7 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 	 * @generated
 	 * @ordered
 	 */
-	protected static final int MARKS_EDEFAULT = 0;
+	protected static final BigDecimal MARKS_EDEFAULT = new BigDecimal("0");
 
 	/**
 	 * The cached value of the '{@link #getMarks() <em>Marks</em>}' attribute.
@@ -83,7 +84,7 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 	 * @generated
 	 * @ordered
 	 */
-	protected int marks = MARKS_EDEFAULT;
+	protected BigDecimal marks = MARKS_EDEFAULT;
 
 	/**
 	 * The default value of the '{@link #getMarksExpression() <em>Marks Expression</em>}' attribute.
@@ -241,7 +242,7 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 	 * @generated
 	 */
 	@Override
-	public int getMarks() {
+	public BigDecimal getMarks() {
 		return marks;
 	}
 
@@ -251,8 +252,8 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 	 * @generated
 	 */
 	@Override
-	public void setMarks(int newMarks) {
-		int oldMarks = marks;
+	public void setMarks(BigDecimal newMarks) {
+		BigDecimal oldMarks = marks;
 		marks = newMarks;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MarkingmatePackage.ANSWER__MARKS, oldMarks, marks));
@@ -371,7 +372,7 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 				setFeedback((String)newValue);
 				return;
 			case MarkingmatePackage.ANSWER__MARKS:
-				setMarks((Integer)newValue);
+				setMarks((BigDecimal)newValue);
 				return;
 			case MarkingmatePackage.ANSWER__MARKS_EXPRESSION:
 				setMarksExpression((String)newValue);
@@ -422,7 +423,7 @@ public class AnswerImpl extends MinimalEObjectImpl.Container implements Answer {
 			case MarkingmatePackage.ANSWER__FEEDBACK:
 				return FEEDBACK_EDEFAULT == null ? feedback != null : !FEEDBACK_EDEFAULT.equals(feedback);
 			case MarkingmatePackage.ANSWER__MARKS:
-				return marks != MARKS_EDEFAULT;
+				return MARKS_EDEFAULT == null ? marks != null : !MARKS_EDEFAULT.equals(marks);
 			case MarkingmatePackage.ANSWER__MARKS_EXPRESSION:
 				return MARKS_EXPRESSION_EDEFAULT == null ? marksExpression != null : !MARKS_EXPRESSION_EDEFAULT.equals(marksExpression);
 		}

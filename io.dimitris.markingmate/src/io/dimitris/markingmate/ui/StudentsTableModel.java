@@ -1,8 +1,11 @@
 package io.dimitris.markingmate.ui;
 
+import java.math.BigDecimal;
+
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+import io.dimitris.markingmate.Answer;
 import io.dimitris.markingmate.Student;
 
 public class StudentsTableModel implements TableModel {
@@ -43,9 +46,19 @@ public class StudentsTableModel implements TableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Student student = app.getExam().getStudents().get(rowIndex);
-		if (columnIndex == 0) return student.getNumber();
-		else if (columnIndex == 2) return student.getAnswers().stream().mapToInt(f -> f.getMarks()).sum();
-		else return student.getAnswers().stream().filter(f -> !f.getFeedback().isEmpty()).count();
+		if (columnIndex == 0) {
+			return student.getNumber();
+		}
+		else if (columnIndex == 2) {
+			BigDecimal sum = BigDecimal.ZERO;
+			for (Answer a : student.getAnswers()) {
+				sum = sum.add(a.getMarks());
+			}
+			return sum;
+		}
+		else {
+			return student.getAnswers().stream().filter(f -> !f.getFeedback().isEmpty()).count();
+		}
 	}
 
 	@Override
