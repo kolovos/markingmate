@@ -17,6 +17,7 @@ class Question {
 class Student {
 	attr String number;
 	val Answer[*]#student answers;
+	transient derived readonly attr EBigDecimal totalMarks;
 }
 
 class Answer {

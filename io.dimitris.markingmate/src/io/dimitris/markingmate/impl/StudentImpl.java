@@ -2,24 +2,24 @@
  */
 package io.dimitris.markingmate.impl;
 
+import java.math.BigDecimal;
+import java.util.Collection;
+
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+
 import io.dimitris.markingmate.Answer;
 import io.dimitris.markingmate.MarkingmatePackage;
 import io.dimitris.markingmate.Student;
-
-import java.util.Collection;
-
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.notify.NotificationChain;
-
-import org.eclipse.emf.common.util.EList;
-
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.InternalEObject;
-
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
-import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -31,6 +31,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <ul>
  *   <li>{@link io.dimitris.markingmate.impl.StudentImpl#getNumber <em>Number</em>}</li>
  *   <li>{@link io.dimitris.markingmate.impl.StudentImpl#getAnswers <em>Answers</em>}</li>
+ *   <li>{@link io.dimitris.markingmate.impl.StudentImpl#getTotalMarks <em>Total Marks</em>}</li>
  * </ul>
  *
  * @generated
@@ -65,6 +66,26 @@ public class StudentImpl extends MinimalEObjectImpl.Container implements Student
 	 * @ordered
 	 */
 	protected EList<Answer> answers;
+
+	/**
+	 * The default value of the '{@link #getTotalMarks() <em>Total Marks</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTotalMarks()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final BigDecimal TOTAL_MARKS_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getTotalMarks() <em>Total Marks</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTotalMarks()
+	 * @generated
+	 * @ordered
+	 */
+	protected BigDecimal totalMarks = TOTAL_MARKS_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -124,6 +145,46 @@ public class StudentImpl extends MinimalEObjectImpl.Container implements Student
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * @generated NOT
+	 */
+	@Override
+	public BigDecimal getTotalMarks() {
+		if (totalMarks == null) {
+			totalMarks = BigDecimal.ZERO;
+			for (Answer a : getAnswers()) {
+				totalMarks = totalMarks.add(a.getMarks());
+			}
+			registerTotalMarksAdapter();
+		}
+		return totalMarks;
+	}
+
+	private void registerTotalMarksAdapter() {
+		for (Adapter ea : eAdapters()) {
+			if (ea instanceof TotalMarksAdapter) {
+				return;
+			}
+		}
+		this.eAdapters().add(new TotalMarksAdapter());
+	}
+
+	protected class TotalMarksAdapter extends EContentAdapter {
+		@Override
+		public void notifyChanged(Notification notification) {
+			if (notification.getNotifier() instanceof Answer) {
+				if (notification.getFeatureID(Answer.class) == MarkingmatePackage.ANSWER__MARKS) {
+					// marks changed - invalidate the total marks computed so far
+					totalMarks = null;
+				}
+			}
+
+			super.notifyChanged(notification);
+		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -162,6 +223,8 @@ public class StudentImpl extends MinimalEObjectImpl.Container implements Student
 				return getNumber();
 			case MarkingmatePackage.STUDENT__ANSWERS:
 				return getAnswers();
+			case MarkingmatePackage.STUDENT__TOTAL_MARKS:
+				return getTotalMarks();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -216,6 +279,8 @@ public class StudentImpl extends MinimalEObjectImpl.Container implements Student
 				return NUMBER_EDEFAULT == null ? number != null : !NUMBER_EDEFAULT.equals(number);
 			case MarkingmatePackage.STUDENT__ANSWERS:
 				return answers != null && !answers.isEmpty();
+			case MarkingmatePackage.STUDENT__TOTAL_MARKS:
+				return TOTAL_MARKS_EDEFAULT == null ? totalMarks != null : !TOTAL_MARKS_EDEFAULT.equals(totalMarks);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -232,6 +297,8 @@ public class StudentImpl extends MinimalEObjectImpl.Container implements Student
 		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (number: ");
 		result.append(number);
+		result.append(", totalMarks: ");
+		result.append(totalMarks);
 		result.append(')');
 		return result.toString();
 	}

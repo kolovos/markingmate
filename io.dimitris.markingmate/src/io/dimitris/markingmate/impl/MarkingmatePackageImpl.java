@@ -238,6 +238,16 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 	 * @generated
 	 */
 	@Override
+	public EAttribute getStudent_TotalMarks() {
+		return (EAttribute)studentEClass.getEStructuralFeatures().get(2);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
 	public EClass getAnswer() {
 		return answerEClass;
 	}
@@ -335,6 +345,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 		studentEClass = createEClass(STUDENT);
 		createEAttribute(studentEClass, STUDENT__NUMBER);
 		createEReference(studentEClass, STUDENT__ANSWERS);
+		createEAttribute(studentEClass, STUDENT__TOTAL_MARKS);
 
 		answerEClass = createEClass(ANSWER);
 		createEReference(answerEClass, ANSWER__STUDENT);
@@ -388,6 +399,7 @@ public class MarkingmatePackageImpl extends EPackageImpl implements MarkingmateP
 		initEClass(studentEClass, Student.class, "Student", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getStudent_Number(), ecorePackage.getEString(), "number", null, 0, 1, Student.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getStudent_Answers(), this.getAnswer(), this.getAnswer_Student(), "answers", null, 0, -1, Student.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getStudent_TotalMarks(), ecorePackage.getEBigDecimal(), "totalMarks", null, 0, 1, Student.class, IS_TRANSIENT, !IS_VOLATILE, !IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
 		initEClass(answerEClass, Answer.class, "Answer", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getAnswer_Student(), this.getStudent(), this.getStudent_Answers(), "student", null, 0, 1, Answer.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

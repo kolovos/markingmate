@@ -1,11 +1,8 @@
 package io.dimitris.markingmate.ui;
 
-import java.math.BigDecimal;
-
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import io.dimitris.markingmate.Answer;
 import io.dimitris.markingmate.Student;
 
 public class StudentsTableModel implements TableModel {
@@ -50,11 +47,7 @@ public class StudentsTableModel implements TableModel {
 			return student.getNumber();
 		}
 		else if (columnIndex == 2) {
-			BigDecimal sum = BigDecimal.ZERO;
-			for (Answer a : student.getAnswers()) {
-				sum = sum.add(a.getMarks());
-			}
-			return sum;
+			return student.getTotalMarks().toPlainString();
 		}
 		else {
 			return student.getAnswers().stream().filter(f -> !f.getFeedback().isEmpty()).count();

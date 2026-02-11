@@ -2,6 +2,7 @@
  */
 package io.dimitris.markingmate;
 
+import java.math.BigDecimal;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
@@ -17,6 +18,7 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  *   <li>{@link io.dimitris.markingmate.Student#getNumber <em>Number</em>}</li>
  *   <li>{@link io.dimitris.markingmate.Student#getAnswers <em>Answers</em>}</li>
+ *   <li>{@link io.dimitris.markingmate.Student#getTotalMarks <em>Total Marks</em>}</li>
  * </ul>
  *
  * @see io.dimitris.markingmate.MarkingmatePackage#getStudent()
@@ -67,5 +69,16 @@ public interface Student extends EObject {
 	 * @generated
 	 */
 	EList<Answer> getAnswers();
+
+	/**
+	 * Returns the value of the '<em><b>Total Marks</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Total Marks</em>' attribute.
+	 * @see io.dimitris.markingmate.MarkingmatePackage#getStudent_TotalMarks()
+	 * @model transient="true" changeable="false" derived="true"
+	 * @generated
+	 */
+	BigDecimal getTotalMarks();
 
 } // Student

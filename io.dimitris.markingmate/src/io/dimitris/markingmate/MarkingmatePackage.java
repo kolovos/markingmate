@@ -204,13 +204,22 @@ public interface MarkingmatePackage extends EPackage {
 	int STUDENT__ANSWERS = 1;
 
 	/**
+	 * The feature id for the '<em><b>Total Marks</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STUDENT__TOTAL_MARKS = 2;
+
+	/**
 	 * The number of structural features of the '<em>Student</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int STUDENT_FEATURE_COUNT = 2;
+	int STUDENT_FEATURE_COUNT = 3;
 
 	/**
 	 * The number of operations of the '<em>Student</em>' class.
@@ -425,6 +434,17 @@ public interface MarkingmatePackage extends EPackage {
 	EReference getStudent_Answers();
 
 	/**
+	 * Returns the meta object for the attribute '{@link io.dimitris.markingmate.Student#getTotalMarks <em>Total Marks</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Total Marks</em>'.
+	 * @see io.dimitris.markingmate.Student#getTotalMarks()
+	 * @see #getStudent()
+	 * @generated
+	 */
+	EAttribute getStudent_TotalMarks();
+
+	/**
 	 * Returns the meta object for class '{@link io.dimitris.markingmate.Answer <em>Answer</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -613,6 +633,14 @@ public interface MarkingmatePackage extends EPackage {
 		 * @generated
 		 */
 		EReference STUDENT__ANSWERS = eINSTANCE.getStudent_Answers();
+
+		/**
+		 * The meta object literal for the '<em><b>Total Marks</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute STUDENT__TOTAL_MARKS = eINSTANCE.getStudent_TotalMarks();
 
 		/**
 		 * The meta object literal for the '{@link io.dimitris.markingmate.impl.AnswerImpl <em>Answer</em>}' class.
