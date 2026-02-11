@@ -10,6 +10,7 @@ import javax.swing.JProgressBar;
 
 public class LLMGenerationProgressDialog extends JDialog {
 
+    private static final long serialVersionUID = 1L;
     private JProgressBar progressBar;
 
     public LLMGenerationProgressDialog(Frame owner) {

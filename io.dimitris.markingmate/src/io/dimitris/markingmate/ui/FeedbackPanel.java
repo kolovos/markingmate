@@ -199,9 +199,7 @@ public class FeedbackPanel extends JPanel {
 	}
 
 	protected class MakeConciseAction extends AbstractAction {
-		protected LLMGenerationProgressDialog dialog = new LLMGenerationProgressDialog(
-			(JFrame) SwingUtilities.getWindowAncestor(FeedbackPanel.this)
-		);
+		private static final long serialVersionUID = 1L;
 
 		public MakeConciseAction() {
 			super("Make concise");
@@ -209,6 +207,10 @@ public class FeedbackPanel extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			LLMGenerationProgressDialog dialog = new LLMGenerationProgressDialog(
+				(JFrame) SwingUtilities.getWindowAncestor(FeedbackPanel.this)
+			);
+
 			if (answer != null) {
 				new SwingWorker<String, String>() {
 					@Override
