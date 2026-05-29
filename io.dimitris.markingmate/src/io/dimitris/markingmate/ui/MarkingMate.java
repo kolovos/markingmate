@@ -318,11 +318,11 @@ public class MarkingMate extends JFrame {
 			};
 			
 			exam = (Exam) resource.getContents().get(0);
-			if (exam.getQuestions().size() > 0) questionsComboBox.setSelectedIndex(0);
 			if (exam.getStudents().size() > 0) {
 				studentsTable.setRowSelectionInterval(0, 0);
 				updateUI(studentsTable);
 			}
+			if (exam.getQuestions().size() > 0) questionsComboBox.setSelectedIndex(0);
 			
 			updateUI(studentsTable);
 			updateUI(questionsComboBox);
